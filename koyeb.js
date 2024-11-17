@@ -5,11 +5,11 @@ RUN sudo dnf -y update &&\
     sudo dnf install -y git ffmpeg ImageMagick nodejs yarnpkg libwebp &&\
     sudo dnf clean all -y
 
-RUN git clone https://github.com/elrebelde21/The-LoliBot-MD
+RUN git clone https://github.com/The-DiosBot-MD/The-MikuBot-MD
 
-WORKDIR /root/The-LoliBot-MD
+WORKDIR /root/The-MikuBot-MD
 
-COPY ./root/The-LoliBot-MD
+COPY ./root/The-MikuBot-MD
 
 RUN yarn install
 

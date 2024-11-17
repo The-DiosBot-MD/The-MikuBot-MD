@@ -9,13 +9,13 @@ import moment from 'moment-timezone'
 
 //---------[ Añada los numeros a ser Propietario/a ]---------
 
-global.owner = [['573147616444', 'ＰＲＯＰＩＥＴＡＲＩＯ', true], ['593968585383'], ['5492266466080'], ['5492266613038']]
+global.owner = [['595976126756', 'OWNER', true], ['595994836199'], ['595981941030']]
 global.mods = []
 global.prems = []
 
 //BETA: Si quiere evitar escribir el número que será bot en la consola, agregué desde aquí entonces:
 //Sólo aplica para opción 2 (ser bot con código de texto de 8 digitos)
-global.botNumberCode = "" //Ejemplo: +59309090909
+global.botNumberCode = "" //Ejemplo: +595976126756
 global.confirmCode = "" 
 
 // Cambiar a false para usar el Bot desde el mismo numero del Bot.
@@ -70,53 +70,53 @@ global.moment = moment
 
 //------------------------[ Stickers ]-----------------------------
 
-global.packname = 'LoliBot'
-global.author = 'elrebelde21'
+global.packname = '𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃🥀'
+global.author = '𝐀𝐝𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥'
 
 //------------[ Versión | Nombre | cuentas ]------------
 
-global.wm = '𝐋𝐨𝐥𝐢𝐁𝐨𝐭-𝐌𝐃' 
-global.botname = '𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿'
-global.vs = '1.9.5'
-global.yt = 'https://www.youtube.com/@elrebelde.21'
-global.tiktok = 'tiktok.com/@elrebelde21'
-global.md = 'https://github.com/elrebelde21/LoliBot-MD'
-global.fb = 'https://www.facebook.com/elrebelde21'
-global.face = 'https://www.facebook.com/groups/872989990425789/'
+global.wm = '𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃🥀' 
+global.botname = '𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃🥀'
+global.vs = '1.9.9'
+global.yt = 'https://www.youtube.com/@The-MikuBot-MD'
+global.tiktok = 'tiktok.com/@Adrian Alegre Sanchez'
+global.md = 'https://github.com/The-DiosBot-MD/The-MikuBot-MD'
+global.fb = 'https://www.facebook.com/Adrian Alegre Sanchez'
+global.face = 'https://www.facebook.com/groups/8729899904789/'
 
-global.nna = 'https://whatsapp.com/channel/0029Va4QjH7DeON0ePwzjS1A' //Update
-global.nna2 = 'https://whatsapp.com/channel/0029Vau57ykEwEk5CgosvU3v'
-global.nn = 'https://chat.whatsapp.com/HNDVUxHphPzG3cJHIwCaX5' //Grupo 1
-global.nnn = 'https://chat.whatsapp.com/H4hxytyGvucIF1k0UAR7es' //Grupo 2
-global.nnnt = 'https://chat.whatsapp.com/IlyJBy1fxcw2qAHLSC5YLa' //Grupo del Colaboracion
-global.nnnt2 = 'https://chat.whatsapp.com/K7RzcVdxGqhGP5dCpVENSI' // Grupo COL 2
-global.nnntt = 'https://chat.whatsapp.com/IB9Vs7mZ03BBkH3reCU8Dw' //Grupo COL 3
-global.nnnttt = 'https://chat.whatsapp.com/IstOAq2RnBx687WhQpOYK8' //enlace lolibot
-global.nnntttt = 'https://chat.whatsapp.com/FRkr7jJHSJA5OjVtE64dDs' //Grupo ayuda sobre el bot
+global.nna = 'https://chat.whatsapp.com/IhHPrATwf5RE5DxlxIjhaT' //Update
+global.nna2 = 'https://chat.whatsapp.com/C92isvspFcXCtqv2PqCfHI'
+global.nn = 'https://chat.whatsapp.com/C92isvspFcXCtqv2PqCfHI' //Grupo 1
+global.nnn = 'https://chat.whatsapp.com/C92isvspFcXCtqv2PqCfHI' //Grupo 2
+global.nnnt = 'https://chat.whatsapp.com/LuD3YzdOjH16LUwPPCVmL6' //Grupo del Colaboracion
+global.nnnt2 = 'https://chat.whatsapp.com/LuD3YzdOjH16LUwPPCVmL6' // Grupo COL 2
+global.nnntt = 'https://chat.whatsapp.com/LuD3YzdOjH16LUwPPCVmL6' //Grupo COL 3
+global.nnnttt = 'https://chat.whatsapp.com/Hg4Akz1Autl7AiPaY9vyod' //Grupo 1
+global.nnntttt = 'https://chat.whatsapp.com/Hg4Akz1Autl7AiPaY9vyod' //Grupo ayuda sobre el bot
 global.bot = 'No disponible de momento...'
 global.asistencia = `${fb}`
 global.redes = [nna, yt, nn, md, tiktok, fb, nnn, face]
 
 //------------------------[ Info | Datos ]---------------------------
 
-global.wait = 'Calmao pa estoy procesando😎\n\n> *❗Por favor no hacer spam👏❗*'
-global.waitt = '*⌛ _Cargando..._ ▬▬▭▭▭*'
-global.waittt = '*⌛ _Cargando..._ ▬▬▬▬▭▭*'
-global.waitttt = '*⌛ _Cargando..._ ▬▬▬▬▬▬▭*'
-global.waittttt = '*⌛ _Cargando..._ ▬▬▬▬▬▬▬*'
-global.rg = '『✅ 𝙍𝙀𝙎𝙐𝙇𝙏𝘼𝘿𝙊𝙎 ✅』\n\n'
+global.wait = '𝑷𝒓𝒐𝒄𝒆𝒔𝒂𝒏𝒅𝒐 𝒂𝒈𝒖𝒂𝒓𝒅𝒆 𝒖𝒏 𝒎𝒐𝒎𝒆𝒏𝒕𝒐..\n\n> *❗𝑭𝒂𝒗𝒐𝒓 𝒏𝒐 𝒉𝒂𝒄𝒆𝒓 𝑺𝒑𝒂𝒎❗*'
+global.waitt = '*⌛ _𝑪𝒂𝒓𝒈𝒂𝒏𝒅𝒐..._ ▬▬▭▭▭*'
+global.waittt = '*⌛ _𝑪𝒂𝒓𝒈𝒂𝒏𝒅𝒐..._ ▬▬▬▬▭▭*'
+global.waitttt = '*⌛ _𝑪𝒂𝒓𝒈𝒂𝒏𝒅𝒐..._ ▬▬▬▬▬▬▭*'
+global.waittttt = '*⌛ _𝑪𝒂𝒓𝒈𝒂𝒏𝒅𝒐..._ ▬▬▬▬▬▬▬*'
+global.rg = '『✔︎ 𝑹𝒆𝒔𝒖𝒍𝒕𝒂𝒅𝒐 ✔︎』\n\n'
 global.resultado = rg
-global.ag = '『⚠️ 𝘼𝘿𝙑𝙀𝙍𝙏𝙀𝙉𝘾𝙄𝘼 ⚠️』\n\n'
+global.ag = '『༒︎ 𝑷𝒓𝒆𝒄𝒂𝒖𝒄𝒊𝒐𝒏 ༒︎』\n\n'
 global.advertencia = ag
-global.iig = '『❕ 𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝘾𝙄𝙊𝙉 』\n\n'
+global.iig = '『␈ 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐𝒏 ␈』\n\n'
 global.informacion = iig
-global.fg = '『❌ 𝙀𝙍𝙍𝙊𝙍 ❌』\n\n'
+global.fg = '『☢︎︎ 𝑬𝒓𝒓𝒐𝒓 ☢︎︎』\n\n'
 global.fallo = fg
-global.mg = '『❗️ 𝙇𝙊 𝙐𝙎𝙊 𝙈𝘼𝙇❗』\n\n'
+global.mg = '『☹︎ 𝑼𝒔𝒐 𝒊𝒏𝒄𝒐𝒓𝒓𝒄𝒕𝒐 ☹︎』\n\n'
 global.mal = mg
-global.eeg = '『📩 𝙍𝙀𝙋𝙊𝙍𝙏𝙀 📩』\n\n'
+global.eeg = '『❣︎ 𝑹𝒆𝒑𝒐𝒓𝒕𝒂𝒓 ❣︎』\n\n'
 global.envio = eeg
-global.eg = '『💚 𝙀𝙓𝙄𝙏𝙊𝙎 💚』\n\n'
+global.eg = '『✿︎ 𝑷𝒓𝒐𝒄𝒆𝒔𝒐 𝒆𝒙𝒊𝒕𝒐𝒔𝒐 ✿︎』\n\n'
 global.exito = eg
 
 //-------------------------[ IMAGEN ]------------------------------
@@ -161,9 +161,9 @@ global.flaaa = [
 //---------------[ IDs de canales ]----------------
 
 global.ch = {
-ch1: '120363355261011910@newsletter', 
-ch2: '120363160031023229@newsletter',
-ch3: '120363301598733462@newsletter',
+ch1: 'https://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W', 
+ch2: 'https://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W',
+ch3: 'https://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W',
 }
 
 //----------------------------------------------------
