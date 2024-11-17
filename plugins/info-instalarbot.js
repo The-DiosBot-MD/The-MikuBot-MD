@@ -2,80 +2,48 @@
 let { generateWAMessageFromContent } = (await import(global.baileys)).default 
 let handler  = async (m, { conn }) => {
 let fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
-let texto = `*◄┢┅͜͡✇⟬↯ື ►ஜ۩💥۩ஜ◄ ↯ື⟭✇͜͡┅┧►*
+let texto = `𝙄𝙉𝙎𝙏𝘼𝙇𝘼𝘾𝙄𝙊𝙉 𝘿𝙀 𝙏𝙃𝙀-𝙈𝙄𝙆𝙐𝘽𝙊𝙏-𝙈𝘿 👑
 
-\`𝙑𝙄𝘿𝙀𝙊 𝘿𝙀 𝙄𝙉𝙎𝙏𝘼𝙇𝘼𝘾𝙄𝙊𝙉\`
-https://youtu.be/gh5NajZOTA8
+*━━━━━━━━━━━━━⬣*
+✅ 𝗜𝗡𝗦𝗧𝗔𝗟𝗔𝗥 𝗘𝗡 𝗛𝗢𝗦𝗧𝗜𝗡𝗚𝗣𝗬
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+*𝚃𝚑𝚎-𝙼𝚒𝚔𝚞𝙱𝚘𝚝-𝙼𝙳 : 𝙷𝚘𝚜𝚝𝚒𝚗𝚐𝙿𝚈*
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+_Pagina Oficial_ 
+*_https://dahs.hostingpy.shop_*
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+_Siguenos para saber mas al respecto_
+_https://www.youtube.com/The-MikuBot-MD_
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+_Dashboard_
+_https://dash.hostingpy.shop_
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+_Panel_
+_https://panel.hostingpy.shop_
+*━━━━━━━━━━━━━⬣*
 
-> ✨ *Canal de Actualizaciones y novedades sobre el bot*
-> *${global.nna}*
+*━━━━━━━━━━━━━⬣*
+✅ 𝙄𝙉𝙎𝙏𝘼𝙇𝘼𝙍 𝙀𝙉 𝙏𝙀𝙍𝙈𝙐𝙓
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+termux-setup-storage
+apt update -y && yes | apt upgrade && pkg install -y bash wget mpv && wget -O - https://raw.githubusercontent.com/The-DiosBot-MD/The-MikuBot-MD/master/install.sh | bash
+*━━━━━━━━━━━━━⬣*
 
-> 💛 *Si tienes dudas o necesitas ayuda en el proceso de la instalación puede escribir me a este número (No es Bot el número)*
- 
-> 📲 ${asistencia}
-
-> ❗ *_Solo para temas de instalación_*
-
-> ───────•••───────
-
-\`✨ 𝙍𝙀𝙌𝙐𝙄𝙎𝙄𝙏𝙊𝙎 𝙋𝘼𝙍𝘼 𝙇𝘼 𝙄𝙉𝙎𝙏𝘼𝙇𝘼𝘾𝙄𝙊𝙉 ✨\`
-
-> ✅ _1 GB de almacenamiento_
-> ✅ _Aplicación Termux (actualizada)_
-> ✅ _Un WhatsApp recomiendo el WhatsApp normal_
-> ✅ _Un número virtual (si es ofc mejor)_
-> ✅ _2 dispositivos o una PC para escanear_
-
-> ───────•••───────
-
-\`✨ 𝙂𝙄𝙏𝙃𝙐𝘽 > 𝙍𝙀𝙋𝙊𝙎𝙄𝙏𝙊𝙍𝙄𝙊\`
-> *_Visita mí repositorio 😸 para más información, si te agrada el Bot apoya me con una ⭐️ ¡Gracias!_*
-${md}
-
-> ───────•••───────
-
-\`📌 𝙋𝘼𝙎𝙊 𝙋𝘼𝙍𝘼 𝙄𝙉𝙎𝙏𝘼𝙇𝘼𝙍 𝙀𝙇 𝘽𝙊𝙏 𝙀𝙇 𝙏𝙀𝙍𝙈𝙐𝙓 (𝙊𝙋𝘾𝙄𝙊𝙉 𝟏 𝙂𝙄𝙏𝙃𝙐𝘽)\`
-
-* termux-setup-storage 
-
-* apt update -y && yes | apt upgrade && pkg install -y bash wget mpv && wget -O - https://raw.githubusercontent.com/elrebelde21/LoliBot-MD/master/install.sh | bash
-
-\`📌 𝙊𝙋𝘾𝙄𝙊𝙉: 2 𝘼𝙍𝘾𝙃𝙄𝙑𝙊\`
-> *https://youtu.be/i1xjB4bmYCc*
-
-*• Descarga los archivos:*
-https://github.com/elrebelde21/LoliBot-MD/archive/refs/heads/master.zip
-
-* termux-setup-storage
-
-* apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
-
-* cd storage/downloads/LoliBot-MD-master/LoliBot-MD-master 
-
-* yarn install && npm install 
-
-* ls 
-
-* npm start
-
-> ───────•••───────
-
-\`📌 INSTALAR EN SKY-ULTRA-PLUS HOST\`
-https://youtu.be/fZbcCLpSH6Y?si=2AFby-LUy5JGKskU
-
-> *Dashboard:*
-https://dash.skyultraplus.com
-
-> *Panel:*
-https://panel.skyultraplus.com
-
-> *◄┢┅͜͡✇⟬↯ື ►ஜ۩💥۩ஜ◄ ↯ື⟭✇͜͡┅┧►*` 
+*━━━━━━━━━━━━━⬣*
+✅ 𝙄𝙉𝙎𝙏𝘼𝙇𝘼𝙍 𝙀𝙉 𝙃𝙀𝙍𝙊𝙆𝙐
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+*_https://heroku.com/deploy?template=https://github.com/The-DiosBot-MD/The-MikuBot-MD_*
+*⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯ ⎯*
+*Añada lo siguente al Buildpack:*
+_https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git_
+_https://github.com/clhuang/heroku-buildpack-webp-binaries.git_
+*━━━━━━━━━━━━━⬣*` 
 let aa = { quoted: m, userJid: conn.user.jid }
-let prep = generateWAMessageFromContent(m.chat, { extendedTextMessage: { text: texto, contextInfo: { externalAdReply: { title: 'ʟᴏʟɪʙᴏᴛ-ᴍᴅ', body: null, thumbnail: imagen1, sourceUrl: 'https://youtu.be/gh5NajZOTA8' }, mentionedJid: [m.sender] }}}, aa)
+let prep = generateWAMessageFromContent(m.chat, { extendedTextMessage: { text: texto, contextInfo: { externalAdReply: { title: '𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃🥀', body: null, thumbnail: imagen1, sourceUrl: 'https://youtu.be/gh5NajZOTA8' }, mentionedJid: [m.sender] }}}, aa)
 conn.relayMessage(m.chat, prep.message, { messageId: prep.key.id, mentions: [m.sender] })  
 }
 handler.help = ['instalarbot']
 handler.tags = ['main']
-handler.command = /^(instalarbot)/i
+handler.command = /^(instalarbot|instal)/i
 handler.register = true
 export default handler

@@ -8,7 +8,7 @@ const LimitVid = 425 * 1024 * 1024; //425MB
 const handler = async (m, {conn, command, args, text, usedPrefix}) => {
 
 if (command == 'play' || command == 'musica') {
-if (!text) return conn.reply(m.chat, `*🤔Que está buscando? 🤔*\n*Ingrese el nombre de la canción*\n\n*Ejemplo:*\n#play emilia 420`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}});
+if (!text) return conn.reply(m.chat, `*Que desea escuchar esta vez?*\n*Ingrese el nombre de la canción*\n\n*Ejemplo:*\n#play piel tiago pzk y ke personajes`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}});
 const yt_play = await search(args.join(' '));
 const ytplay2 = await yts(text);
 const texto1 = `📌 *Título* : ${yt_play[0].title}
@@ -49,7 +49,7 @@ console.log(e3);
 }}}}
 
 if (command == 'play2' || command == 'video') {
-if (!text) return conn.reply(m.chat, `*🤔Que está buscando? 🤔*\n*Ingrese el nombre del video*\n\n*Ejemplo:*\n#play emilia 420`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}});
+if (!text) return conn.reply(m.chat, `*Que desea escuchar esta vez?*\n*Ingrese el nombre del video*\n\n*Ejemplo:*\n#play piel tiago pzk y ke personajes`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}});
 const yt_play = await search(args.join(' '));
 const ytplay2 = await yts(text);
 const texto1 = `📌 *Título* : ${yt_play[0].title}\n📆 *Publicado:* ${yt_play[0].ago}\n⌚ *Duración:* ${secondString(yt_play[0].duration.seconds)}
@@ -86,7 +86,7 @@ console.log(e2);
 }}}
 
 if (command == 'play3' || command == 'play4') {
-if (!text) return conn.reply(m.chat, `*🤔Que esta buscado? 🤔*\n*Ingrese el nombre del la canción*\n\n*Ejemplo:*\n#play emilia 420`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}})
+if (!text) return conn.reply(m.chat, `*Que desea escucharesta vez?*\n*Ingrese el nombre del la canción*\n\n*Ejemplo:*\n#play piel tiago pzk y ke personajes`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}})
 const yt_play = await search(args.join(' '))
 const texto1 = `📌 *Título* : ${yt_play[0].title}\n📆 *Publicado:* ${yt_play[0].ago}\n⌚ *Duración:* ${secondString(yt_play[0].duration.seconds)}\n👀 *Vistas:* ${MilesNumber(yt_play[0].views)}`.trim()
 

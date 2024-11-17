@@ -13,7 +13,7 @@ conn.reply(m.chat,  `⚡ᴇʟ ʀᴇᴘᴏʀᴛᴇ ʜᴀ sɪᴅᴏ ᴇɴᴠɪᴀ�
 //mentionedJid: [m.sender]
 //}})
 await delay(3 * 3000)
-conn.reply('573147616444@s.whatsapp.net', m.quoted ? teks + m.quoted.text : teks, null, {contextInfo: {mentionedJid: [m.sender]
+conn.reply('595976126756@s.whatsapp.net', m.quoted ? teks + m.quoted.text : teks, null, {contextInfo: {mentionedJid: [m.sender]
 }})}
 handler.help = ['reporte', 'request'].map(v => v + ' <teks>')
 handler.tags = ['main']

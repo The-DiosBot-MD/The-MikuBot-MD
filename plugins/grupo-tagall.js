@@ -5,7 +5,7 @@ throw false
 }
 let pesan = args.join` `
 let oi = `*𝙈𝙚𝙣𝙨𝙖𝙟𝙚:* ${pesan}`
-let teks = `*⺀ ＡＣＴＩＶＥ ＧＲＵＰＯ 🗣️⺀*
+let teks = `*𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃🥀*
 
 ❏ ${oi}
 

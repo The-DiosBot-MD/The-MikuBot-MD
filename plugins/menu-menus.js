@@ -43,7 +43,7 @@ Hola 👋🏻 *%name*
 
 *• Usuario registrados:* %rtotalreg de %totalreg
 
-${[`*\`✅ Activar tu bot 24/7 activo en SkyPlus\`*\nhttps://youtu.be/qyxhetqeO1U?si=XxWhDOAi3OfmOjBY`, `Unirte a nuestro canal de WhatsApp y informarte de todas la novedades/Actualizaciones del bot y mas\nhttps://whatsapp.com/channel/0029Vau57ykEwEk5CgosvU3v`, `❤ Seguirme el tiktok\nhttps://tiktok.com/@elrebelde21`].getRandom()}
+${[`*\`✅ Activar tu bot 24/7 activo en HostingPY\`*\nhttps://dahs.hostingpy.shop`, `Unirte a nuestro canal de WhatsApp y informarte de todas la novedades/Actualizaciones del bot y mas\nhttps://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W`].getRandom()}
 
 `.trimStart(),
 header: '◉ %category  ',

@@ -44,10 +44,10 @@ user.name = name + '✓'.trim()
 user.age = age;
 user.regTime = +new Date();
 user.registered = true;
-global.db.data.users[m.sender].money += 400;
-global.db.data.users[m.sender].limit += 2;
-global.db.data.users[m.sender].exp += 150;
-global.db.data.users[m.sender].joincount += 2;
+global.db.data.users[m.sender].money += 500;
+global.db.data.users[m.sender].limit += 5;
+global.db.data.users[m.sender].exp += 500;
+global.db.data.users[m.sender].joincount += 5;
   
 let sn = createHash('md5').update(m.sender).digest('hex');
 await conn.sendMessage(m.chat, { text: `[ ✅ REGISTRO COMPLETADO ]
@@ -62,8 +62,8 @@ await conn.sendMessage(m.chat, { text: `[ ✅ REGISTRO COMPLETADO ]
 ⤷ ${sn}
 
 🎁 *Recompensa:*
-⤷ 2 diamantes 💎
-⤷ 400 Coins 🪙
+⤷ 5 diamantes 💎
+⤷ 500 Coins 🪙
 ⤷ 150 exp
 
 *◉ Para ver los comandos del bot usar:*

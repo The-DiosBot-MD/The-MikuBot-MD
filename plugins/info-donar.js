@@ -1,48 +1,14 @@
-let media = img.getRandom()
+let media = './media/menus/Menu4paypal.jpg'
 let handler = async (m, { conn, command }) => {
-//let pp = './src/apoyo.jpg'
-let name = await conn.getName(m.sender)
-await conn.sendMessage(m.chat, { 
-text: `*\`[💖 DONACION 💖 ]\`*
-
-◈ 𝙃𝙤𝙡𝙖 ${name} 👋
-
-*𝘛𝘦 𝘢𝘨𝘳𝘢𝘥𝘦𝘻𝘤𝘰, 𝘱𝘰𝘳 𝘢𝘺𝘶𝘥𝘢𝘳𝘮𝘦 𝘺 𝘱𝘰𝘳 𝘶𝘴𝘢𝘳 𝘮𝘪 𝘣𝘰𝘵 𝘴𝘪 𝘲𝘶𝘪𝘦𝘳𝘦 𝘢𝘱𝘰𝘺𝘢𝘳 𝘢 𝘦𝘴𝘵𝘦 𝘱𝘳𝘰𝘺𝘦𝘤𝘵𝘰 𝘱𝘢𝘳𝘢 𝘲𝘶𝘦 𝘴𝘪𝘨𝘢𝘯 𝘢𝘤𝘵𝘶𝘢𝘭𝘪𝘻𝘢𝘥𝘰 𝘴𝘦𝘳 𝘭𝘰𝘴 𝘱𝘶𝘦𝘥𝘦 𝘩𝘢𝘤𝘦𝘳 𝘢𝘤𝘭𝘢𝘷𝘦 𝘥𝘦 𝘗𝘢𝘺𝘗𝘢𝘭 𝘰 𝘮𝘦𝘳𝘤𝘢𝘥𝘰 𝘱𝘢𝘨𝘰 𝘢𝘳𝘨.*
-
- ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-
-*• 𝘗𝘢𝘺𝘗𝘢𝘭 :* https://paypal.me/OfcGB
-*• 𝘔𝘦𝘳𝘤𝘢𝘥𝘰 𝘱𝘢𝘨𝘰 :*
-*• 𝘈𝘭𝘪𝘢𝘴 :* OficialGB
-*• 𝘊𝘝𝘜 :* 0000003100059201491917
-
+let fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
+  let user = db.data.users[m.sender]
+let str = `💖 𝙃𝙤𝙡𝙖!! 𝘼𝙜𝙧𝙖𝙙𝙚𝙯𝙘𝙤 𝙨𝙞 𝙢𝙚 𝘼𝙥𝙤𝙮𝙖𝙨 𝘿𝙤𝙣𝙖𝙣𝙙𝙤. 🎁 𝙈𝙚 𝙖𝙜𝙧𝙖𝙙𝙖 𝙚𝙡 𝙏𝙧𝙖𝙗𝙖𝙟𝙤 𝙦𝙪𝙚 𝙝𝙚 𝙇𝙤𝙜𝙧𝙖𝙙𝙤 𝙮 𝙡𝙤 𝘾𝙤𝙢𝙥𝙖𝙧𝙩𝙤 𝙘𝙤𝙣 𝙐𝙨𝙩𝙚𝙙𝙚𝙨. 𝙂𝙧𝙖𝙘𝙞𝙖𝙨!
 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-
-*𝘘𝘶𝘪𝘦𝘳𝘦 𝘢𝘱𝘰𝘺𝘢𝘳 𝘥𝘦 𝘰𝘵𝘳𝘢 𝘧𝘰𝘳𝘮𝘢 𝘱𝘶𝘦𝘥𝘦 𝘥𝘰𝘯𝘢𝘳 𝘶𝘯 𝘯𝘶́𝘮𝘦𝘳𝘰 𝘱𝘢𝘳𝘢 𝘲𝘶𝘦 𝘴𝘦𝘢 𝘣𝘰𝘵, 𝘩𝘢𝘣𝘭𝘢𝘳 𝘤𝘰𝘯 𝘮𝘪 𝘤𝘳𝘦𝘢𝘥𝘰𝘳. 𝘛𝘢𝘮𝘣𝘪𝘦́𝘯 𝘱𝘶𝘦𝘥𝘦 𝘢𝘱𝘰𝘺𝘢𝘳 𝘯𝘶𝘦𝘴𝘵𝘳𝘢 𝘳𝘦𝘥𝘦𝘴 𝘴𝘰𝘤𝘪𝘢𝘭𝘦𝘴 👇*
-
-*• ʏᴏᴜᴛᴜʙᴇ | sᴜsᴄʀɪʙɪʀᴛᴇ 🔕*
-${yt}
-
-*• ɢɪᴛʜᴜʙ 🌟*
-${md}
-
-*• ¡ᴇɴʟᴀᴄᴇ ᴏғɪᴄɪᴀʟᴇs ᴇɴ ᴜ́ɴɪᴄᴏ ʟᴜɢᴀʀ! 👇*
-https://atom.bio/lolibot
-
-*• ғᴀᴄᴇʙᴏᴏᴋ*
-${face}
-
- ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-
-*ＡＧＲＡＣＩＭＩＥＮＴＯＳ:*
-
-*ʟᴏʟɪʙᴏᴛ-ᴍᴅ ᴛɪᴇɴᴇ ғᴜɴᴄɪᴏɴᴇs ǫᴜᴇ ᴘᴇʀᴛᴇɴᴇᴢᴄᴀɴ ᴀ ʟᴀs sɪɢᴜᴇɴᴛᴇs ᴇᴍᴘʀᴇsᴀs ᴏʀɢᴀɴɪᴢᴀᴄɪᴏɴ(ᴇs) ᴘᴇʀsᴏɴᴀ(s):*
-
-*• ᴛʜᴇ-ᴍʏｓᴛɪᴄʙᴏᴛ-ᴍᴅ:*
-https://github.com/BrunoSobrino
-
-*• ɢᴀᴛᴀʙᴏᴛ-ᴍᴅ:*
-https://github.com/GataNina-Li`, 
+𝙋𝙖𝙮𝙋𝙖𝙡 - 𝙈𝙞𝙠𝙪 - 𝘽𝙤𝙩
+*https://paypal.me/mikubotofc*
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈`
+await conn.sendMessage(m.chat, { 
+text: str, 
 contextInfo:{
 forwardingScore: 9999999,
 isForwarded: true, 
@@ -50,29 +16,20 @@ mentionedJid:[m.sender],
 "externalAdReply": {
 "showAdAttribution": true,
 "renderLargerThumbnail": true,
-"thumbnail": imagen3, 
-"title": 'ᴾᵘᵉᵈᵉ ᵃᵖᵒʸᵃʳ ⁿᵘᵉˢᵗʳᵒ ʳᵉᵖᵒˢᶦᵗᵒʳᶦᵒ ᶜᵒⁿ ᵘⁿᵃ ᵉˢᵗʳᵉˡˡᶦᵗᵃˢ ⭐', 
+"thumbnail": imagen1, 
+"title": `𝙈𝙄𝙆𝙐𝘽𝙊𝙏 - 𝘼𝙎𝙄𝙎𝙏𝙀𝙉𝘾𝙄𝘼\n${asistencia}`, 
 "containsAutoReply": true,
 "mediaType": 1, 
-"mediaUrl": md, 
-"sourceUrl": md, 
-}}}, { quoted: m })
-// await conn.sendButton(m.chat, `a`, `https://paypal.me/OficialGD`, pp, [['𝙑𝙤𝙡𝙫𝙚𝙧 𝙖𝙡 𝙈𝙚𝙣𝙪́ ☘️', `/menu`]], m) //[['𝙑𝙤𝙡𝙫𝙚𝙧 𝙖𝙡 𝙈𝙚𝙣𝙪́ ☘️', `/menu`]]
-/*await conn.sendHydrated(m.chat, str, wm, media, 'https://github.com/elrebelde21/The-LoliBot-MD', 'ɢɪᴛʜᴜʙ', null, null, [
-['𝙂𝙧𝙪𝙥𝙤𝙨 𝙊𝙛𝙞𝙘𝙞𝙖𝙡𝙚𝙨 🔰', '.grupos'],
-['𝘾𝙧𝙚𝙖𝙙𝙤𝙧 💗', '#owner'],
-['𝙑𝙤𝙡𝙫𝙚𝙧 𝙖𝙡 𝙈𝙚𝙣𝙪́ ☘️', '/menu']
-], m,)}*/
+"mediaUrl": paypal, 
+"sourceUrl": paypal, 
 }
-handler.help = ['donar']
-handler.tags = ['main']
-handler.command = /^dona(te|si)|donar|apoyar|paypal|donating|creditos$/i
-handler.exp = 600
-handler.register = true
+}
+}, { quoted: fkontak })}
+/*conn.sendHydrated(m.chat, str, `𝙂𝘼𝙏𝘼 𝘿𝙄𝙊𝙎 - 𝘼𝙎𝙄𝙎𝙏𝙀𝙉𝘾𝙄𝘼\n${asistencia}\n\n` + wm, media, 'https://paypal.me/OficialGD', '🎁 𝘿𝙤𝙣𝙖𝙧 | 𝘿𝙤𝙣𝙖𝙩𝙚', null, null, [
+['𝙂𝙧𝙪𝙥𝙤𝙨 𝙊𝙛𝙞𝙘𝙞𝙖𝙡𝙚𝙨 | 𝙂𝙧𝙤𝙪𝙥𝙨 🔰', '.grupos'],
+['𝘾𝙧𝙚𝙖𝙙𝙤𝙧𝙖 | 𝘾𝙧𝙚𝙖𝙩𝙤𝙧 💗', '#owner'],
+['𝙑𝙤𝙡𝙫𝙚𝙧 𝙖𝙡 𝙈𝙚𝙣𝙪́ | 𝘽𝙖𝙘𝙠 𝙩𝙤 𝙈𝙚𝙣𝙪 ☘️', '/menu']
+], m,)}*/
+handler.command = /^dona(te|si)|donar|apoyar|paypal|donating$/i
+handler.exp = 80
 export default handler
-
-
-/*
-//await conn.sendButton(m.chat, wm, `https://paypal.me/OficialGD`, pp, m)
-await conn.sendButton(m.chat, ``, `https://paypal.me/OficialGD`, pp, [['𝙑𝙤𝙡𝙫𝙚𝙧 𝙖𝙡 𝙈𝙚𝙣𝙪́ ☘️', `/menu`]], m) //[['𝙑𝙤𝙡𝙫𝙚𝙧 𝙖𝙡 𝙈𝙚𝙣𝙪́ ☘️', `/menu`]]
-  */

@@ -5,20 +5,14 @@ let info = `*✅ BIENVENIDO A LOS GRUPOS OFICIALES*
   
   2) *${nnn}*
 
-➤ Grupo del Colaboracion LoliBot, GataBot-MD
+➤ Grupo del Colaboracion The-MikuBot-MD, GataBot-MD
  *${nnnt}*
-
-➤ Grupo del colaboración LoliBot, DorratBot-MD
-*${nnnt2}*
-
-➤ Grupo del col 3 (sin limite)
-*${nnntt}*
 
 ➤ Infomarte sobre las nuevas actualizaciones del bot
 *${nna}*
  
 ➤ *¡Visita todos los enlaces oficiales en un único lugar!*
-https://atom.bio/lolibot
+https://atom.bio/the-mikubot-md
 
  ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 

@@ -34,7 +34,7 @@ token: '9',
 curreyCode: 'IDR',
 totalCurrencyCode: '>〰<',
 totalAmount1000: '1000000',
-sellerJid: 'https://github.com/elrebelde21/LoliBot-MD',
+sellerJid: 'https://github.com/The-DiosBot-MD/The-MikuBot-MD',
 thumbnail: fs.readFileSync('./src/avatar_contact.png')
 }}, {contextInfo: null, quoted: m})
 conn.relayWAMessage(prep)

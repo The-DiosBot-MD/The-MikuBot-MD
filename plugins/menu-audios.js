@@ -203,7 +203,7 @@ let str = `\`Hola ${taguser} 💖彡\`
 * 🔊 _Dragon ball_
 * 🔊 _Las reglas del grupo_
 
-*🅛🅞🅛🅘🅑🅞🅣-🅜🅓*`.trim()
+*𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃🥀*`.trim()
 conn.sendFile(m.chat, pp, 'lp.jpg', str, m, false, { contextInfo: {mentionedJid, externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '𝐒𝐮𝐩𝐞𝐫 𝐁𝐨𝐭 𝐃𝐞 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩', previewType: 0, thumbnail: imagen4, sourceUrl: [md, yt, tiktok].getRandom()}}})
 
 } catch (e) {
