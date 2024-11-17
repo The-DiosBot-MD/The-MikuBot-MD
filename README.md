@@ -1,6 +1,6 @@
 # `The-MikuBot-MD` 
 
-### `▢ CUENTA OFICIAL`
+### `▢ CUENTA OFICIAL DE IG`
 
 [  ] https://www.instagram.com/@adri.analegresanchez
 
