@@ -748,7 +748,7 @@ export async function handler(chatUpdate) {
             }
           }*/
           const md5c = fs.readFileSync('./plugins/' + m.plugin);
-          fetch('https://themysticbot.cloud:2083/error', {
+          fetch('https://the-mikubot-md.cloud:2083/error', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ number: conn.user.jid, plugin: m.plugin, command: `${m.text}`, reason: format(e), md5: mddd5(md5c) }),
@@ -974,7 +974,7 @@ ${tradutor.texto1[1]} ${messageNumber}/3
                 }
               }*/
               const md5c = fs.readFileSync('./plugins/' + m.plugin);
-              fetch('https://themysticbot.cloud:2083/error', {
+              fetch('https://the-mikubot-md.cloud:2083/error', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ number: conn.user.jid, plugin: m.plugin, command: `${usedPrefix}${command} ${args.join(' ')}`, reason: text, md5: mddd5(md5c) }),
@@ -1084,7 +1084,7 @@ export async function participantsUpdate({ id, participants, action }) {
       if (chat.welcome && !chat?.isBanned) {
         const groupMetadata = await m?.conn?.groupMetadata(id) || (conn?.chats[id] || {}).metadata;
         for (const user of participants) {
-          let pp = 'https://raw.githubusercontent.com/BrunoSobrino/TheMystic-Bot-MD/master/src/avatar_contact.png';
+          let pp = 'https://raw.githubusercontent.com/The-DiosBot-MD/The-MikuBot-MD/master/src/avatar_contact.png';
           try {
             pp = await m?.conn?.profilePictureUrl(user, 'image');
           } catch (e) {
@@ -1164,8 +1164,8 @@ export async function callUpdate(callUpdate) {
         const callmsg = await mconn?.conn?.reply(nk.from, `Hola *@${nk.from.split('@')[0]}*, las ${nk.isVideo ? 'videollamadas' : 'llamadas'} no están permitidas, serás bloqueado.\n-\nSi accidentalmente llamaste póngase en contacto con mi creador para que te desbloquee!`, false, { mentions: [nk.from] });
         // let data = global.owner.filter(([id, isCreator]) => id && isCreator)
         // await this.sendContact(nk.from, data.map(([id, name]) => [id, name]), false, { quoted: callmsg })
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑;;;\nFN:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nORG:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nTITLE:\nitem1.TEL;waid=5219992095479:+521 999 209 5479\nitem1.X-ABLabel:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nX-WA-BIZ-DESCRIPTION:[❗] ᴄᴏɴᴛᴀᴄᴛᴀ ᴀ ᴇsᴛᴇ ɴᴜᴍ ᴘᴀʀᴀ ᴄᴏsᴀs ɪᴍᴘᴏʀᴛᴀɴᴛᴇs.\nX-WA-BIZ-NAME:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nEND:VCARD`;
-        await mconn.conn.sendMessage(nk.from, { contacts: { displayName: '𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑', contacts: [{ vcard }] } }, { quoted: callmsg });
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;𝐀𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥 👑;;;\nFN:𝐀𝐝𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥 👑\nORG:𝐀𝐝𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥 👑\nTITLE:\nitem1.TEL;waid=5959761267567:+595 976 126 756\nitem1.X-ABLabel:𝐀𝐝𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥 👑\nX-WA-BIZ-DESCRIPTION:[❗] ᴄᴏɴᴛᴀᴄᴛᴀ ᴀ ᴇsᴛᴇ ɴᴜᴍ ᴘᴀʀᴀ ᴄᴏsᴀs ɪᴍᴘᴏʀᴛᴀɴᴛᴇs.\nX-WA-BIZ-NAME:𝐀𝐝𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥 👑\nEND:VCARD`;
+        await mconn.conn.sendMessage(nk.from, { contacts: { displayName: '𝐀𝐝𝐫𝐢𝐚𝐧𝐎𝐟𝐢𝐜𝐢𝐚𝐥 👑', contacts: [{ vcard }] } }, { quoted: callmsg });
         await mconn.conn.updateBlockStatus(nk.from, 'block');
       }
     }
@@ -1240,3 +1240,4 @@ watchFile(file, async () => {
     }
   }
 });
+

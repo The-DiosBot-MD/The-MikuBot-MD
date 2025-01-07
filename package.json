@@ -1,7 +1,7 @@
 {
-  "name": "TheMystic-Bot-MD",
+  "name": "The-MikuBot-MD",
   "version": "1.0.0",
-  "description": "Un chatbot automatizado para WhatsApp basado en Node.js, que permite realizar múltiples funciones y personalizaciones en la plataforma.",
+  "description": "WhatsApp By Corporations.",
   "main": "index.js",
   "type": "module",
   "directories": {
@@ -17,16 +17,16 @@
     "eslintfix": "eslint --fix .",
     "postinstall": "node pipdeps.js"
   },
-  "homepage": "https://github.com/BrunoSobrino/TheMystic-Bot-MD",
+  "homepage": "https://github.com/The-DiosBot-MD/The-MikuBot-MD",
   "author": {
-    "name": "BrunoSobrino"
+    "name": "The-DiosBot-MD"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BrunoSobrino/TheMystic-Bot-MD.git"
+    "url": "git+https://github.com/The-DiosBot-MD/The-MikuBot-MD.git"
   },
   "bugs": {
-    "url": "https://github.com/BrunoSobrino/TheMystic-Bot-MD/issues"
+    "url": "https://github.com/The-DiosBot-MD/The-MikuBot-MD/issues"
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {

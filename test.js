@@ -27,3 +27,4 @@ for (const file of files) {
   assert.ok(file);
   console.log('Done', file);
 }
+
