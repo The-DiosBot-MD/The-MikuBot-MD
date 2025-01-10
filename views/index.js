@@ -7,5 +7,6 @@ window.onload = () => {
     chat.appendChild(html);
   }
 
+  
   window.onclick = () => addMsg(12);
 };
