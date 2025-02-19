@@ -19,3 +19,4 @@ fi
 
 echo "Iniciando el bot..."
 npm start
+

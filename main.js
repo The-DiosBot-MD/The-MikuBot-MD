@@ -285,7 +285,7 @@ auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
 },
-browser: opcion == '1' ? ['LoliBot-MD', 'Edge', '20.0.04'] : methodCodeQR ? ['LoliBot-MD', 'Edge', '20.0.04'] : ["Ubuntu", "Chrome", "20.0.04"],
+browser: opcion == '1' ? ['The-MikuBot-MD', 'Edge', '20.0.04'] : methodCodeQR ? ['The-MikuBot-MD', 'Edge', '20.0.04'] : ["Ubuntu", "Chrome", "20.0.04"],
 version: version,
 generateHighQualityLinkPreview: true
 };
@@ -429,8 +429,8 @@ conn.ev.off('creds.update', conn.credsUpdate);
 
 conn.welcome = 'HOLAA!! @user ¿COMO ESTAS?😃\n\n『Bienvenido A *@subject*』\n\nUn gusto conocerte amig@ 🤗\n\n_Recuerda leer las reglas del grupo para no tener ningun problema 🧐_\n\n*Solo disfrutar de este grupo y divertite 🥳*`'
 conn.bye = 'Bueno, se fue @user 👋\n\nQue dios lo bendiga 😎`'
-conn.spromote = 'Hey @user ya forma parte de staff 👑'
-conn.sdemote = 'jajaja @user ya no eres admins'
+conn.spromote = 'Hey @user ya forma parte de la administración👑'
+conn.sdemote = 'Ups @user ya no eres admin'
 conn.sDesc = 'La descripción ha sido cambiada a \n@desc'
 conn.sSubject = 'El nombre del grupo ha sido cambiado a \n@group'
 conn.sIcon = 'El icono del grupo ha sido cambiado'
