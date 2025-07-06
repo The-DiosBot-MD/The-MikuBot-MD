@@ -308,6 +308,7 @@ process.on('uncaughtException', console.error);
 
 let isInit = true;
 
+
 let handler = await import('./handler.js');
 global.reloadHandler = async function(restatConn) {
   
