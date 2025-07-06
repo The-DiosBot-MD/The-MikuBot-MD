@@ -12,32 +12,21 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const videoResult = await ttsave.video(text);
     const { 
       type, 
-      nickname, 
-      username, 
-      description, 
       videoInfo, 
       slides 
     } = videoResult;
 
-    let message = `*✔️🍟TikTok Downloader*
-
-> • *Nombre*: ${nickname || "-"}
-> • *Usuario*: ${username || "-"}
-> • *Descripción*: ${description || "-"}
-`.trim();
+    let message = `*✔️🍟TikTok Downloader*\n\n> • *Tipo*: ${type === "slide" ? "Presentación (Imágenes)" : "Video"}`;
 
     if (type === "slide") {
-      message += "\n> • *Tipo*: Presentación (Imágenes)";
       await conn.reply(m.chat, message, m);
 
       for (let slide of slides) {
-        await m.react('✅'); // Reacciona con un cheque para cada imagen
+        await m.react('✅');
         await conn.sendFile(m.chat, slide.url, `presentacion-${slide.number}.jpg`, "", m);
       }
     } 
     else if (type === "video") {
-      message += "\n> • *Tipo*: Video";
-
       if (videoInfo.nowm) {
         await m.react('✅');
         await conn.sendMessage(m.chat, {
