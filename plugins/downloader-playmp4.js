@@ -44,7 +44,7 @@ let handler = async (m, { text, conn, command }) => {
 
     const msgInfo = `
 ╔═ೋ═══❖═══ೋ═╗
-║  ⚡ 𝐒𝐚𝐬𝐮𝐤𝐞 𝐁𝐨𝐭 𝐌𝐃 ⚡
+║  ⚡ The Miku Bot  ⚡
 ║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
 ╠═ೋ═══❖═══ೋ═╣
 ║ 🎵 Título: ${videoTitle}
