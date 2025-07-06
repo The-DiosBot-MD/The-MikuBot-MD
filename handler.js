@@ -155,6 +155,7 @@ export async function handler(chatUpdate) {
         if (typeof m.text !== 'string')
             m.text = ''
 
+        
 
         let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]
         const sendNum = m?.sender?.replace(/[^0-9]/g, '')
