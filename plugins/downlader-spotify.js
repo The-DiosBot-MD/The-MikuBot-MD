@@ -7,7 +7,7 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
       `╭─⬣「 *Miku Bot* 」⬣
 │ ≡◦ 🎧 *Uso correcto del comando:*
 │ ≡◦ ${usedPrefix + command} shakira soltera
-╰─⬣\n> © Barboza AI`
+╰─⬣\n> © The Miku`
 );
 }
 
