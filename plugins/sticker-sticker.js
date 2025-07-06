@@ -57,7 +57,7 @@ let handler = async (m, { conn, args}) => {
 }
 } finally {
     if (stiker) {
-      conn.sendFile(m.chat, stiker, 'sticker.webp', '', m);
+      conn.sendFile(m.chat, stiker, 'sticker.webp', '', m,rcanal);
 }
 }
 };
