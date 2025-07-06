@@ -7,7 +7,7 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
       `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ 🎧 *Uso correcto del comando:*
 │ ≡◦ ${usedPrefix + command} shakira soltera
-╰─⬣\n> © Barboza AI`
+╰─⬣\n> The-MikuBot-MD`
 );
 }
   await m.react('⌛');
@@ -29,7 +29,7 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
 
     await conn.sendMessage(m.chat, {
       image: { url: cover},
-      caption: `╭─⬣「 *SPOTIFY* 」⬣
+      caption: `╭─⬣「 *Descargador* 」⬣
 │ ≡◦ 🎵 *Título:* ${title}
 │ ≡◦ 👤 *Artista:* ${artist}
 │ ≡◦ ⏱️ *Duración:* ${duration}
