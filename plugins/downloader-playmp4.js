@@ -1,157 +1,81 @@
-import yts from "yt-search";
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
-const LIMIT_MB = 100;
-const API_KEY = "Sylphiette's"; 
+const SEARCH_APIS = [
+  { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/search_youtube?query=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/search_youtube?query=' },
+  { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/search_youtube?query=' }
+];
 
-const countryCodes = {
-  '+54': { country: 'Argentina', timeZone: 'America/Argentina/Buenos_Aires'},
-  '+591': { country: 'Bolivia', timeZone: 'America/La_Paz'},
-  '+56': { country: 'Chile', timeZone: 'America/Santiago'},
-  '+57': { country: 'Colombia', timeZone: 'America/Bogota'},
-  '+506': { country: 'Costa Rica', timeZone: 'America/Costa_Rica'},
-  '+53': { country: 'Cuba', timeZone: 'America/Havana'},
-  '+593': { country: 'Ecuador', timeZone: 'America/Guayaquil'},
-  '+503': { country: 'El Salvador', timeZone: 'America/El_Salvador'},
-  '+34': { country: 'España', timeZone: 'Europe/Madrid'},
-  '+502': { country: 'Guatemala', timeZone: 'America/Guatemala'},
-  '+504': { country: 'Honduras', timeZone: 'America/Tegucigalpa'},
-  '+52': { country: 'México', timeZone: 'America/Mexico_City'},
-  '+505': { country: 'Nicaragua', timeZone: 'America/Managua'},
-  '+507': { country: 'Panamá', timeZone: 'America/Panama'},
-  '+595': { country: 'Paraguay', timeZone: 'America/Asuncion'},
-  '+51': { country: 'Perú', timeZone: 'America/Lima'},
-  '+1': { country: 'Puerto Rico', timeZone: 'America/Puerto_Rico'},
-  '+1-809': { country: 'República Dominicana', timeZone: 'America/Santo_Domingo'},
-  '+1-829': { country: 'República Dominicana', timeZone: 'America/Santo_Domingo'},
-  '+1-849': { country: 'República Dominicana', timeZone: 'America/Santo_Domingo'},
-  '+598': { country: 'Uruguay', timeZone: 'America/Montevideo'},
-  '+58': { country: 'Venezuela', timeZone: 'America/Caracas'}
-};
+const DOWNLOAD_APIS = [
+  { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/download_video?url=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/download_video?url=' },
+  { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/download_video?url=' }
+];
 
-const getGreeting = (hour) => {
-  return hour < 12 ? 'Buenos días 🌅' : hour < 18 ? 'Buenas tardes 🌄' : 'Buenas noches 🌃';
-};
-
-const getUserGreeting = (userNumber) => {
-  const phoneCodeMatch = userNumber.match(/\+(\d+)/);
-  const phoneCode = phoneCodeMatch ? `+${phoneCodeMatch[1].split('-')[0]}` : null;
-  const countryInfo = phoneCode ? countryCodes[phoneCode] : null;
-  const now = new Date();
-
-  if (countryInfo) {
+async function tryFetchJSON(servers, query) {
+  for (let server of servers) {
     try {
-
-      const formatter = new Intl.DateTimeFormat('en-US', {
-        timeZone: countryInfo.timeZone,
-        hour: 'numeric',
-        hour12: false
-      });
-      const hour = parseInt(formatter.format(now));
-      return `${getGreeting(hour)} @${userNumber.split('@')[0]}, (${countryInfo.country})`;
-    } catch (e) {
-      console.error(`Error getting local time for ${userNumber}: ${e.message}`);
-
-      return `${getGreeting(now.getHours())} @${userNumber.split('@')[0]}, (${countryInfo.country})`;
+      const res = await fetch(server.url + encodeURIComponent(query));
+      if (!res.ok) continue;
+      const json = await res.json();
+      if (json && Object.keys(json).length) return { json, serverName: server.name };
+    } catch {
+      continue;
     }
   }
-  return `${getGreeting(now.getHours())} @${userNumber.split('@')[0]}`;
-};
+  return { json: null, serverName: null };
+}
 
-const fetchVideoInfo = async (query) => {
-  try {
-    const res = await yts(query);
-    return res?.all?.[0] || null;
-  } catch (error) {
-    console.error("Error fetching video info from yt-search:", error);
-    return null;
-  }
-};
-
-const getDownloadLinks = (url) => ({
-  audio: `https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(url)}&apikey=${API_KEY}`,
-  video: `https://api.sylphy.xyz/download/ytmp4?url=${encodeURIComponent(url)}&apikey=${API_KEY}`,
-});
-
-const handler = async (m, { conn, text, command}) => {
-  if (!text) {
-    return m.reply("✨ Ingresa el nombre de un video o una URL de YouTube.");
-  }
-  await m.react("🔎");
-
-  const userNumber = m.sender.split('@')[0];
-  const saludo = getUserGreeting(m.sender); // Pass the full m.sender to getUserGreeting
-  const intro = `${saludo}, ¿cómo estás? 🎧 Tu pedido será procesado...`;
-
-
-  await conn.sendMessage(m.chat, { text: intro, mentions: [m.sender] }, { quoted: m });
-
-  const video = await fetchVideoInfo(text);
-  if (!video) {
-    return m.reply("🚫 No encontré ningún resultado.");
-  }
-
-  const caption = `
-┌─「🎬 𝗬𝗼𝘂𝗧𝘂𝗯𝗲 𝗥𝗲𝘀𝘂𝗹𝘁𝗮𝗱𝗼」─┐
-📌 *Título:* ${video.title}
-👤 *Autor:* ${video.author.name}
-⏰ *Duración:* ${video.duration.timestamp}
-👁️‍🗨️ *Vistas:* ${video.views.toLocaleString()}
-🔗 *Enlace:* ${video.url}
-└────────────────────────┘
-`;
+let handler = async (m, { text, conn, command }) => {
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: *.play2 Usewa Ado*');
 
   try {
+    const { json: searchJson, serverName: searchServer } = await tryFetchJSON(SEARCH_APIS, text);
 
-    const thumbnailBuffer = await (await fetch(video.thumbnail)).buffer();
-    await conn.sendFile(m.chat, thumbnailBuffer, "thumb.jpg", caption, m);
+    if (!searchJson || !searchJson.results || !searchJson.results.length) {
+      return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
+    }
+
+    const video = searchJson.results[0];
+    const thumb = video.thumbnails.find(t => t.width === 720)?.url || video.thumbnails[0]?.url;
+    const videoTitle = video.title;
+    const videoUrl = video.url;
+    const duration = Math.floor(video.duration);
+
+    const msgInfo = `
+╔═ೋ═══❖═══ೋ═╗
+║  ⚡ 𝐒𝐚𝐬𝐮𝐤𝐞 𝐁𝐨𝐭 𝐌𝐃 ⚡
+║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
+╠═ೋ═══❖═══ೋ═╣
+║ 🎵 Título: ${videoTitle}
+║ ⏱️ Duración: ${duration}s
+║ 👀 Vistas: ${video.views.toLocaleString()}
+║ 🧑‍🎤 Autor: ${video.channel}
+║ 🔗 Link: ${videoUrl}
+║ 🌐 Servidor: ${searchServer || 'Desconocido'}
+╚═ೋ═══❖═══ೋ═╝
+`.trim();
+
+    await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
+
+    const { json: downloadJson } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
+
+    if (!downloadJson || !downloadJson.download_url) return m.reply('❌ No se pudo descargar el video.');
+
+    await conn.sendMessage(m.chat, {
+      video: { url: downloadJson.download_url },
+      mimetype: 'video/mp4',
+      fileName: `video.mp4`
+    }, { quoted: m });
+
   } catch (e) {
-    console.error("Error sending thumbnail:", e);
-
-    await m.reply(caption);
-  }
-
-  const { audio, video: videoLink} = getDownloadLinks(video.url);
-
-  try {
-    if (command === "play") {
-      const audioRes = await fetch(audio);
-      if (!audioRes.ok) { // Check if the response was successful (status 200-299)
-        throw new Error(`Failed to fetch audio: ${audioRes.statusText}`);
-      }
-      const audioData = await audioRes.json();
-      if (!audioData.status || !audioData.res?.downloadURL) {
-        return m.reply("😢 No pude obtener el audio o el enlace de descarga.");
-      }
-      await conn.sendFile(m.chat, audioData.res.downloadURL, `${audioData.res.title}.mp3`, "", m);
-    } else if (["play2", "playvid"].includes(command)) {
-      const videoRes = await fetch(videoLink);
-      if (!videoRes.ok) { 
-        throw new Error(`Failed to fetch video: ${videoRes.statusText}`);
-      }
-      const videoData = await videoRes.json();
-      if (!videoData.status || !videoData.res?.url) {
-        return m.reply("😢 No pude obtener el video o el enlace de descarga.");
-      }
-      const head = await fetch(videoData.res.url, { method: "HEAD" });
-      const contentLength = head.headers.get("content-length");
-      const sizeMB = contentLength ? parseInt(contentLength, 10) / (1024 * 1024) : 0;
-      const asDoc = sizeMB >= LIMIT_MB;
-
-      await conn.sendFile(m.chat, videoData.res.url, `${videoData.res.title}.mp4`, "", m, null, {
-        asDocument: asDoc,
-        mimetype: "video/mp4",
-      });
-    }
-    await m.react("✅");
-  } catch (err) {
-    console.error("Error during download process:", err);
-    m.reply("💥 Ocurrió un error al procesar tu solicitud: " + err.message);
+    console.error(e);
+    m.reply('❌ Error al procesar tu solicitud.');
   }
 };
 
-handler.help = ["play", "play2", "playvid"];
-handler.tags = ["download"];
-handler.command = ["play", "play2", "playvid"];
+handler.command = ['play2', 'mp4', 'ytmp4', 'playmp4'];
+handler.help = ['play2 <video>'];
+handler.tags = ['downloader'];
 
 export default handler;
