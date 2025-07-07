@@ -93,7 +93,7 @@ let handler = async (m, { conn, args }) => {
 
   } catch (error) {
     console.error("Error durante la búsqueda en Pinterest:", error);
-    await conn.sendMessage(m.chat, { text: "> Powered @Alba070503" }, { quoted: m });
+    await conn.sendMessage(m.chat, { text: "> Miku Bot" }, { quoted: m });
   }
 };
 
