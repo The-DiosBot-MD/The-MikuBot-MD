@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
 
-if (!text) throw m.reply(`${emoji} Por favor, ingresa un link de mediafire.`);
+if (!text) throw m.reply(`Por favor, ingresa un link de mediafire.`);
 conn.sendMessage(m.chat, { react: { text: "🕒", key: m.key } });
         let ouh = await fetch(`https://api.agatz.xyz/api/mediafire?url=${text}`)
   let gyh = await ouh.json() 
