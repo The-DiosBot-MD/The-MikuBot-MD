@@ -10,45 +10,50 @@ const mediafireHandler = async (m, { conn, text, usedPrefix, command}) => {
   try {
     const apiEndpoint = `https://api.vreden.my.id/api/mediafiredl?url=${encodeURIComponent(text)}`;
     const response = await fetch(apiEndpoint);
-    const { result} = await response.json();
+    const apiData = await response.json();
 
-    const fileData = result?.[0];
-    if (!fileData?.link ||!fileData?.nama) {
+    const fileData = apiData?.result?.[0];
+    if (!fileData?.link ||!fileData?.nama ||!fileData?.size) {
       return conn.sendMessage(m.chat, {
-        text: '⚠️ No se pudo obtener el archivo desde MediaFire.'
+        text: '⚠️ No se pudo obtener la información del archivo desde MediaFire o la API no devolvió datos válidos.'
 }, { quoted: m});
 }
 
-    const fileName = decodeURIComponent(fileData.nama);
+    const fileName = fileData.nama;
     const fileMime = fileData.mime || 'application/octet-stream';
     const fileLink = fileData.link;
+    const fileSize = fileData.size;
 
     const infoMessage = `
+---
+🚀 *Descarga de MediaFire*
+---
 🗂 *Nombre del archivo:* ${fileName}
+📦 *Tamaño:* ${fileSize}
 📄 *Tipo:* ${fileMime}
-📦 *Tamaño:* ${fileData.size}
 🖥️ *Servidor:* ${fileData.server}
-🔗 *Enlace:* ${fileLink}
-    `.trim();
+🔗 *Enlace directo:* ${fileLink}
+`.trim();
 
     await conn.sendMessage(m.chat, { text: infoMessage}, { quoted: m});
 
     await conn.sendMessage(m.chat, {
       document: {
         url: fileLink,
-        fileName,
+        fileName: fileName,
         mimetype: fileMime
 },
       caption: '✅ Archivo descargado desde MediaFire'
 }, { quoted: m});
 
 } catch (error) {
-    console.error(error);
+    console.error("Error en mediafireHandler:", error);
     await conn.sendMessage(m.chat, {
-      text: `❌ Error al conectar con la API.\n🔍 Detalles: ${error.message}`
+      text: `❌ Error al procesar la solicitud de MediaFire.\n🔍 Detalles: ${error.message}`
 }, { quoted: m});
 }
 };
 
 mediafireHandler.command = ['descargar', 'mf', 'mediafire'];
 export default mediafireHandler;
+
