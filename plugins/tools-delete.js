@@ -2,10 +2,10 @@
 import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text, usedPrefix, command}) => {
-  // Validación básica del texto
+  // Validación de entrada
   if (!text) {
     return conn.sendMessage(m.chat, {
-      text: `🎥 *Debes escribir un texto para generar el video.*\nEjemplo:\n${usedPrefix}${command} Un robot aprendiendo a cantar ballet flamenco.`,
+      text: `🎥 *Escribe el texto para generar el video.*\nEjemplo:\n${usedPrefix}${command} Un robot aprendiendo a cantar ballet flamenco.`,
 }, { quoted: m});
 }
 
@@ -13,38 +13,38 @@ const handler = async (m, { conn, text, usedPrefix, command}) => {
 
   try {
     const response = await fetch(apiUrl);
-    const data = await response.json();
+    const result = await response.json();
 
-    if (!data?.status ||!data?.result?.url) {
+    if (!result ||!result.status ||!result.result ||!result.result.url) {
       return conn.sendMessage(m.chat, {
-        text: '🚫 No se pudo generar el video desde la API.',
+        text: '🚫 La API no devolvió un video válido.',
 }, { quoted: m});
 }
 
-    const videoUrl = data.result.url;
-
-    const infoMessage = `
+    const videoUrl = result.result.url;
+    const infoText = `
 🎬 *Video generado con IA*
 📝 *Prompt:* ${text}
-📎 *Enlace:* ${videoUrl}
-    `.trim();
+📎 *Enlace directo:* ${videoUrl}
+`.trim();
 
-    // Primero se envía info como texto
-    await conn.sendMessage(m.chat, { text: infoMessage}, { quoted: m});
+    // Mensaje informativo
+    await conn.sendMessage(m.chat, { text: infoText}, { quoted: m});
 
-    // Luego se intenta enviar el video si el enlace es compatible
+    // Enviar video generado
     await conn.sendMessage(m.chat, {
       video: { url: videoUrl},
-      caption: '✅ Aquí tienes tu video generado automáticamente 🎉'
+      caption: '✅ Tu video generado está listo 🎉',
 }, { quoted: m});
 
 } catch (error) {
-    console.error('[ERROR AL GENERAR VIDEO]', error);
+    console.error('[ERROR]', error);
     await conn.sendMessage(m.chat, {
       text: `⚠️ No se pudo conectar con la API.\n📄 Detalles: ${error.message}`,
 }, { quoted: m});
 }
 };
 
+// Comandos que activan el manejador
 handler.command = ['videogpt', 'crearvideo', 'generarvideo'];
 export default handler;
