@@ -76,5 +76,5 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-handler.command = ['mf'];
+handler.command = ['mediafire'];
 export default handler;
