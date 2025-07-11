@@ -1,45 +1,47 @@
+
 import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text, usedPrefix, command}) => {
+  // Validación básica del texto
   if (!text) {
     return conn.sendMessage(m.chat, {
-      text: `📽️ *Escribe el texto para generar el video.*\nEjemplo:\n${usedPrefix}${command} Un robot aprendiendo a cantar ballet flamenco.`,
+      text: `🎥 *Debes escribir un texto para generar el video.*\nEjemplo:\n${usedPrefix}${command} Un robot aprendiendo a cantar ballet flamenco.`,
 }, { quoted: m});
 }
 
-  const apiEndpoint = 'https://api.nekorinn.my.id/api/ai/video/gpt';
+  const apiUrl = `https://api.nekorinn.my.id/api/ai/video/gpt?text=${encodeURIComponent(text)}`;
 
   try {
-    const response = await fetch(`${apiEndpoint}?text=${encodeURIComponent(text)}`);
-    const result = await response.json();
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-    if (!result?.status ||!result.result?.url) {
+    if (!data?.status ||!data?.result?.url) {
       return conn.sendMessage(m.chat, {
-        text: '🚫 No se pudo generar el video.',
+        text: '🚫 No se pudo generar el video desde la API.',
 }, { quoted: m});
 }
 
-    const videoUrl = result.result.url;
-    const infoText = `
+    const videoUrl = data.result.url;
+
+    const infoMessage = `
 🎬 *Video generado con IA*
-📝 *Texto:* ${text}
-🔗 *Enlace:* ${videoUrl}
+📝 *Prompt:* ${text}
+📎 *Enlace:* ${videoUrl}
     `.trim();
 
-    await conn.sendMessage(m.chat, { text: infoText}, { quoted: m});
+    // Primero se envía info como texto
+    await conn.sendMessage(m.chat, { text: infoMessage}, { quoted: m});
 
-    // Intento de enviar el video directamente
+    // Luego se intenta enviar el video si el enlace es compatible
     await conn.sendMessage(m.chat, {
-      video: {
-        url: videoUrl
-},
-      caption: '✅ Tu video generado está listo 🎉'
+      video: { url: videoUrl},
+      caption: '✅ Aquí tienes tu video generado automáticamente 🎉'
 }, { quoted: m});
 
-} catch (err) {
-    console.error(err);
+} catch (error) {
+    console.error('[ERROR AL GENERAR VIDEO]', error);
     await conn.sendMessage(m.chat, {
-      text: `⚠️ Error al conectar con la API.\n📄 Detalles: ${err.message}`
+      text: `⚠️ No se pudo conectar con la API.\n📄 Detalles: ${error.message}`,
 }, { quoted: m});
 }
 };
