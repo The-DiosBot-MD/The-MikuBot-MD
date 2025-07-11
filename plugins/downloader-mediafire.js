@@ -78,7 +78,7 @@ let handler = async (m, { conn, args, text, usedPrefix, command }) => {
                 fileName = 'archivo_descargado'; // Asignar nombre genérico si no se pudo extraer
             }
 
-            const apiUrl = `https://www.dark-yasiya-api.site/download/mfire?url=${encodeURIComponent(text)}`;
+            const apiUrl = `https://api.vreden.my.id/api/mediafiredl?url=${encodeURIComponent(text)}`;
             const apiResponse = await fetch(apiUrl);
             const data = await apiResponse.json();
 
