@@ -1,16 +1,54 @@
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-if (!text) throw m.reply(`Ingresa un link de mediafire\n*✧ Ejemplo:* ${usedPrefix}${command} https://www.mediafire.com/file/2v2x1p0x58qomva/WhatsApp_Messenger_2.24.21.8_beta_By_WhatsApp_LLC.apk/file`);
-conn.sendMessage(m.chat, { react: { text: "🕒", key: m.key } });
-        let ouh = await fetch(`https://api.agatz.xyz/api/mediafire?url=${text}`)
-  let gyh = await ouh.json()
-        await conn.sendFile(m.chat, gyh.data[0].link, `${gyh.data[0].nama}`, `*✧ Nombre:* ${gyh.data[0].nama}\n*✧ Tamaño:* ${gyh.data[0].size}\n*✧ Extensión:* ${gyh.data[0].mime}`, m)
-        await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key }})
+const mediafireHandler = async (m, { conn, text, usedPrefix, command}) => {
+  if (!text ||!text.includes('mediafire.com')) {
+    return conn.sendMessage(m.chat, {
+      text: `❗️ Por favor proporciona un enlace válido de MediaFire.\nEjemplo:\n${usedPrefix}${command} https://www.mediafire.com/file/abc123/example.zip/file`
+}, { quoted: m});
 }
-handler.help = ['mediafire *<link>*']
-handler.tags = ['downloader']
-handler.command = /^(mediafire|mf)$/i
-handler.premium = false
-handler.register = true
-export default handler
+
+  try {
+    const apiEndpoint = `https://api.vreden.my.id/api/mediafiredl?url=${encodeURIComponent(text)}`;
+    const response = await fetch(apiEndpoint);
+    const { result} = await response.json();
+
+    const fileData = result?.[0];
+    if (!fileData?.link ||!fileData?.nama) {
+      return conn.sendMessage(m.chat, {
+        text: '⚠️ No se pudo obtener el archivo desde MediaFire.'
+}, { quoted: m});
+}
+
+    const fileName = decodeURIComponent(fileData.nama);
+    const fileMime = fileData.mime || 'application/octet-stream';
+    const fileLink = fileData.link;
+
+    const infoMessage = `
+🗂 *Nombre del archivo:* ${fileName}
+📄 *Tipo:* ${fileMime}
+📦 *Tamaño:* ${fileData.size}
+🖥️ *Servidor:* ${fileData.server}
+🔗 *Enlace:* ${fileLink}
+    `.trim();
+
+    await conn.sendMessage(m.chat, { text: infoMessage}, { quoted: m});
+
+    await conn.sendMessage(m.chat, {
+      document: {
+        url: fileLink,
+        fileName,
+        mimetype: fileMime
+},
+      caption: '✅ Archivo descargado desde MediaFire'
+}, { quoted: m});
+
+} catch (error) {
+    console.error(error);
+    await conn.sendMessage(m.chat, {
+      text: `❌ Error al conectar con la API.\n🔍 Detalles: ${error.message}`
+}, { quoted: m});
+}
+};
+
+mediafireHandler.command = ['descargar', 'mf', 'mediafire'];
+export default mediafireHandler;
