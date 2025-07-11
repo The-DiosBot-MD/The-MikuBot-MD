@@ -21,18 +21,25 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
 
     const fileName = decodeURIComponent(result.nama);
     const message = `
-📥 *Descarga disponible:*
-
 📂 *Nombre:* ${fileName}
 📄 *Tipo:* ${result.mime}
 📦 *Tamaño:* ${result.size}
 🖥️ *Servidor:* ${result.server}
 🔗 *Enlace directo:* ${result.link}
-
-✅ Puedes hacer clic en el enlace para ir directamente a MediaFire y descargar el archivo.
     `.trim();
 
+    // Envía información del archivo
     await conn.sendMessage(m.chat, { text: message}, { quoted: m});
+
+    // Envía el archivo como documento si el enlace lo permite
+    await conn.sendMessage(m.chat, {
+      document: {
+        url: result.link,
+        fileName,
+        mimetype: result.mime || 'application/octet-stream'
+},
+      caption: '✅ Archivo descargado desde MediaFire'
+}, { quoted: m});
 
 } catch (err) {
     console.error(err);
@@ -40,5 +47,5 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
 }
 };
 
-handler.command = ['mf'];
+handler.command = ['mf', 'mediafire'];
 export default handler;
