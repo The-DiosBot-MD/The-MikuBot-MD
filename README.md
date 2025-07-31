@@ -38,4 +38,4 @@ Un proyecto colaborativo inspirado por la legendaria *Vocaloid Hatsune Miku*, fu
 
 ¿Quieres enterarte primero de los cambios, ver nuevas funciones y participar en eventos sorpresa?
 
-🪄 [🌐 ÚNETE AL CANAL AQUÍ](https://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W)
+🪄 [🌐 ÚNETE AL CANAL AQUÍ]()
