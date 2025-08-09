@@ -74,7 +74,7 @@ let handler = async (m, { conn, args }) => {
 
   try {
     const query = args.join(" ");
-    const apiUrl = `https://api.dorratz.com/v2/pinterest?q=${encodeURIComponent(query)}`;
+    const apiUrl = `https://api.vreden.my.id/api/pinterest?query=${encodeURIComponent(query)}`;
     const response = await axios.get(apiUrl);
 
     if (!Array.isArray(response.data) || response.data.length === 0) {
