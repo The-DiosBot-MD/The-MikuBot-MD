@@ -1,22 +1,22 @@
 import fetch from 'node-fetch';
 
-const YT_SEARCH_API = 'https://api.dorratz.com/v3/yt-search?query=';
-const YT_DOWNLOAD_API = 'https://api.vreden.my.id/api/ytmp3?url=';
+const YTS_API = 'https://api.vreden.my.id/api/yts?query=';
+const YTMP3_API = 'https://api.vreden.my.id/api/ytmp3?url=';
 
-async function fetchYouTubeSearch(query) {
+async function fetchYTS(query) {
   try {
-    const res = await fetch(YT_SEARCH_API + encodeURIComponent(query));
+    const res = await fetch(YTS_API + encodeURIComponent(query));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.data?.[0] || null;
+    return json.result?.all?.[0] || null;
   } catch {
     return null;
   }
 }
 
-async function fetchYouTubeDownload(videoUrl) {
+async function fetchYTMP3(videoUrl) {
   try {
-    const res = await fetch(YT_DOWNLOAD_API + encodeURIComponent(videoUrl));
+    const res = await fetch(YTMP3_API + encodeURIComponent(videoUrl));
     if (!res.ok) return null;
     const json = await res.json();
     return json.result?.download?.url ? json.result : null;
@@ -28,37 +28,35 @@ async function fetchYouTubeDownload(videoUrl) {
 let handler = async (m, { text, conn, command, isOwner, isAdmin }) => {
   if (!text) return m.reply(`
 ╔═🎶═══🪄═══🎶═╗
-║  🗣️ Invoca tu video con palabras mágicas.
-║  ✨ Ejemplo: .ytmusic Minecraft Hardcore
+║  🗣️ Invoca tu hechizo musical.
+║  ✨ Ejemplo: .play DJ Ambatukam
 ╚═🎶═══🪄═══🎶═╝
 `.trim());
 
   try {
-    const video = await fetchYouTubeSearch(text);
+    const video = await fetchYTS(text);
     if (!video) return m.reply(`
 ╔══🎭═══⚠️═══🎭══╗
-║  🔍 No se encontró ningún ritual audiovisual.
-║  🌀 Intenta con otro hechizo.
+║  🔍 Ningún ritual fue encontrado.
+║  🌀 Intenta con otro conjuro.
 ╚══🎭═══⚠️═══🎭══╝
 `.trim());
 
-    const { title, url, duration, views, publishedAt, thumbnail, author } = video;
+    const { title, url, duration, views, thumbnail, author } = video;
 
     const msgInfo = `
 🎬 *𝑹𝒊𝒕𝒖𝒂𝒍 𝒅𝒆 𝒀𝒐𝒖𝑻𝒖𝒃𝒆 𝑺𝒐𝒏𝒐𝒓𝒐* 🎬
 
 🎵 *Título:* ${title}
 🧑‍💻 *Autor:* ${author.name}
-⏱️ *Duración:* ${duration}
-📅 *Publicado:* ${publishedAt}
-👁️ *Vistas:* ${views.toLocaleString()}
+⏱️ *Duración:* ${duration.timestampviews.toLocaleString()}
 🔗 *Enlace:* ${url}
-🌐 *Servidor:* Dorratz API
+🌐 *Servidor:* Vreden YTS API
 `.trim();
 
     await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: msgInfo }, { quoted: m });
 
-    const download = await fetchYouTubeDownload(url);
+    const download = await fetchYTMP3(url);
     if (!download || !download.download?.url) return m.reply(`
 ╔══🎭═══❌═══🎭══╗
 ║  💔 No se pudo extraer el hechizo sonoro.
@@ -79,7 +77,7 @@ let handler = async (m, { text, conn, command, isOwner, isAdmin }) => {
       fileName: download.download.filename || 'ritual.mp3'
     }, { quoted: m });
 
-    console.log(`[🔍 YouTubeSearch] Consulta: ${text}`);
+    console.log(`[🔍 YTS] Consulta: ${text}`);
     console.log(`[🎧 Resultado] Título: ${title} | Autor: ${author.name}`);
 
   } catch (e) {
