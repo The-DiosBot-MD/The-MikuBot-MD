@@ -13,8 +13,8 @@ import axios from 'axios'
   [ '172056423456949@lid', 'Barboza', true ],
   [ '111270153982054@lid', 'BAJO BOTS', true ],
   [ '254575982448677@lid',     'AdrianOficial', true ],
-  [ '', true ],
-  [ '', true ]
+  [ '5355699866', true ],
+  [ '261271484104740', true ]
   ]
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
