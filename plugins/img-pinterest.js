@@ -3,17 +3,17 @@ import baileys from "@whiskeysockets/baileys";
 
 async function sendAlbumMessage(conn, jid, medias, options) {
   options = { ...options };
-  if (typeof jid !== "string") throw new TypeError(`jid must be a string, received: ${jid}`);
+  if (typeof jid !== "string") throw new TypeError(`jid must be una cadena, recibido: ${jid}`);
 
   for (const media of medias) {
     if (!media.type || (media.type !== "image" && media.type !== "video"))
-      throw new TypeError(`medias[i].type must be "image" or "video", received: ${media.type}`);
+      throw new TypeError(`medias[i].type debe ser "image" o "video", recibido: ${media.type}`);
 
     if (!media.data || (!media.data.url && !Buffer.isBuffer(media.data)))
-      throw new TypeError(`medias[i].data must be an object with url or buffer, received: ${media.data}`);
+      throw new TypeError(`medias[i].data debe tener url o buffer, recibido: ${media.data}`);
   }
 
-  if (medias.length < 2) throw new RangeError("Se requieren al menos 2 medios.");
+  if (medias.length < 2) throw new RangeError("Se requieren al menos 2 medios para el álbum.");
 
   const caption = options.text || options.caption || "";
   const delay = !isNaN(options.delay) ? options.delay : 500;
@@ -65,11 +65,11 @@ async function sendAlbumMessage(conn, jid, medias, options) {
 
 let handler = async (m, { conn, args }) => {
   if (!args.length) {
-    return m.reply("Por favor, proporciona una consulta.\n\nEjemplo: .pinterest gato");
+    return m.reply("╭─⬣「 *Pinterest Ritual* 」⬣\n│ ≡◦ ✨ *Ejemplo:* .pinterest anime\n╰─⬣");
   }
 
   await conn.sendMessage(m.chat, {
-    react: { text: "⏱️", key: m.key },
+    react: { text: "🔮", key: m.key },
   });
 
   try {
@@ -77,22 +77,29 @@ let handler = async (m, { conn, args }) => {
     const apiUrl = `https://api.vreden.my.id/api/pinterest?query=${encodeURIComponent(query)}`;
     const response = await axios.get(apiUrl);
 
-    if (!Array.isArray(response.data) || response.data.length === 0) {
-      return await conn.sendMessage(m.chat, { text: "No se encontraron resultados." }, { quoted: m });
+    const urls = response.data.result;
+    if (!Array.isArray(urls) || urls.length === 0) {
+      return await conn.sendMessage(m.chat, { text: "⚠️ No se encontraron imágenes rituales." }, { quoted: m });
     }
 
-    const limitedData = response.data.slice(0, 10);
-    const medias = limitedData.map(item => ({
+    const limitedData = urls.slice(0, 10);
+    const medias = limitedData.map(url => ({
       type: "image",
-      data: { url: item.image_large_url },
-      caption: `✧➢ *Fuente:* Pinterest`
+      data: { url },
     }));
 
-    const albumCaption = "🌙 Imágenes encontradas en Pinterest";
+    const albumCaption = `🌌 *Imágenes encontradas para:* ${query}`;
     await sendAlbumMessage(conn, m.chat, medias, { caption: albumCaption, quoted: m });
+
+    await conn.sendMessage(m.chat, {
+      react: { text: "✅", key: m.key },
+    });
 
   } catch (error) {
     console.error("Error durante la búsqueda en Pinterest:", error);
+    await conn.sendMessage(m.chat, {
+      text: "⚠️ Ocurrió un error al invocar el ritual visual.",
+    }, { quoted: m });
   }
 };
 
