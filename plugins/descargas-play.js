@@ -1,25 +1,25 @@
 import fetch from 'node-fetch';
 
-const YTS_API = 'https://api.vreden.my.id/api/yts?query=';
-const YTMP3_API = 'https://api.vreden.my.id/api/ytmp3?url=';
+const YTSEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
+const YTMP3_API = 'https://delirius-apiofc.vercel.app/download/ytmp3?url=';
 
-async function fetchYTS(query) {
+async function fetchDeliriusSearch(query) {
   try {
-    const res = await fetch(YTS_API + encodeURIComponent(query));
+    const res = await fetch(YTSEARCH_API + encodeURIComponent(query));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.result?.all?.[0] || null;
+    return json.data?.[0] || null;
   } catch {
     return null;
   }
 }
 
-async function fetchYTMP3(videoUrl) {
+async function fetchDeliriusDownload(videoUrl) {
   try {
     const res = await fetch(YTMP3_API + encodeURIComponent(videoUrl));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.result?.download?.url ? json.result : null;
+    return json.data?.download?.url ? json.data : null;
   } catch {
     return null;
   }
@@ -29,12 +29,12 @@ let handler = async (m, { text, conn, command, isOwner, isAdmin }) => {
   if (!text) return m.reply(`
 ╔═🎶═══🪄═══🎶═╗
 ║  🗣️ Invoca tu hechizo musical.
-║  ✨ Ejemplo: .play DJ Ambatukam
+║  ✨ Ejemplo: .ytmusic TWICE
 ╚═🎶═══🪄═══🎶═╝
 `.trim());
 
   try {
-    const video = await fetchYTS(text);
+    const video = await fetchDeliriusSearch(text);
     if (!video) return m.reply(`
 ╔══🎭═══⚠️═══🎭══╗
 ║  🔍 Ningún ritual fue encontrado.
@@ -42,21 +42,23 @@ let handler = async (m, { text, conn, command, isOwner, isAdmin }) => {
 ╚══🎭═══⚠️═══🎭══╝
 `.trim());
 
-    const { title, url, duration, views, thumbnail, author } = video;
+    const { title, url, duration, views, thumbnail, author, publishedAt } = video;
 
     const msgInfo = `
 🎬 *𝑹𝒊𝒕𝒖𝒂𝒍 𝒅𝒆 𝒀𝒐𝒖𝑻𝒖𝒃𝒆 𝑺𝒐𝒏𝒐𝒓𝒐* 🎬
 
 🎵 *Título:* ${title}
 🧑‍💻 *Autor:* ${author.name}
-⏱️ *Duración:* ${duration.timestampviews.toLocaleString()}
+⏱️ *Duración:* ${duration}
+📅 *Publicado:* ${publishedAt}
+👁️ *Vistas:* ${views.toLocaleString()}
 🔗 *Enlace:* ${url}
-🌐 *Servidor:* Vreden YTS API
+🌐 *Servidor:* Delirius API
 `.trim();
 
     await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: msgInfo }, { quoted: m });
 
-    const download = await fetchYTMP3(url);
+    const download = await fetchDeliriusDownload(url);
     if (!download || !download.download?.url) return m.reply(`
 ╔══🎭═══❌═══🎭══╗
 ║  💔 No se pudo extraer el hechizo sonoro.
@@ -77,7 +79,7 @@ let handler = async (m, { text, conn, command, isOwner, isAdmin }) => {
       fileName: download.download.filename || 'ritual.mp3'
     }, { quoted: m });
 
-    console.log(`[🔍 YTS] Consulta: ${text}`);
+    console.log(`[🔍 DeliriusSearch] Consulta: ${text}`);
     console.log(`[🎧 Resultado] Título: ${title} | Autor: ${author.name}`);
 
   } catch (e) {
