@@ -1,99 +1,77 @@
 import fetch from 'node-fetch';
 
-const YTSEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
-const YTMP3_API = 'https://delirius-apiofc.vercel.app/download/ytmp3?url=';
+const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp3?url=';
 
-async function fetchDeliriusSearch(query) {
-  try {
-    const res = await fetch(YTSEARCH_API + encodeURIComponent(query));
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data?.[0] || null;
-  } catch {
-    return null;
-  }
-}
+// 🌠 Claves API disponibles para rotación ritual
+const API_KEYS = [
+  'stellar-xI80Ci6e',
+  'stellar-abc123xyz',
+  'stellar-otroToken987'
+];
 
-async function fetchDeliriusDownload(videoUrl) {
-  try {
-    const res = await fetch(YTMP3_API + encodeURIComponent(videoUrl));
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data?.download?.url ? json.data : null;
-  } catch {
-    return null;
-  }
+// 🔮 Selección aleatoria de clave
+function getRandomKey() {
+  return API_KEYS[Math.floor(Math.random() * API_KEYS.length)];
 }
 
 let handler = async (m, { text, conn, command, isOwner, isAdmin }) => {
-  if (!text) return m.reply(`
-╔═🎶═══🪄═══🎶═╗
-║  🗣️ Invoca tu hechizo musical.
-║  ✨ Ejemplo: .ytmusic TWICE
-╚═🎶═══🪄═══🎶═╝
+  if (!text || !text.includes('youtube.com') && !text.includes('youtu.be')) return m.reply(`
+╔═🌠═══🪄═══🌠═╗
+║  🎧 Invoca con un enlace válido de YouTube.
+║  ✨ Ejemplo: .play https://youtu.be/TdrL3QxjyVw
+╚═🌠═══🪄═══🌠═╝
 `.trim());
 
   try {
-    const video = await fetchDeliriusSearch(text);
-    if (!video) return m.reply(`
-╔══🎭═══⚠️═══🎭══╗
-║  🔍 Ningún ritual fue encontrado.
-║  🌀 Intenta con otro conjuro.
-╚══🎭═══⚠️═══🎭══╝
+    const apikey = getRandomKey();
+    const res = await fetch(`${STELLAR_API}${encodeURIComponent(text)}&apikey=${apikey}`);
+    const json = await res.json();
+
+    if (!json.status || !json.download?.url) return m.reply(`
+╔══🌌═══⚠️═══🌌══╗
+║  🚫 El ritual fue rechazado por el oráculo.
+║  🧪 Clave usada: ${apikey}
+║  📜 Mensaje: ${json.message || 'Error desconocido'}
+╚══🌌═══⚠️═══🌌══╝
 `.trim());
 
-    const { title, url, duration, views, thumbnail, author, publishedAt } = video;
+    const { title, author, duration, views, image, download } = json;
 
     const msgInfo = `
-🎬 *𝑹𝒊𝒕𝒖𝒂𝒍 𝒅𝒆 𝒀𝒐𝒖𝑻𝒖𝒃𝒆 𝑺𝒐𝒏𝒐𝒓𝒐* 🎬
+🎶 *𝑺𝒐𝒏𝒊𝒅𝒐 𝒄𝒐𝒔𝒎𝒊𝒄𝒐 𝒆𝒏𝒄𝒐𝒏𝒕𝒓𝒂𝒅𝒐* 🎶
 
 🎵 *Título:* ${title}
-🧑‍💻 *Autor:* ${author.name}
-⏱️ *Duración:* ${duration}
-📅 *Publicado:* ${publishedAt}
-👁️ *Vistas:* ${views.toLocaleString()}
-🔗 *Enlace:* ${url}
-🌐 *Servidor:* Delirius API
+🧑‍💻 *Autor:* ${author}
+⏱️ *Duración:* ${duration}s
+👁️ *Vistas:* ${views}
+📁 *Archivo:* ${download.filename}
+🔗 *Enlace:* ${text}
+🔑 *Clave usada:* ${apikey}
+🌐 *Servidor:* StellarWA
 `.trim();
 
-    await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: msgInfo }, { quoted: m });
-
-    const download = await fetchDeliriusDownload(url);
-    if (!download || !download.download?.url) return m.reply(`
-╔══🎭═══❌═══🎭══╗
-║  💔 No se pudo extraer el hechizo sonoro.
-║  🔁 Intenta con otro video.
-╚══🎭═══❌═══🎭══╝
-`.trim());
-
-    if (isOwner || isAdmin) {
-      await conn.sendMessage(m.chat, {
-        text: '🧙‍♂️ Invocación privilegiada completada. El archivo será entregado con bendición sonora.',
-        quoted: m
-      });
-    }
+    await conn.sendMessage(m.chat, { image: { url: image }, caption: msgInfo }, { quoted: m });
 
     await conn.sendMessage(m.chat, {
-      audio: { url: download.download.url },
+      audio: { url: download.url },
       mimetype: 'audio/mpeg',
-      fileName: download.download.filename || 'ritual.mp3'
+      fileName: download.filename || 'ritual.mp3'
     }, { quoted: m });
 
-    console.log(`[🔍 DeliriusSearch] Consulta: ${text}`);
-    console.log(`[🎧 Resultado] Título: ${title} | Autor: ${author.name}`);
+    console.log(`[🌌 StellarWA] Descarga completada: ${title} | Clave: ${apikey}`);
 
   } catch (e) {
     console.error(e);
     m.reply(`
-╔══🎭═══⚠️═══🎭══╗
+╔══🌌═══❌═══🌌══╗
 ║  ⚠️ El ritual fue interrumpido por fuerzas desconocidas.
-║  🧪 Revisa el hechizo o consulta al oráculo.
-╚══🎭═══⚠️═══🎭══╝
+║  🔁 Intenta nuevamente o consulta al oráculo.
+╚══🌌═══❌═══🌌══╝
 `.trim());
   }
 };
 
 handler.command = ['play'];
-handler.help = ['play <consulta>'];
+handler.help = ['play <enlace de YouTube>'];
 handler.tags = ['downloader'];
 export default handler;
