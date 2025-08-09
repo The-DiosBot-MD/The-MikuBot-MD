@@ -3,7 +3,7 @@ import baileys from "@whiskeysockets/baileys";
 
 async function sendAlbumMessage(conn, jid, medias, options) {
   options = { ...options };
-  if (typeof jid !== "string") throw new TypeError(`jid must be una cadena, recibido: ${jid}`);
+  if (typeof jid !== "string") throw new TypeError(`jid debe ser una cadena, recibido: ${jid}`);
 
   for (const media of medias) {
     if (!media.type || (media.type !== "image" && media.type !== "video"))
@@ -89,16 +89,27 @@ let handler = async (m, { conn, args }) => {
     }));
 
     const albumCaption = `🌌 *Imágenes encontradas para:* ${query}`;
-    await sendAlbumMessage(conn, m.chat, medias, { caption: albumCaption, quoted: m });
 
-    await conn.sendMessage(m.chat, {
-      react: { text: "✅", key: m.key },
-    });
+    // Logging ritual
+    console.log("📦 Preparando álbum con", medias.length, "medios.");
+    console.log("🖼️ URLs:", limitedData);
+
+    try {
+      await sendAlbumMessage(conn, m.chat, medias, { caption: albumCaption, quoted: m });
+      await conn.sendMessage(m.chat, {
+        react: { text: "✅", key: m.key },
+      });
+    } catch (albumError) {
+      console.error("❌ Error al enviar el álbum:", albumError);
+      await conn.sendMessage(m.chat, {
+        text: `⚠️ Fallo en el envío del álbum.\n\n🧪 *Diagnóstico:* ${albumError.message}`,
+      }, { quoted: m });
+    }
 
   } catch (error) {
-    console.error("Error durante la búsqueda en Pinterest:", error);
+    console.error("❌ Error durante la búsqueda en Pinterest:", error);
     await conn.sendMessage(m.chat, {
-      text: "⚠️ Ocurrió un error al invocar el ritual visual.",
+      text: `⚠️ Error al invocar el ritual visual.\n\n🧪 *Diagnóstico:* ${error.message}`,
     }, { quoted: m });
   }
 };
