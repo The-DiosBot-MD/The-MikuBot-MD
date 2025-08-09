@@ -46,16 +46,19 @@ async function sendAlbumMessage(conn, jid, medias, options) {
 
   await conn.relayMessage(album.key.remoteJid, album.message, { messageId: album.key.id });
 
-  for (const i in medias) {
+  for (let i = 0; i < medias.length; i++) {
     const { type, data } = medias[i];
+
     const img = await baileys.generateWAMessage(
       album.key.remoteJid,
-      { [type]: data, ...(i === "0" ? { caption } : {}) },
+      { [type]: data, ...(i === 0 ? { caption } : {}) },
       { upload: conn.waUploadToServer }
     );
+
     img.message.messageContextInfo = {
       messageAssociation: { associationType: 1, parentMessageKey: album.key },
     };
+
     await conn.relayMessage(img.key.remoteJid, img.message, { messageId: img.key.id });
     await baileys.delay(delay);
   }
@@ -100,17 +103,17 @@ let handler = async (m, { conn, args }) => {
         react: { text: "✅", key: m.key },
       });
     } catch (albumError) {
-      console.error("❌ Error al enviar el álbum:", albumError);
+      console.error("❌ Error al enviar el álbum:", albumError.message);
       await conn.sendMessage(m.chat, {
-        text: `⚠️ Fallo en el envío del álbum.\n\n🧪 *Diagnóstico:* ${albumError.message}`,
-      }, { quoted: m });
+        react: { text: "⚠️", key: m.key },
+      });
     }
 
   } catch (error) {
-    console.error("❌ Error durante la búsqueda en Pinterest:", error);
+    console.error("❌ Error durante la búsqueda en Pinterest:", error.message);
     await conn.sendMessage(m.chat, {
-      text: `⚠️ Error al invocar el ritual visual.\n\n🧪 *Diagnóstico:* ${error.message}`,
-    }, { quoted: m });
+      react: { text: "⚠️", key: m.key },
+    });
   }
 };
 
