@@ -6,8 +6,8 @@ const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp3?url=';
 // 🌠 Claves API disponibles para rotación ritual
 const API_KEYS = [
   'stellar-xI80Ci6e',
-  'stellar-abc123xyz',
-  'stellar-otroToken987'
+  '',
+  ''
 ];
 
 // 🔮 Selección aleatoria de clave
