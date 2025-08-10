@@ -73,10 +73,10 @@ async function fetchImageBuffer(content, imageBuffer) {
   }
 }
 
-// Función actualizada para interactuar con la nueva API
+// ✅ Función adaptada para la API de Vreden
 async function luminsesi(q, username, logic) {
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/qioo2?query=${encodeURIComponent(logic)}`)
+    const response = await axios.get(`https://api.vreden.my.id/api/qioo2?query=${encodeURIComponent(logic)}&username=${encodeURIComponent(username)}`)
     return response.data.result
   } catch (error) {
     console.error('💛 Error al obtener:', error)
