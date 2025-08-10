@@ -1,4 +1,5 @@
-const handler = async (m, { conn }) => {
+// 🎮 Comando para iniciar el juego
+const startHandler = async (m, { conn }) => {
   const modos = [
     { nombre: "🚥 Carrera Nocturna", reto: "Corre en la oscuridad con solo pequeños destellos de luz iluminando el camino." },
     { nombre: "🌪️ Carrera Extrema", reto: "Supera tormentas, terremotos y obstáculos impredecibles mientras intentas llegar a la meta." },
@@ -14,11 +15,9 @@ const handler = async (m, { conn }) => {
   ];
 
   let mensaje = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n📌 *Elige tu desafío:*\n\n`;
-
   modos.forEach((modo, i) => {
     mensaje += `🔹 ${i + 1}. ${modo.nombre} - ${modo.reto}\n`;
   });
-
   mensaje += `\n📌 *Responde con el número de la opción que elijas.*`;
 
   conn.speedGame = conn.speedGame || {};
@@ -30,7 +29,11 @@ const handler = async (m, { conn }) => {
   await conn.sendMessage(m.chat, { text: mensaje });
 };
 
-handler.before = async (m, { conn }) => {
+startHandler.command = ["speed"];
+export default startHandler;
+
+// 🧠 Handler para capturar respuestas del usuario
+export const messageHandler = async (m, { conn }) => {
   const estado = conn.speedGame?.[m.chat];
   if (!estado || !estado.esperandoRespuesta) return;
 
@@ -67,6 +70,3 @@ handler.before = async (m, { conn }) => {
     delete conn.speedGame[m.chat]; // 🧼 Limpiamos para evitar spam
   }
 };
-
-handler.command = ["speed"];
-export default handler;
