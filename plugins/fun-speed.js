@@ -15,49 +15,54 @@ const handler = async (m, { conn, args, command }) => {
     { nombre: "🎲 Desafío Aleatorio", reto: "El tipo de carrera cambia cada vez, desde circuitos normales hasta desafíos extremos." }
   ];
 
-  // Si no hay elección, mostrar menú
-  if (!args[0]) {
-    let mensaje = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n📌 **Elige tu desafío:**\n`;
+  const chatId = m.chat;
+  const usuario = conn.getName(m.sender);
+
+  if (command === "speed") {
+    let mensaje = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n📌 *Elige tu desafío usando:* \n👉 *.choose <número>*\n\n`;
     modos.forEach((modo, i) => {
       mensaje += `🔹 ${i + 1}. ${modo.nombre} - ${modo.reto}\n`;
     });
-    mensaje += `\n📌 *Responde con el número de la opción que elijas.*`;
 
-    speedGame[m.chat] = { esperando: true, modos };
-    return conn.sendMessage(m.chat, { text: mensaje });
+    speedGame[chatId] = { esperando: true, modos };
+    return conn.sendMessage(chatId, { text: mensaje });
   }
 
-  // Si hay número, validar elección
-  const eleccion = parseInt(args[0]);
-  if (isNaN(eleccion) || eleccion < 1 || eleccion > modos.length) {
-    return m.reply("❌ *Opción inválida. Elige un número entre 1 y 11.*");
+  if (command === "choose") {
+    const estado = speedGame[chatId];
+    if (!estado || !estado.esperando) {
+      return m.reply("❌ No hay una carrera activa. Usa *.speed* para comenzar.");
+    }
+
+    const eleccion = parseInt(args[0]);
+    if (isNaN(eleccion) || eleccion < 1 || eleccion > modos.length) {
+      return m.reply("❌ *Opción inválida. Usa un número entre 1 y 11.*");
+    }
+
+    const modoSeleccionado = modos[eleccion - 1].nombre;
+    conn.speedGame[chatId] = { nombre: usuario, modo: modoSeleccionado };
+
+    await conn.reply(chatId, `✅ *${usuario} ha elegido:* ${modoSeleccionado}\n⌛ Preparándose para la velocidad extrema...`, m);
+
+    setTimeout(() => {
+      const resultado = [
+        "🏆 ¡Has dominado la pista y eres el campeón!",
+        "💀 Perdiste el control y la competencia te superó.",
+        "⚔️ Fue un duelo intenso, pero lograste terminar en buena posición.",
+        "🔥 Sobreviviste al caos y llegaste a la meta.",
+        "💢 La carrera fue brutal y apenas conseguiste terminar."
+      ];
+
+      const desenlace = resultado[Math.floor(Math.random() * resultado.length)];
+
+      const mensajeFinal = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n👤 *Jugador:* ${usuario}\n🏎️ *Modo elegido:* ${modoSeleccionado}\n\n${desenlace}`;
+
+      conn.sendMessage(chatId, { text: mensajeFinal });
+
+      delete speedGame[chatId];
+    }, 5000);
   }
-
-  const modoSeleccionado = modos[eleccion - 1].nombre;
-  const usuario = conn.getName(m.sender);
-
-  conn.speedGame[m.chat] = { nombre: usuario, modo: modoSeleccionado };
-
-  await conn.reply(m.chat, `✅ *${usuario} ha elegido:* ${modoSeleccionado}\n⌛ Preparándose para la velocidad extrema...`, m);
-
-  setTimeout(() => {
-    const resultado = [
-      "🏆 ¡Has dominado la pista y eres el campeón!",
-      "💀 Perdiste el control y la competencia te superó.",
-      "⚔️ Fue un duelo intenso, pero lograste terminar en buena posición.",
-      "🔥 Sobreviviste al caos y llegaste a la meta.",
-      "💢 La carrera fue brutal y apenas conseguiste terminar."
-    ];
-
-    const desenlace = resultado[Math.floor(Math.random() * resultado.length)];
-
-    const mensajeFinal = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n👤 *Jugador:* ${usuario}\n🏎️ *Modo elegido:* ${modoSeleccionado}\n\n${desenlace}`;
-
-    conn.sendMessage(m.chat, { text: mensajeFinal });
-
-    delete conn.speedGame[m.chat];
-  }, 5000);
 };
 
-handler.command = ["speed"];
+handler.command = ["speed", "choose"];
 export default handler;
