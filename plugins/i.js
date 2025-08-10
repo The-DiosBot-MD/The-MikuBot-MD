@@ -13,7 +13,7 @@ const handler = async (m, { conn, args }) => {
     }
 
     const prompt = args.join(' ');
-    const apiUrl = `https://api.vreden.my.id/api/artificial/text2image?prompt=${prompt}`;
+    const apiUrl = `https://apis-starlights-team.koyeb.app/starlight/txt-to-image2?text=${prompt}`;
 
     try {
         conn.reply(m.chat, '*🧧 Espere un momento...*', m);
