@@ -76,7 +76,7 @@ async function fetchImageBuffer(content, imageBuffer) {
 // Función actualizada para interactuar con la nueva API
 async function luminsesi(q, username, logic) {
   try {
-    const response = await axios.get(`https://apis-starlights-team.koyeb.app/starlight/gemini?text=${encodeURIComponent(logic)}`)
+    const response = await axios.get(`https://api.vreden.my.id/api/qioo2?query=${encodeURIComponent(logic)}`)
     return response.data.result
   } catch (error) {
     console.error('💛 Error al obtener:', error)
