@@ -1,35 +1,32 @@
-/*
-- 🗣️ Crear imagenes con *IA*
-*/
-
-// *`[🕯️ DALLE 🕯️]`*
+// *`[🕯️ DALLE 🕯️]`* — Ritual de creación visual
 
 import axios from 'axios';
 
 const handler = async (m, { conn, args }) => {
     if (!args[0]) {
-        await conn.reply(m.chat, '✨ Por favor proporciona una descripción para generar la imagen.', m);
+        await conn.reply(m.chat, '✨ Por favor proporciona una descripción para invocar la imagen.', m);
         return;
     }
 
     const prompt = args.join(' ');
-    const apiUrl = `https://apis-starlights-team.koyeb.app/starlight/txt-to-image2?text=${prompt}`;
+    const apiUrl = `https://apis-starlights-team.koyeb.app/starlight/txt-to-image2?text=${encodeURIComponent(prompt)}`;
 
     try {
-        conn.reply(m.chat, '*🧧 Espere un momento...*', m);
+        conn.reply(m.chat, '*🧧 Invocando los trazos del universo...*', m);
 
         const response = await axios.get(apiUrl);
 
-        if (response.data && response.data.data && response.data.data.image_link) {
-            const imageUrl = response.data.data.image_link;
+        // 🔍 Validación visual corregida
+        if (response.data?.data?.image) {
+            const imageUrl = response.data.data.image;
 
             await conn.sendMessage(m.chat, { image: { url: imageUrl } }, { quoted: m });
         } else {
-            throw new Error('No se encontró la imagen en la respuesta.');
+            throw new Error('⚠️ No se encontró la imagen en la respuesta ritual.');
         }
     } catch (error) {
-        console.error('Error al generar la imagen:', error);
-        await conn.reply(m.chat,`${error}`, m);
+        console.error('🩸 Error al generar la imagen:', error);
+        await conn.reply(m.chat, `🚫 Error: ${error.message}`, m);
     }
 };
 
