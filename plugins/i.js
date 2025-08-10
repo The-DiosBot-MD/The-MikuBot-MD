@@ -13,7 +13,7 @@ const handler = async (m, { conn, args }) => {
     }
 
     const prompt = args.join(' ');
-    const apiUrl = `https://api.dorratz.com/v3/ai-image?prompt=${prompt}`;
+    const apiUrl = `https://api.vreden.my.id/api/artificial/text2image?prompt=${prompt}`;
 
     try {
         conn.reply(m.chat, '*🧧 Espere un momento...*', m);
