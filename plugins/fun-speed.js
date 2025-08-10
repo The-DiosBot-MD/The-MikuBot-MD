@@ -19,10 +19,12 @@ const handler = async (m, { conn, args, command }) => {
   const usuario = conn.getName(m.sender);
 
   if (command === "speed") {
-    let mensaje = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n📌 *Elige tu desafío usando:* \n👉 *.choose <número>*\n\n`;
+    let mensaje = `🏁 *Zona de Velocidad Extrema* 🚀🔥\n\n📌 *Explora los modos disponibles:*\n\n`;
     modos.forEach((modo, i) => {
       mensaje += `🔹 ${i + 1}. ${modo.nombre} - ${modo.reto}\n`;
     });
+
+    mensaje += `\n📌 *Para elegir tu desafío, usa:* \n👉 *.choose <número>*\n🎮 Ejemplo: *.choose 3*`;
 
     speedGame[chatId] = { esperando: true, modos };
     return conn.sendMessage(chatId, { text: mensaje });
