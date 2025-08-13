@@ -1,18 +1,42 @@
 let mutedUsers = new Set();
 
 let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
+  
   if (!isBotAdmin) 
     return conn.reply(m.chat, '⭐ El bot necesita ser administrador.', m);
   if (!isAdmin) 
     return conn.reply(m.chat, '⭐ Solo los administradores pueden usar este comando.', m);
 
-  // 1) Asegurarnos de que haya mensaje citado
-  if (!m.quoted) {
+  if (!m.quoted) 
     return conn.reply(m.chat, '⭐ Responde al mensaje del usuario que quieres mutear.', m);
+
+  // 1) Extraer el JID citado de forma infalible
+  const quotedKey = m.quoted.key || {};
+  let targetJid;
+
+  if (quotedKey.fromMe) {
+    // Si el bot es quien envió el mensaje
+    targetJid = conn.user.jid;
+  } else if (quotedKey.participant) {
+    // En grupos, el remitente original está en participant
+    targetJid = quotedKey.participant;
+  } else if (m.quoted.sender) {
+    // En otros entornos puede venir aquí
+    targetJid = m.quoted.sender;
+  } else {
+    // Fallback
+    targetJid = quotedKey.remoteJid || '';
   }
 
-  // 2) Protección definitiva: si el citado es un mensaje fromMe (del propio bot), se bloquea
-  if (m.quoted.key?.fromMe) {
+  // 2) Depuración en consola (elimina o comenta tras probar)
+  console.log('[DEBUG] botJid =', conn.user.jid);
+  console.log('[DEBUG] quoted.fromMe =', quotedKey.fromMe);
+  console.log('[DEBUG] quoted.participant =', quotedKey.participant);
+  console.log('[DEBUG] quoted.sender =', m.quoted.sender);
+  console.log('[DEBUG] resolved targetJid =', targetJid);
+
+  // 3) Bloquear intento de autocastigo
+  if (targetJid === conn.user.jid) {
     return conn.reply(
       m.chat,
       '🛑 *Hey pendejo*, ¿cómo me voy a mutear a mí misma?',
@@ -20,27 +44,14 @@ let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
     );
   }
 
-  // 3) Extraemos el JID del objetivo
-  const user = m.quoted.sender;
-  const target = user.split('@')[0];
-
-  // 4) Ejecutamos la acción
+  // 4) Proceder con mute/unmute
+  const username = targetJid.split('@')[0];
   if (command === 'mute') {
-    mutedUsers.add(user);
-    conn.reply(
-      m.chat,
-      `✅ *Usuario muteado:* @${target}`,
-      m,
-      { mentions: [user] }
-    );
-  } else if (command === 'unmute') {
-    mutedUsers.delete(user);
-    conn.reply(
-      m.chat,
-      `✅ *Usuario desmuteado:* @${target}`,
-      m,
-      { mentions: [user] }
-    );
+    mutedUsers.add(targetJid);
+    conn.reply(m.chat, `✅ *Usuario muteado:* @${username}`, m, { mentions: [targetJid] });
+  } else {
+    mutedUsers.delete(targetJid);
+    conn.reply(m.chat, `✅ *Usuario desmuteado:* @${username}`, m, { mentions: [targetJid] });
   }
 };
 
