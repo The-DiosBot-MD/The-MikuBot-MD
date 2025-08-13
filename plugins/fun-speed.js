@@ -42,6 +42,9 @@ const handler = async (m, { conn, args, command }) => {
     }
 
     const modoSeleccionado = modos[eleccion - 1].nombre;
+
+    // 🔧 Blindaje contra error de propiedad indefinida
+    if (!conn.speedGame) conn.speedGame = {};
     conn.speedGame[chatId] = { nombre: usuario, modo: modoSeleccionado };
 
     await conn.reply(chatId, `✅ *${usuario} ha elegido:* ${modoSeleccionado}\n⌛ Preparándose para la velocidad extrema...`, m);
