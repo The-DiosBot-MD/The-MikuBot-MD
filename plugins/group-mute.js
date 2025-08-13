@@ -1,6 +1,8 @@
+import { decodeJid } from '@whiskeysockets/baileys';
+
 let mutedUsers = new Set();
 
-let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
+let handler = async (m, { conn, command, isAdmin, isBotAdmin }) => {
   
   if (!isBotAdmin) 
     return conn.reply(m.chat, '⭐ El bot necesita ser administrador.', m);
@@ -10,33 +12,24 @@ let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
   if (!m.quoted) 
     return conn.reply(m.chat, '⭐ Responde al mensaje del usuario que quieres mutear.', m);
 
-  // 1) Extraer el JID citado de forma infalible
-  const quotedKey = m.quoted.key || {};
-  let targetJid;
+  // ——————————————————————————————————————
+  // 1) Obtener y normalizar el JID del bot
+  const rawBotJid = conn.user?.id || conn.user?.jid || conn.user;
+  const botJid = decodeJid(rawBotJid);
 
-  if (quotedKey.fromMe) {
-    // Si el bot es quien envió el mensaje
-    targetJid = conn.user.jid;
-  } else if (quotedKey.participant) {
-    // En grupos, el remitente original está en participant
-    targetJid = quotedKey.participant;
-  } else if (m.quoted.sender) {
-    // En otros entornos puede venir aquí
-    targetJid = m.quoted.sender;
-  } else {
-    // Fallback
-    targetJid = quotedKey.remoteJid || '';
-  }
+  // 2) Extraer y normalizar el JID citado
+  const ctx = m.message?.extendedTextMessage?.contextInfo || {};
+  const quotedParticipant = ctx.participant || m.quoted.sender;
+  const targetJid = decodeJid(quotedParticipant);
 
-  // 2) Depuración en consola (elimina o comenta tras probar)
-  console.log('[DEBUG] botJid =', conn.user.jid);
-  console.log('[DEBUG] quoted.fromMe =', quotedKey.fromMe);
-  console.log('[DEBUG] quoted.participant =', quotedKey.participant);
-  console.log('[DEBUG] quoted.sender =', m.quoted.sender);
-  console.log('[DEBUG] resolved targetJid =', targetJid);
+  // 3) Logs de depuración (comenta tras probar)
+  console.log('[DEBUG] botJid      =', botJid);
+  console.log('[DEBUG] participant  =', ctx.participant);
+  console.log('[DEBUG] quoted.sender=', m.quoted.sender);
+  console.log('[DEBUG] targetJid   =', targetJid);
 
-  // 3) Bloquear intento de autocastigo
-  if (targetJid === conn.user.jid) {
+  // 4) Bloquear autocastigo
+  if (targetJid === botJid) {
     return conn.reply(
       m.chat,
       '🛑 *Hey pendejo*, ¿cómo me voy a mutear a mí misma?',
@@ -44,7 +37,7 @@ let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
     );
   }
 
-  // 4) Proceder con mute/unmute
+  // 5) Proceder con mute/unmute
   const username = targetJid.split('@')[0];
   if (command === 'mute') {
     mutedUsers.add(targetJid);
