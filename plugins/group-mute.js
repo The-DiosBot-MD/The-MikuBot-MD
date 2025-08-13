@@ -11,6 +11,11 @@ let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
         return conn.reply(m.chat, '⭐ Responde al mensaje del usuario que quieres mutear.', m);
     }
 
+    // ⚔️ Validación ceremonial: ¿intenta mutear al propio bot?
+    if (user === conn.user.jid) {
+        return conn.reply(m.chat, '🛑 *Hey pendejo*, ¿cómo me voy a mutear a mí misma?', m);
+    }
+
     if (command === "mute") {
         mutedUsers.add(user);
         conn.reply(m.chat, `✅ *Usuario muteado:* @${user.split('@')[0]}`, m, { mentions: [user] });
