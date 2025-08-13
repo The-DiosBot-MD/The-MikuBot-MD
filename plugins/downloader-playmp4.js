@@ -28,7 +28,7 @@ async function fetchStellarDownload(videoUrl) {
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Usewa Ado');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Hatsune Miku');
 
   try {
     const video = await fetchSearch(text);
