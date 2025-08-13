@@ -11,18 +11,21 @@ let handler = async (m, { conn, usedPrefix, command, isAdmin, isBotAdmin }) => {
         return conn.reply(m.chat, '⭐ Responde al mensaje del usuario que quieres mutear.', m);
     }
 
-    // 🛡️ Protección imperial: evitar que el bot se mutee a sí mismo
-    const botJid = conn.user?.jid || conn.user?.id || conn.user; // Variante flexible
-    if (user === botJid || user.includes(botJid.split('@')[0])) {
+    // 🛡️ Protección definitiva: evitar que el bot se mutee a sí mismo
+    const botJid = conn.user?.jid || conn.user?.id || conn.user;
+    const botUsername = botJid.split('@')[0];
+    const targetUsername = user.split('@')[0];
+
+    if (botUsername === targetUsername) {
         return conn.reply(m.chat, '🛑 *Hey pendejo*, ¿cómo me voy a mutear a mí misma?', m);
     }
 
     if (command === "mute") {
         mutedUsers.add(user);
-        conn.reply(m.chat, `✅ *Usuario muteado:* @${user.split('@')[0]}`, m, { mentions: [user] });
+        conn.reply(m.chat, `✅ *Usuario muteado:* @${targetUsername}`, m, { mentions: [user] });
     } else if (command === "unmute") {
         mutedUsers.delete(user);
-        conn.reply(m.chat, `✅ *Usuario desmuteado:* @${user.split('@')[0]}`, m, { mentions: [user] });
+        conn.reply(m.chat, `✅ *Usuario desmuteado:* @${targetUsername}`, m, { mentions: [user] });
     }
 };
 
