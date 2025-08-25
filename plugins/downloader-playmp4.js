@@ -45,16 +45,27 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
     );
   }
 
-  const { title, description, duration, views, author, url, thumbnail } = video;
+  const {
+    title,
+    description,
+    duration,
+    seconds,
+    views,
+    author,
+    url,
+    thumbnail
+  } = video;
+
+  const duracion = duration?.timestamp || (seconds ? `${seconds}s` : 'Desconocida');
 
   const caption = `
 ╭─⬣「 *Descargador YouTube MP4* 」⬣
 │ ≡◦ 🎵 *Título:* ${title}
-│ ≡◦ 🧑‍🎤 *Autor:* ${author.name}
-│ ≡◦ ⏱️ *Duración:* ${duration.timestamp}
-│ ≡◦ 👁️ *Vistas:* ${views.toLocaleString()}
+│ ≡◦ 🧑‍🎤 *Autor:* ${author?.name || 'Desconocido'}
+│ ≡◦ ⏱️ *Duración:* ${duracion}
+│ ≡◦ 👁️ *Vistas:* ${views?.toLocaleString() || 'N/A'}
 │ ≡◦ 🌐 *YouTube:* ${url}
-│ ≡◦ 📝 *Descripción:* ${description}
+│ ≡◦ 📝 *Descripción:* ${description || 'Sin descripción'}
 ╰─⬣`.trim();
 
   await conn.sendMessage(m.chat, {
@@ -81,7 +92,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
   await m.react('✅');
 };
 
-handler.command = ['play2', 'playambatukam', 'ytambatukam'];
-handler.help = ['play2 <video>'];
+handler.command = ['play2', 'ytambatukam', 'ambatukam'];
+handler.help = ['play2' <video>'];
 handler.tags = ['descargas'];
 export default handler;
