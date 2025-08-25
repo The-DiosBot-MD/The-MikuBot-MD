@@ -1,14 +1,15 @@
 import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
-const DOWNLOAD_API = https://itzpire.com/download/ytmp4?url=';
+const DOWNLOAD_API = 'https://api.vreden.my.id/api/ytmp4?url=';
 
 async function buscarVideo(query) {
   try {
     const res = await fetch(SEARCH_API + encodeURIComponent(query));
     const json = await res.json();
     return json.result?.all?.[0] || null;
-  } catch {
+  } catch (error) {
+    console.error('[🔴 ERROR EN BUSCAR VIDEO]', error);
     return null;
   }
 }
@@ -18,7 +19,8 @@ async function descargarVideo(url) {
     const res = await fetch(DOWNLOAD_API + encodeURIComponent(url));
     const json = await res.json();
     return json.result?.download?.status ? json.result : null;
-  } catch {
+  } catch (error) {
+    console.error('[🔴 ERROR EN DESCARGAR VIDEO]', error);
     return null;
   }
 }
@@ -30,7 +32,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ 🎥 *Uso correcto del comando:*
 │ ≡◦ ${usedPrefix + command} dj ambatukam
-╰─⬣`
+╰─⬣\n> The-MikuBot-MD`
     );
   }
 
@@ -57,27 +59,27 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
   } = video;
 
   const duracion = duration?.timestamp || (seconds ? `${seconds}s` : 'Desconocida');
-
-  const caption = `
-╭─⬣「 *Descargador YouTube MP4* 」⬣
-│ ≡◦ 🎵 *Título:* ${title}
-│ ≡◦ 🧑‍🎤 *Autor:* ${author?.name || 'Desconocido'}
-│ ≡◦ ⏱️ *Duración:* ${duracion}
-│ ≡◦ 👁️ *Vistas:* ${views?.toLocaleString() || 'N/A'}
-│ ≡◦ 🌐 *YouTube:* ${url}
-│ ≡◦ 📝 *Descripción:* ${description || 'Sin descripción'}
-╰─⬣`.trim();
+  const vistas = views ? views.toLocaleString() : 'N/A';
+  const autor = author?.name || 'Desconocido';
+  const descripcion = description || 'Sin descripción';
 
   await conn.sendMessage(m.chat, {
     image: { url: thumbnail },
-    caption
+    caption: `╭─⬣「 *Descargador YouTube* 」⬣
+│ ≡◦ 🎵 *Título:* ${title}
+│ ≡◦ 👤 *Autor:* ${autor}
+│ ≡◦ ⏱️ *Duración:* ${duracion}
+│ ≡◦ 👁️ *Vistas:* ${vistas}
+│ ≡◦ 🌐 *YouTube:* ${url}
+│ ≡◦ 📝 *Descripción:* ${descripcion}
+╰─⬣`
   }, { quoted: m });
 
   const descarga = await descargarVideo(url);
   if (!descarga || !descarga.download?.url) {
     return m.reply(
       `╭─⬣「 *The-MikuBot-MD* 」⬣
-│ ≡◦ ⚠️ *No se pudo convertir el video.*
+│ ≡◦ ⚠️ *No se pudo convertir el video a MP4.*
 │ ≡◦ Intenta con otro título o más tarde.
 ╰─⬣`
     );
