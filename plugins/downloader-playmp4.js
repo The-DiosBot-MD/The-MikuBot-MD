@@ -1,44 +1,78 @@
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
-let handler = async (m, { conn, args }) => {
+const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
+const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp4?url=';
+const STELLAR_KEY = 'stellar-Gn3yNy3a';
+
+async function fetchSearch(query) {
   try {
-    let query = args.join(" ");
-    if (!query) throw "⚠️ Ingresa el título o link de YouTube";
+    const res = await fetch(SEARCH_API + encodeURIComponent(query));
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.result?.all?.[0] || null;
+  } catch {
+    return null;
+  }
+}
 
-    let res = await fetch(`https://api.vreden.my.id/api/ytplaymp4?query=${encodeURIComponent(query)}`);
-    let json = await res.json();
+async function fetchStellarDownload(videoUrl) {
+  try {
+    const fullUrl = `${STELLAR_API}${encodeURIComponent(videoUrl)}&apikey=${STELLAR_KEY}`;
+    const res = await fetch(fullUrl);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.status ? json.data : null;
+  } catch {
+    return null;
+  }
+}
 
-    if (!json || !json.result || !json.result.metadata) throw "⚠️ No se pudo obtener información del video";
+let handler = async (m, { text, conn, command }) => {
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Usewa Ado');
 
-    let meta = json.result.metadata;
-    let down = json.result.download || {};
-    
-    let caption = `
-🎵 *${meta.title || "Sin título"}*
-👤 Autor: ${meta.author?.name || "Desconocido"}
-👁️ Vistas: ${meta.views || 0}
-⏱️ Duración: ${meta.timestamp || "?"}
-📅 Publicado: ${meta.ago || "?"}
-🔗 YouTube: ${meta.url || ""}
-    `.trim();
+  try {
+    const video = await fetchSearch(text);
+    if (!video) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
 
-    if (down.status && down.url) {
-      await conn.sendMessage(m.chat, {
-        video: { url: down.url },
-        caption
-      }, { quoted: m });
-    } else {
-      await m.reply("⚠️ No encontré un link de descarga válido.");
-    }
+    const thumb = video.thumbnail;
+    const videoTitle = video.title;
+    const videoUrl = video.url;
+    const duration = video.seconds;
+    const views = video.views;
+    const author = video.author?.name || 'Desconocido';
+
+    const msgInfo = `
+╔═ೋ═══❖═══ೋ═╗
+║  ⚡ The Miku Bot  ⚡
+║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
+╠═ೋ═══❖═══ೋ═╣
+║ 🎵 Título: ${videoTitle}
+║ ⏱️ Duración: ${duration}s
+║ 👀 Vistas: ${views.toLocaleString()}
+║ 🧑‍🎤 Autor: ${author}
+║ 🔗 Link: ${videoUrl}
+║ 🌐 Servidor: StellarWA API
+╚═ೋ═══❖═══ೋ═╝
+`.trim();
+
+    await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
+
+    const download = await fetchStellarDownload(videoUrl);
+    if (!download || !download.dl) return m.reply('❌ No se pudo descargar el video.');
+
+    await conn.sendMessage(m.chat, {
+      video: { url: download.dl },
+      mimetype: 'video/mp4',
+      fileName: download.title || 'video.mp4'
+    }, { quoted: m });
 
   } catch (e) {
     console.error(e);
-    m.reply("❌ Error al procesar el comando.");
+    m.reply('❌ Error al procesar tu solicitud.');
   }
 };
 
-handler.help = ["play2 <texto|link>"];
-handler.tags = ["downloader"];
-handler.command = /^play2$/i;
-
+handler.command = ['play2', 'mp4', 'ytmp4', 'playmp4'];
+handler.help = ['play2 <video>'];
+handler.tags = ['downloader'];
 export default handler;
