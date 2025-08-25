@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
-const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp4?url=';
-const STELLAR_KEY = 'stellar-Gn3yNy3a';
+const Miku_API = 'https://itzpire.com/download/ytmp4?url=';
+
 
 async function fetchSearch(query) {
   try {
@@ -17,7 +17,7 @@ async function fetchSearch(query) {
 
 async function fetchStellarDownload(videoUrl) {
   try {
-    const fullUrl = `${STELLAR_API}${encodeURIComponent(videoUrl)}&apikey=${STELLAR_KEY}`;
+    const fullUrl = `${Miku_API}${encodeURIComponent(videoUrl)}`;
     const res = await fetch(fullUrl);
     if (!res.ok) return null;
     const json = await res.json();
