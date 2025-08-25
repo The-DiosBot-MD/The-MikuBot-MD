@@ -2,43 +2,67 @@ import fetch from 'node-fetch';
 
 const ADONIX_API = 'https://myapiadonix.vercel.app/api/adonixvoz?q=';
 
-let handler = async (m, { text, conn }) => {
+async function fetchAdonixVoice(phrase) {
+  try {
+    const res = await fetch(ADONIX_API + encodeURIComponent(phrase));
+    if (!res.ok) return null;
+    const buffer = await res.buffer();
+    return buffer;
+  } catch (e) {
+    console.log('❌ Error al invocar la voz:', e);
+    return null;
+  }
+}
+
+let handler = async (m, { text, conn, command }) => {
   if (!text) return m.reply(`
-╭─❍🌸 *Miku dice...* 🌸❍─╮
-│ Porfis, dime qué quieres que diga 💬
-│ Ejemplo: *.voz Te quiero mucho, Miku~*
-╰───────────────╯
+╔═ೋ═══❖═══ೋ═╗
+║ 🌸 *Miku te escucha...* 🌸
+║ 🗣️ Porfis, dime qué quieres que diga
+║ 💡 Ejemplo: .voz Te extraño, Mitsuri~
+╚═ೋ═══❖═══ೋ═╝
 `.trim());
 
   try {
-    const audioUrl = `${ADONIX_API}${encodeURIComponent(text)}`;
+    await m.reply('🎙️ *Miku está preparando su voz...* 💫');
+
+    const audio = await fetchAdonixVoice(text);
+    if (!audio) return m.reply('❌ No se pudo generar el audio. Intenta con otra frase.');
+
+    const caption = `
+╔═ೋ═══❖═══ೋ═╗
+║ 🔊 *Voz canalizada por Miku* 🔊
+║ 📝 Frase: ${text}
+║ 🎧 Estilo: Miku Bot 🌸
+╚═ೋ═══❖═══ೋ═╝
+
+Tu frase se convirtió en melodía emocional...  
+Espero que te saque una sonrisita ✨🎶
+`.trim();
 
     await conn.sendMessage(m.chat, {
-      audio: { url: audioUrl },
+      audio,
       mimetype: 'audio/mp4',
-      fileName: 'mikuvoz.mp4',
-      ptt: true
+      ptt: true,
+      caption
     }, { quoted: m });
 
-    await m.reply(`
-╭─❍💖 *Miku te escuchó* 💖❍─╮
-│ Aquí está tu mensaje en mi voz 🎶
-│ Espero que te saque una sonrisita 🌈
-╰───────────────╯
-`.trim());
-
   } catch (e) {
-    console.error('💥 Error en el flujo de voz:', e);
+    console.error('💥 Error general en el flujo de voz:', e);
     m.reply(`
-╭─❍💔 *Miku se tropezó* 💔❍─╮
-│ No pude generar el audio... sniff 😢
-│ ¿Intentamos de nuevo con otro texto?
-╰───────────────╯
+🚫 *Ups... Miku se quedó sin voz*
+
+╔═ೋ═══❖═══ೋ═╗
+║ 📄 Detalles: ${e.message}
+║ 🔁 Sugerencia: Intenta más tarde o cambia la frase
+╚═ೋ═══❖═══ೋ═╝
+
+Pero no te preocupes... Miku siempre regresa cuando la necesitas 💫🎀
 `.trim());
   }
 };
 
 handler.command = ['voz', 'Miku', 'habla'];
-handler.help = ['voz <texto>'];
+handler.help = ['voz <frase>'];
 handler.tags = ['voz', 'utilidades'];
 export default handler;
