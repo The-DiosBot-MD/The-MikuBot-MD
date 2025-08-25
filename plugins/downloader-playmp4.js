@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
-const Miku_API = 'https://api.vreden.my.id/api/ytmp4?url=';
+const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp4?url=';
+const STELLAR_KEY = 'stellar-Gn3yNy3a';
 
 async function fetchSearch(query) {
   try {
@@ -9,21 +10,19 @@ async function fetchSearch(query) {
     if (!res.ok) return null;
     const json = await res.json();
     return json.result?.all?.[0] || null;
-  } catch (e) {
-    console.error('[🔍 LOG] Error en búsqueda:', e);
+  } catch {
     return null;
   }
 }
 
 async function fetchStellarDownload(videoUrl) {
   try {
-    const full}${encodeURIComponent(videoUrl)}`;
+    const fullUrl = `${STELLAR_API}${encodeURIComponent(videoUrl)}&apikey=${STELLAR_KEY}`;
     const res = await fetch(fullUrl);
     if (!res.ok) return null;
     const json = await res.json();
-    return json.result?.download?.status ? json.result.download : null;
-  } catch (e) {
-    console.error('[📥 LOG] Error en descarga:', e);
+    return json.status ? json.data : null;
+  } catch {
     return null;
   }
 }
@@ -33,55 +32,42 @@ let handler = async (m, { text, conn, command }) => {
 
   try {
     const video = await fetchSearch(text);
-    console.log('[🔍 LOG] Resultado de búsqueda:', video);
     if (!video) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
 
-    const { thumbnail, title, url, seconds, views, author } = video;
-    const duration = seconds;
-    const authorName = author?.name || 'Desconocido';
-
-    if (duration > 600) {
-      return m.reply('⏳ Este video es muy largo para descargarlo directamente. Intenta con uno más corto.');
-    }
+    const thumb = video.thumbnail;
+    const videoTitle = video.title;
+    const videoUrl = video.url;
+    const duration = video.seconds;
+    const views = video.views;
+    const author = video.author?.name || 'Desconocido';
 
     const msgInfo = `
 ╔═ೋ═══❖═══ೋ═╗
 ║  ⚡ The Miku Bot  ⚡
 ║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
 ╠═ೋ═══❖═══ೋ═╣
-║ 🎵 Título: ${title}
+║ 🎵 Título: ${videoTitle}
 ║ ⏱️ Duración: ${duration}s
 ║ 👀 Vistas: ${views.toLocaleString()}
-║ 🧑‍🎤 Autor: ${authorName}
-║ 🔗 Link: ${url}
+║ 🧑‍🎤 Autor: ${author}
+║ 🔗 Link: ${videoUrl}
 ╚═ೋ═══❖═══ೋ═╝
 `.trim();
 
-    await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: msgInfo }, { quoted: m });
+    await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
 
-    const download = await fetchStellarDownload(url);
-    console.log('[📥 LOG] Resultado de descarga:', download);
-    if (!download || !download.url) {
-      return m.reply('❌ No se pudo obtener el enlace de descarga. Tal vez el video no está disponible en formato MP4.');
-    }
-
-    const qualityEmoji = {
-      144: '🧊',
-      360: '🎞️',
-      480: '📼',
-      720: '📺',
-      1080: '🎬'
-    }[download.quality] || '🎥';
+    const download = await fetchStellarDownload(videoUrl);
+    if (!download || !download.dl) return m.reply('❌ No se pudo descargar el video.');
 
     await conn.sendMessage(m.chat, {
-      video: { url: download.url },
+      video: { url: download.dl },
       mimetype: 'video/mp4',
-      fileName: `${qualityEmoji} ${download.filename || 'video.mp4'}`
+      fileName: download.title || 'video.mp4'
     }, { quoted: m });
 
   } catch (e) {
-    console.error('[❌ LOG] Error general:', e);
-    m.reply('❌ Error al procesar tu solicitud. Intenta nuevamente o revisa el nombre del video.');
+    console.error(e);
+    m.reply('❌ Error al procesar tu solicitud.');
   }
 };
 
