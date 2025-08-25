@@ -3,7 +3,6 @@ import fetch from 'node-fetch';
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
 const Miku_API = 'https://api.vreden.my.id/api/ytmp4?url=';
 
-
 async function fetchSearch(query) {
   try {
     const res = await fetch(SEARCH_API + encodeURIComponent(query));
@@ -21,14 +20,14 @@ async function fetchStellarDownload(videoUrl) {
     const res = await fetch(fullUrl);
     if (!res.ok) return null;
     const json = await res.json();
-    return json.status ? json.data : null;
+    return json.result?.download?.status ? json.result.download : null;
   } catch {
     return null;
   }
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Usewa Ado');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Miku');
 
   try {
     const video = await fetchSearch(text);
@@ -40,6 +39,9 @@ let handler = async (m, { text, conn, command }) => {
     const duration = video.seconds;
     const views = video.views;
     const author = video.author?.name || 'Desconocido';
+
+    // Validación ceremonial por duración
+    if (duration > 600) return m.reply('⏳ Este video es muy largo para descargarlo directamente. Intenta con uno más corto.');
 
     const msgInfo = `
 ╔═ೋ═══❖═══ೋ═╗
@@ -57,12 +59,20 @@ let handler = async (m, { text, conn, command }) => {
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
 
     const download = await fetchStellarDownload(videoUrl);
-    if (!download || !download.dl) return m.reply('❌ No se pudo descargar el video.');
+    if (!download || !download.url) return m.reply('❌ No se pudo descargar el video.');
+
+    const qualityEmoji = {
+      144: '🧊',
+      360: '🎞️',
+      480: '📼',
+      720: '📺',
+      1080: '🎬'
+    }[download.quality] || '🎥';
 
     await conn.sendMessage(m.chat, {
-      video: { url: download.dl },
+      video: { url: download.url },
       mimetype: 'video/mp4',
-      fileName: download.title || 'video.mp4'
+      fileName: `${qualityEmoji} ${download.filename || 'video.mp4'}`
     }, { quoted: m });
 
   } catch (e) {
