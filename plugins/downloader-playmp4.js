@@ -2,7 +2,20 @@ import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
 const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp4?url=';
-const STELLAR_KEY = 'stellar-bvc3RO8u';
+
+
+const STELLAR_KEYS = [
+  'stellar-bvc3RO8u',
+  '',
+  ''
+];
+
+
+function getRandomKey() {
+  const key = STELLAR_KEYS[Math.floor(Math.random() * STELLAR_KEYS.length)];
+  console.log(`🔑 Llave elegida para esta descarga: ${key}`);
+  return key;
+}
 
 async function fetchSearch(query) {
   try {
@@ -10,19 +23,22 @@ async function fetchSearch(query) {
     if (!res.ok) return null;
     const json = await res.json();
     return json.result?.all?.[0] || null;
-  } catch {
+  } catch (e) {
+    console.log('⚠️ Error en búsqueda:', e);
     return null;
   }
 }
 
 async function fetchStellarDownload(videoUrl) {
   try {
-    const fullUrl = `${STELLAR_API}${encodeURIComponent(videoUrl)}&apikey=${STELLAR_KEY}`;
+    const apiKey = getRandomKey();
+    const fullUrl = `${STELLAR_API}${encodeURIComponent(videoUrl)}&apikey=${apiKey}`;
     const res = await fetch(fullUrl);
     if (!res.ok) return null;
     const json = await res.json();
     return json.status ? json.data : null;
-  } catch {
+  } catch (e) {
+    console.log('❌ Error en descarga:', e);
     return null;
   }
 }
@@ -66,7 +82,7 @@ let handler = async (m, { text, conn, command }) => {
     }, { quoted: m });
 
   } catch (e) {
-    console.error(e);
+    console.error('💥 Error general en el flujo:', e);
     m.reply('❌ Error al procesar tu solicitud.');
   }
 };
