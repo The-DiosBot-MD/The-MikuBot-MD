@@ -92,7 +92,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
   await m.react('✅');
 };
 
-handler.command = ['playmp4', 'ytambatukam', 'ambatukam'];
+handler.command = ['play2', 'ytmp4', 'mp4'];
 handler.help = ['playmp4 <video>'];
 handler.tags = ['descargas'];
 export default handler;
