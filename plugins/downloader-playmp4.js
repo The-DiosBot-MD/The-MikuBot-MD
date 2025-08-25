@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
 const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp4?url=';
-const STELLAR_KEY = 'stellar-Gn3yNy3a';
+const STELLAR_KEY = 'stellar-bvc3RO8u';
 
 async function fetchSearch(query) {
   try {
