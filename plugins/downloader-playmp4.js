@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
-const DOWNLOAD_API = 'https://api.vreden.my.id/api/ytmp4?url=';
+const DOWNLOAD_API = https://itzpire.com/download/ytmp4?url=';
 
 async function buscarVideo(query) {
   try {
