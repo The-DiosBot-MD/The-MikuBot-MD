@@ -3,9 +3,17 @@ import fetch from 'node-fetch';
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
 const DOWNLOAD_API = 'https://api.vreden.my.id/api/ytmp4?url=';
 
+// Headers tipo navegador para evitar bloqueos 403
+const headersNavegador = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+  "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+  "Referer": "https://youtube.com/"
+};
+
 async function buscarVideo(query) {
   try {
-    const res = await fetch(SEARCH_API + encodeURIComponent(query));
+    const res = await fetch(SEARCH_API + encodeURIComponent(query), { headers: headersNavegador });
     const json = await res.json();
     return json.result?.all?.[0] || null;
   } catch (error) {
@@ -16,7 +24,7 @@ async function buscarVideo(query) {
 
 async function descargarVideo(url) {
   try {
-    const res = await fetch(DOWNLOAD_API + encodeURIComponent(url));
+    const res = await fetch(DOWNLOAD_API + encodeURIComponent(url), { headers: headersNavegador });
     const json = await res.json();
     return json.result?.download?.status ? json.result : null;
   } catch (error) {
