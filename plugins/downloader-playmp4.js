@@ -1,41 +1,53 @@
 import fetch from 'node-fetch';
 
+const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
+const DOWNLOAD_API = 'https://api.vreden.my.id/api/ytmp4?url=';
+
+async function buscarVideo(query) {
+  try {
+    const res = await fetch(SEARCH_API + encodeURIComponent(query));
+    const json = await res.json();
+    return json.result?.all?.[0] || null;
+  } catch {
+    return null;
+  }
+}
+
+async function descargarVideo(url) {
+  try {
+    const res = await fetch(DOWNLOAD_API + encodeURIComponent(url));
+    const json = await res.json();
+    return json.result?.download?.status ? json.result : null;
+  } catch {
+    return null;
+  }
+}
+
 let handler = async (m, { conn, args, command, usedPrefix }) => {
   const text = args.join(" ");
   if (!text) {
     return m.reply(
       `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ 🎥 *Uso correcto del comando:*
-│ ≡◦ ${usedPrefix + command} DJ malam pagi slowed
+│ ≡◦ ${usedPrefix + command} dj ambatukam
 ╰─⬣`
     );
   }
 
   await m.react('🔍');
 
-  try {
-    const res = await fetch(`https://api.vreden.my.id/api/ytplaymp4?query=${encodeURIComponent(text)}`);
-    const json = await res.json();
-
-    if (!json.result?.metadata) {
-      return m.reply(
-        `╭─⬣「 *The-MikuBot-MD* 」⬣
-│ ≡◦ ❌ *No se encontró contenido para:* ${text}
+  const video = await buscarVideo(text);
+  if (!video) {
+    return m.reply(
+      `╭─⬣「 *The-MikuBot-MD* 」⬣
+│ ≡◦ ❌ *No se encontraron resultados para:* ${text}
 ╰─⬣`
-      );
-    }
+    );
+  }
 
-    const {
-      title,
-      description,
-      duration,
-      views,
-      author,
-      url,
-      thumbnail
-    } = json.result.metadata;
+  const { title, description, duration, views, author, url, thumbnail } = video;
 
-    const caption = `
+  const caption = `
 ╭─⬣「 *Descargador YouTube MP4* 」⬣
 │ ≡◦ 🎵 *Título:* ${title}
 │ ≡◦ 🧑‍🎤 *Autor:* ${author.name}
@@ -45,42 +57,31 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 │ ≡◦ 📝 *Descripción:* ${description}
 ╰─⬣`.trim();
 
-    await conn.sendMessage(m.chat, {
-      image: { url: thumbnail },
-      caption
-    }, { quoted: m });
+  await conn.sendMessage(m.chat, {
+    image: { url: thumbnail },
+    caption
+  }, { quoted: m });
 
-    const download = json.result.download;
-
-    if (!download?.status || !download.url) {
-      return m.reply(
-        `╭─⬣「 *The-MikuBot-MD* 」⬣
-│ ≡◦ ⚠️ *No se pudo convertir el video a MP4.*
-│ ≡◦ Intenta con otro título o más tarde.
-╰─⬣`
-      );
-    }
-
-    await conn.sendMessage(m.chat, {
-      video: { url: download.url },
-      mimetype: 'video/mp4',
-      fileName: `${title}.mp4`
-    }, { quoted: m });
-
-    await m.react('✅');
-
-  } catch (e) {
-    console.error(e);
-    m.reply(
+  const descarga = await descargarVideo(url);
+  if (!descarga || !descarga.download?.url) {
+    return m.reply(
       `╭─⬣「 *The-MikuBot-MD* 」⬣
-│ ≡◦ ⚠️ *Error inesperado.*
-│ ≡◦ Revisa tu conexión o intenta más tarde.
+│ ≡◦ ⚠️ *No se pudo convertir el video.*
+│ ≡◦ Intenta con otro título o más tarde.
 ╰─⬣`
     );
   }
+
+  await conn.sendMessage(m.chat, {
+    video: { url: descarga.download.url },
+    mimetype: 'video/mp4',
+    fileName: descarga.download.filename || `${title}.mp4`
+  }, { quoted: m });
+
+  await m.react('✅');
 };
 
-handler.command = ['play2',ytmp4'];
+handler.command = ['play2', 'playambatukam', 'ytambatukam'];
 handler.help = ['play2 <video>'];
 handler.tags = ['descargas'];
 export default handler;
