@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
-const Miku_API = 'https://itzpire.com/download/ytmp4?url=';
+const Miku_API = 'https://api.vreden.my.id/api/ytmp4?url=';
 
 
 async function fetchSearch(query) {
@@ -51,7 +51,6 @@ let handler = async (m, { text, conn, command }) => {
 ║ 👀 Vistas: ${views.toLocaleString()}
 ║ 🧑‍🎤 Autor: ${author}
 ║ 🔗 Link: ${videoUrl}
-║ 🌐 Servidor: StellarWA API
 ╚═ೋ═══❖═══ೋ═╝
 `.trim();
 
