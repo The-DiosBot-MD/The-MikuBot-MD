@@ -3,7 +3,7 @@ import { createHash} from 'crypto';
 
 let handler = async (m, { conn, text, usedPrefix, command}) => {
   const formatoRegistro = /^([^\s]+)\.(\d{1,3})$/i;
-  const fondo = 'https://qu.ax/ARhkT.jpg';
+  const fondo = 'https://n.uguu.se/PNblsanY.jpg';
 
   if (!global.db.data.users) global.db.data.users = {};
   if (!global.db.data.users[m.sender]) global.db.data.users[m.sender] = {};
