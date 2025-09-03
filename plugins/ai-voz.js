@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const ADONIX_API = 'https://myapiadonix.vercel.app/api/adonixvoz?q=';
+const ADONIX_API = 'https://myapiadonix.vercel.app/ai/iavoz?q=';
 
 async function fetchAdonixVoice(phrase) {
   try {
