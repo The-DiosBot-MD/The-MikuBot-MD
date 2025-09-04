@@ -1,42 +1,26 @@
 import fetch from 'node-fetch';
 
-const SEARCH_API = 'https://api.vreden.my.id/api/yts?query=';
-const STELLAR_API = 'https://api.stellarwa.xyz/dow/ytmp4?url=';
-
-
-const STELLAR_KEYS = [
-  'stellar-bvc3RO8u',
-  'stellar-R019a2hS',
-  'stellar-ajkwULU9'
-];
-
-
-function getRandomKey() {
-  const key = STELLAR_KEYS[Math.floor(Math.random() * STELLAR_KEYS.length)];
-  console.log(`🔑 Llave elegida para esta descarga: ${key}`);
-  return key;
-}
+const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
+const DOWNLOAD_API = 'https://api.starlights.uk/api/downloader/youtube?url=';
 
 async function fetchSearch(query) {
   try {
     const res = await fetch(SEARCH_API + encodeURIComponent(query));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.result?.all?.[0] || null;
+    return json.status && json.data && json.data.length > 0 ? json.data[0] : null;
   } catch (e) {
     console.log('⚠️ Error en búsqueda:', e);
     return null;
   }
 }
 
-async function fetchStellarDownload(videoUrl) {
+async function fetchDownload(videoUrl) {
   try {
-    const apiKey = getRandomKey();
-    const fullUrl = `${STELLAR_API}${encodeURIComponent(videoUrl)}&apikey=${apiKey}`;
-    const res = await fetch(fullUrl);
+    const res = await fetch(DOWNLOAD_API + encodeURIComponent(videoUrl));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.status ? json.data : null;
+    return json.status && json.mp4 ? json.mp4 : null;
   } catch (e) {
     console.log('❌ Error en descarga:', e);
     return null;
@@ -47,13 +31,14 @@ let handler = async (m, { text, conn, command }) => {
   if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Usewa Ado');
 
   try {
+    // 🔎 Buscar en YouTube
     const video = await fetchSearch(text);
     if (!video) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
 
     const thumb = video.thumbnail;
     const videoTitle = video.title;
     const videoUrl = video.url;
-    const duration = video.seconds;
+    const duration = video.duration;
     const views = video.views;
     const author = video.author?.name || 'Desconocido';
 
@@ -63,7 +48,7 @@ let handler = async (m, { text, conn, command }) => {
 ║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
 ╠═ೋ═══❖═══ೋ═╣
 ║ 🎵 Título: ${videoTitle}
-║ ⏱️ Duración: ${duration}s
+║ ⏱️ Duración: ${duration}
 ║ 👀 Vistas: ${views.toLocaleString()}
 ║ 🧑‍🎤 Autor: ${author}
 ║ 🔗 Link: ${videoUrl}
@@ -72,13 +57,15 @@ let handler = async (m, { text, conn, command }) => {
 
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
 
-    const download = await fetchStellarDownload(videoUrl);
-    if (!download || !download.dl) return m.reply('❌ No se pudo descargar el video.');
+    // 📥 Descargar en MP4
+    const download = await fetchDownload(videoUrl);
+    if (!download || !download.dl_url) return m.reply('❌ No se pudo descargar el video.');
 
     await conn.sendMessage(m.chat, {
-      video: { url: download.dl },
+      video: { url: download.dl_url },
       mimetype: 'video/mp4',
-      fileName: download.title || 'video.mp4'
+      fileName: `${download.title || 'video'}.mp4`,
+      caption: `🎬 ${download.title || videoTitle}`
     }, { quoted: m });
 
   } catch (e) {
@@ -90,4 +77,5 @@ let handler = async (m, { text, conn, command }) => {
 handler.command = ['play2', 'mp4', 'ytmp4', 'playmp4'];
 handler.help = ['play2 <video>'];
 handler.tags = ['downloader'];
+
 export default handler;
