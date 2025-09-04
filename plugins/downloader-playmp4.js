@@ -28,7 +28,7 @@ async function fetchDownload(videoUrl) {
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Usewa Ado');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Miku');
 
   try {
     // 🔎 Buscar en YouTube
