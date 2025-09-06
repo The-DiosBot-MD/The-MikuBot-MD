@@ -9,7 +9,7 @@ const emoji = '🌸';
 const rwait = '🎙️';
 const done = '🎧';
 const error = '💥';
-const GEMINI_API_KEY = "AIzaSyBA_t7qCvPrsuokI_RV2myhaEf3wtJSqbc";
+const GEMINI_API_KEY = "AIzaSyBA_t7qCvPrsuokI_RV2myhaEf3wtJSqbc"; 
 const defaultLang = 'es';
 const memoryPath = './miku_memory.json';
 
@@ -25,7 +25,7 @@ function saveMemory(memory) {
 
 
 function buildPrompt(username) {
-  return `Tu nombre es ${botname}. Eres dulce, emocional y respondes de forma muy amable . Llamas a ${username} con ternura , también responde sin emojis,sin puntos,ni comas ni símbolos especiales.`;
+  return `Tu nombre es ${botname}. Eres dulce, emocional y respondes de forma muy amable. Llamas a ${username} con ternura. También respondes sin emojis, sin puntos, ni comas ni símbolos especiales.`;
 }
 
 
@@ -34,8 +34,7 @@ function tts(text, lang = defaultLang) {
     try {
       const ttsInstance = gtts(lang);
       const filePath = join(global.__dirname(import.meta.url), '../tmp', `${Date.now()}.wav`);
-      ttsInstance.save(filePath, text, () => {
-        resolve(readFileSync(filePath));
+      ttsInstance.save(filePath, text resolve(readFileSync(filePath));
         unlinkSync(filePath);
       });
     } catch (e) {
@@ -85,7 +84,7 @@ async function analyzeImage(basePrompt, imageBuffer, query, mimeType) {
   }
 }
 
-
+// 🛠 Handler principal
 let handler = async (m, { conn, text, args }) => {
   const username = conn.getName(m.sender);
   const basePrompt = buildPrompt(username);
@@ -93,14 +92,16 @@ let handler = async (m, { conn, text, args }) => {
 
   await m.reply(`${rwait} Miku está preparando su voz... 💫`);
 
-  const isQuotedImage = m.quoted && (m.quoted.msg || m.quoted).mimetype?.startsWith('image/');
+  // 🔍 Detección robusta de imagen citada
+  const quoted = m.quoted || m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+  const mimeType = quoted?.mimetype || quoted?.message?.imageMessage?.mimetype;
+  const isQuotedImage = mimeType?.startsWith('image/');
+
   if (isQuotedImage) {
     try {
-      const q = m.quoted;
-      const img = await q.download?.();
+      const img = await quoted.download?.();
       if (!img) throw new Error('No se pudo descargar la imagen');
 
-      const mimeType = q.mimetype || 'image/png';
       const query = `${emoji} Describe la imagen con ternura y dime qué sientes al verla.`;
       const description = await analyzeImage(basePrompt, img, query, mimeType);
 
@@ -116,6 +117,7 @@ let handler = async (m, { conn, text, args }) => {
     }
   }
 
+  
   try {
     const userText = text || memory[m.sender] || 'Dime algo bonito.';
     const prompt = `${basePrompt}. Frase: ${userText}`;
@@ -159,8 +161,8 @@ Pero no te preocupes... Miku siempre regresa cuando la necesitas 💫🎀
   }
 };
 
-handler.help = ['voz <texto>'];
-handler.tags = ['ai'];
+handler.help = ['voz <texto>', 'voz <imagen>'];
+handler.tags = ['voz', 'emocional', 'miku'];
 handler.command = ['voz', 'miku', 'habla'];
 
 export default handler;
