@@ -7,7 +7,7 @@ import { join } from 'path';
 const botname = 'Miku';
 const emoji = '🌸';
 const rwait = '🎙️';
-const done = '🎧';
+const done = '🥳';
 const error = '💥';
 const GEMINI_API_KEY = "AIzaSyBA_t7qCvPrsuokI_RV2myhaEf3wtJSqbc"; // ← reemplaza con tu clave real
 const defaultLang = 'es';
