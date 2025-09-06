@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const ADONIX_API = 'https://myapiadonix.vercel.app/ai/iavoz?q=';
+const ADONIX_API = 'https://myapiadonix.casacam.net/ai/iavoz?q=';
 
 // Función para llamar a la API y obtener el audio en buffer
 async function fetchAdonixVoice(phrase) {
