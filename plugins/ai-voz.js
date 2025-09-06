@@ -9,7 +9,7 @@ const emoji = '🌸';
 const rwait = '🎙️';
 const done = '🎧';
 const error = '💥';
-const GEMINI_API_KEY = "AIzaSyBA_t7qCvPrsuokI_RV2myhaEf3wtJSqbc"; 
+const GEMINI_API_KEY = "AIzaSyBA_t7qCvPrsuokI_RV2myhaEf3wtJSqbc"; // ← reemplaza con tu clave real
 const defaultLang = 'es';
 const memoryPath = './miku_memory.json';
 
@@ -34,7 +34,8 @@ function tts(text, lang = defaultLang) {
     try {
       const ttsInstance = gtts(lang);
       const filePath = join(global.__dirname(import.meta.url), '../tmp', `${Date.now()}.wav`);
-      ttsInstance.save(filePath, text resolve(readFileSync(filePath));
+      ttsInstance.save(filePath, text, () => {
+        resolve(readFileSync(filePath));
         unlinkSync(filePath);
       });
     } catch (e) {
@@ -84,40 +85,42 @@ async function analyzeImage(basePrompt, imageBuffer, query, mimeType) {
   }
 }
 
-// 🛠 Handler principal
-let handler = async (m, { conn, text, args }) => {
+
+let handler = async (m, { conn, usedPrefix, command, text, args }) => {
   const username = conn.getName(m.sender);
   const basePrompt = buildPrompt(username);
   const memory = loadMemory();
 
-  await m.reply(`${rwait} Miku está preparando su voz... 💫`);
+  await m.react(rwait);
 
-  // 🔍 Detección robusta de imagen citada
-  const quoted = m.quoted || m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-  const mimeType = quoted?.mimetype || quoted?.message?.imageMessage?.mimetype;
-  const isQuotedImage = mimeType?.startsWith('image/');
-
+  
+  const isQuotedImage = m.quoted && (m.quoted.msg || m.quoted).mimetype?.startsWith('image/');
   if (isQuotedImage) {
     try {
-      const img = await quoted.download?.();
+      const q = m.quoted;
+      const img = await q.download?.();
       if (!img) throw new Error('No se pudo descargar la imagen');
 
+      const mimeType = q.mimetype || 'image/png';
       const query = `${emoji} Describe la imagen con ternura y dime qué sientes al verla.`;
       const description = await analyzeImage(basePrompt, img, query, mimeType);
 
       const audioBuffer = await tts(description, defaultLang);
       await conn.sendFile(m.chat, audioBuffer, 'miku.opus', null, m, true);
+      await m.react(done);
+
       memory[m.sender] = description;
       saveMemory(memory);
       return;
     } catch (err) {
       console.error('[Miku Img Error]', err);
-      await m.reply('💥 Miku no pudo interpretar la imagen. Intenta con otra.');
+      await m.react(error);
+      await conn.reply(m.chat, '💥 Miku no pudo interpretar la imagen. Intenta con otra.', m);
       return;
     }
   }
 
-  
+ 
   try {
     const userText = text || memory[m.sender] || 'Dime algo bonito.';
     const prompt = `${basePrompt}. Frase: ${userText}`;
@@ -146,9 +149,11 @@ Espero que te saque una sonrisita ✨🎶
     memory[m.sender] = userText;
     saveMemory(memory);
 
+    await m.react(done);
   } catch (err) {
     console.error('[Miku Error]', err);
-    await m.reply(`
+    await m.react(error);
+    await conn.reply(m.chat, `
 🚫 Ups... Miku se quedó sin voz
 
 ╔═ೋ═══❖═══ೋ═╗
@@ -157,12 +162,12 @@ Espero que te saque una sonrisita ✨🎶
 ╚═ೋ═══❖═══ೋ═╝
 
 Pero no te preocupes... Miku siempre regresa cuando la necesitas 💫🎀
-    `.trim());
+    `.trim(), m);
   }
 };
 
 handler.help = ['voz <texto>', 'voz <imagen>'];
-handler.tags = ['voz', 'emocional', 'miku'];
+handler.tags = ['ai'];
 handler.command = ['voz', 'miku', 'habla'];
 
 export default handler;
