@@ -5,27 +5,26 @@ const handler = async (m, { conn, args }) => {
   const apiUrl = `https://sky-api-omega.vercel.app/search/images?q=${encodeURIComponent(query)}&limit=5`;
 
   try {
-    await m.react('🌀'); // Ritual de inicio
+    await m.react('🌌'); // Inicio ritual
 
     const res = await fetch(apiUrl);
     const json = await res.json();
 
     if (!json.status || !json.result?.images?.length) {
       await m.react('❌');
-      return conn.reply(m.chat, `🌫️ No se encontraron imágenes para *${query}*. Intenta con otro término.`, m);
+      return conn.reply(m.chat, `🫧 No se encontraron imágenes para *${query}*.`, m);
     }
 
     for (const img of json.result.images) {
-      const caption = `🖼️ *${img.title}*\n📷 ${img.photographer}\n🔗 Fuente: ${img.source}`;
-      await conn.sendFile(m.chat, img.url, 'imagen.jpg', caption, m);
+      await conn.sendFile(m.chat, img.url, 'imagen.jpg', '', m); // Sin texto
     }
 
-    await m.react('✅'); // Ritual de cierre
+    await m.react('✅'); // Cierre ritual
 
   } catch (e) {
     console.error('Error en el plugin:', e);
     await m.react('⚠️');
-    conn.reply(m.chat, `🚫 Ocurrió un error al buscar imágenes: ${e.message}`, m);
+    conn.reply(m.chat, `🚫 Error al buscar imágenes: ${e.message}`, m);
   }
 };
 
