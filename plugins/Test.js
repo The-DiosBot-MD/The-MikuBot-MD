@@ -5,7 +5,7 @@ const handler = async (m, { conn, args }) => {
   const apiUrl = `https://sky-api-omega.vercel.app/search/images?q=${encodeURIComponent(query)}&limit=5`;
 
   try {
-    await m.react('🧃'); // Ritual de inicio
+    await m.react('🌀'); // Ritual de inicio
 
     const res = await fetch(apiUrl);
     const json = await res.json();
@@ -15,12 +15,11 @@ const handler = async (m, { conn, args }) => {
       return conn.reply(m.chat, `🌫️ No se encontraron imágenes para *${query}*. Intenta con otro término.`, m);
     }
 
-    let msg = `🎨 *Imágenes relacionadas con:* ${json.result.query}\n\n`;
-    json.result.images.forEach((img, i) => {
-      msg += `🖼️ *${img.title}*\n📷 ${img.photographer}\n🔗 [Ver imagen](${img.url})\n\n`;
-    });
+    for (const img of json.result.images) {
+      const caption = `🖼️ *${img.title}*\n📷 ${img.photographer}\n🔗 Fuente: ${img.source}`;
+      await conn.sendFile(m.chat, img.url, 'imagen.jpg', caption, m);
+    }
 
-    await conn.reply(m.chat, msg.trim(), m);
     await m.react('✅'); // Ritual de cierre
 
   } catch (e) {
@@ -32,6 +31,6 @@ const handler = async (m, { conn, args }) => {
 
 handler.command = ['test', 'imganime'];
 handler.help = ['test <término>'];
-handler.tags = ['buscador'];
+handler.tags = ['search'];
 
 export default handler;
