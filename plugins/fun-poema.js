@@ -18,7 +18,7 @@ let handler = async (m, { conn, args }) => {
                    `💔 *Tema:* ${json.result.theme}\n` +
                    `📜 *Estrofas:* ${json.result.stanzas}\n\n` +
                    `${json.result.poem}\n\n` +
-                   `🔖 *Esquema de rima:* ${json.result.rhyme_scheme}`;
+                   `> 🔖 *Power by Miku-Team* `;
 
         await conn.sendMessage(m.chat, { text: poem }, { quoted: m });
     } catch (e) {
