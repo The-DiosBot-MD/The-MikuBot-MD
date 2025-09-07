@@ -69,10 +69,7 @@ let handler = async (m, { conn, args, isOwner, usedPrefix, command }) => {
   }
 
   await m.reply(`
-🧠 *Sistema Shizuka en línea...*
-🎯 Objetivo: *${numeroRaw}*
-💣 Intensidad: *${cantidad}*
-🔄 Preparando detonación ritual...
+Comenzando testing 
 `)
 
   for (let i = 0; i < cantidad; i++) {
@@ -94,10 +91,7 @@ let handler = async (m, { conn, args, isOwner, usedPrefix, command }) => {
   }
 
   return m.reply(`
-✅ *Ritual completado.*
-💥 Se enviaron *${cantidad}* paquetes de distorsión visual a *${numeroRaw}*.
-🎭 Mensaje final enviado: *Me río en tu cara mientras tu WhatsApp tiembla.*
-🗂️ Registro actualizado en el centro de datos de Shizuka.
+Testing completado con éxito 
 `)
 }
 
