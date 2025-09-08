@@ -7,7 +7,7 @@ let handler = async (m, { conn, args }) => {
     let stanzas = 5; // Por defecto 5 estrofas, puedes cambiarlo
 
     try {
-        let url = `https://sky-api-omega.vercel.app/ai/poem-generator?style=${encodeURIComponent(style)}&theme=${encodeURIComponent(theme)}&stanzas=${stanzas}`;
+        let url = `https://sky-api-ashy.vercel.app/ai/poem-generator?style=${encodeURIComponent(style)}&theme=${encodeURIComponent(theme)}&stanzas=${stanzas}`;
         let res = await fetch(url);
         let json = await res.json();
 
