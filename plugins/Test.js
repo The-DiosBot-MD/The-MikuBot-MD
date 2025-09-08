@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const handler = async (m, { conn, args }) => {
   const query = args.join(' ') || 'Anime';
-  const apiUrl = `https://sky-api-omega.vercel.app/search/images?q=${encodeURIComponent(query)}&limit=5`;
+  const apiUrl = `https://sky-api-ashy.vercel.app/search/images?q=${encodeURIComponent(query)}&limit=5`;
 
   try {
     await m.react('🌌'); // Inicio ritual
