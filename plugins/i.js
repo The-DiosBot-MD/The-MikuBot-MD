@@ -1,4 +1,4 @@
-// *`[🕯️ DALLE 🕯️]`* — Ritual de creación visual
+// *`[🕯️ DALLE 🕯️]`* 
 
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ const handler = async (m, { conn, args }) => {
 
         const response = await axios.get(apiUrl);
 
-        // 🔍 Validación visual corregida
+        
         if (response.data?.data?.image) {
             const imageUrl = response.data.data.image;
 
