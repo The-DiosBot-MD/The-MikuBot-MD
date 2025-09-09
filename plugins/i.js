@@ -9,20 +9,20 @@ const handler = async (m, { conn, args }) => {
     }
 
     const prompt = args.join(' ');
-    const ratio = '9:19'; // Puedes hacerlo dinámico si lo deseas
-
-    const apiUrl = `https://api.dorratz.com/v3/ai-image?prompt=${encodeURIComponent(prompt)}&ratio=${ratio}`;
+    const apiUrl = `https://api.vreden.my.id/api/artificial/text2image?prompt=${encodeURIComponent(prompt)}`;
 
     try {
-        conn.reply(m.chat, '*🧧 Invocando los trazos del universo con proporción sagrada...*', m);
+        conn.reply(m.chat, '*🎐 Invocando la imagen desde los susurros de Vreden...*', m);
 
         const response = await axios.get(apiUrl);
-        const imageUrl = response.data?.data?.image_link;
+        const result = response.data?.result;
 
-        if (imageUrl) {
-            await conn.sendMessage(m.chat, { image: { url: imageUrl } }, { quoted: m });
+        if (result?.status && result?.download) {
+            const imageUrl = result.download;
+
+            await conn.sendMessage(m.chat, { image: { url: imageUrl }, caption: `🖼️ *Prompt:* ${result.prompt}\n📅 *Creada:* ${result.created}\n🌐 [Ver en el altar digital](${result.website})` }, { quoted: m });
         } else {
-            throw new Error('⚠️ No se encontró la imagen en la respuesta ritual.');
+            throw new Error('⚠️ La imagen no fue revelada.');
         }
     } catch (error) {
         console.error('🩸 Error al generar la imagen:', error);
@@ -32,6 +32,6 @@ const handler = async (m, { conn, args }) => {
 
 handler.command = ['dalle'];
 handler.help = ['dalle'];
-handler.tags = ['tools'];
+handler.tags = ['ai'];
 
 export default handler;
