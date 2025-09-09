@@ -20,7 +20,7 @@ const handler = async (m, { conn, args }) => {
         if (result?.status && result?.download) {
             const imageUrl = result.download;
 
-            await conn.sendMessage(m.chat, { image: { url: imageUrl }, caption: `🖼️ *Prompt:* ${result.prompt}\n📅 *Creada:* ${result.created}\n🌐 [Ver en el altar digital](${result.website})` }, { quoted: m });
+            await conn.sendMessage(m.chat, { image: { url: imageUrl }, caption: `> Aquí está tu imagen` }, { quoted: m });
         } else {
             throw new Error('⚠️ La imagen no fue revelada.');
         }
