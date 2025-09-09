@@ -9,7 +9,7 @@ const handler = async (m, { conn, args }) => {
     }
 
     const prompt = args.join(' ');
-    const apiUrl = `https://apis-starlights-team.koyeb.app/starlight/txt-to-image2?text=${encodeURIComponent(prompt)}`;
+    const apiUrl = `https://api.dorratz.com/v3/ai-image?prompt=${encodeURIComponent(prompt)}`;
 
     try {
         conn.reply(m.chat, '*🧧 Invocando los trazos del universo...*', m);
