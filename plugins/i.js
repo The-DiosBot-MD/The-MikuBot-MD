@@ -12,7 +12,7 @@ const handler = async (m, { conn, args }) => {
     const apiUrl = `https://api.vreden.my.id/api/artificial/text2image?prompt=${encodeURIComponent(prompt)}`;
 
     try {
-        conn.reply(m.chat, '*🎐 Invocando la imagen desde los susurros de Vreden...*', m);
+        conn.reply(m.chat, '*🎐 Invocando la imagen ...*', m);
 
         const response = await axios.get(apiUrl);
         const result = response.data?.result;
