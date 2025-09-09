@@ -1,4 +1,4 @@
-// *`[🕯️ DALLE 🕯️]`* 
+
 
 import axios from 'axios';
 
@@ -9,17 +9,17 @@ const handler = async (m, { conn, args }) => {
     }
 
     const prompt = args.join(' ');
-    const apiUrl = `https://api.dorratz.com/v3/ai-image?prompt=${encodeURIComponent(prompt)}`;
+    const ratio = '9:19'; // Puedes hacerlo dinámico si lo deseas
+
+    const apiUrl = `https://api.dorratz.com/v3/ai-image?prompt=${encodeURIComponent(prompt)}&ratio=${ratio}`;
 
     try {
-        conn.reply(m.chat, '*🧧 Invocando los trazos del universo...*', m);
+        conn.reply(m.chat, '*🧧 Invocando los trazos del universo con proporción sagrada...*', m);
 
         const response = await axios.get(apiUrl);
+        const imageUrl = response.data?.data?.image_link;
 
-        
-        if (response.data?.data?.image) {
-            const imageUrl = response.data.data.image;
-
+        if (imageUrl) {
             await conn.sendMessage(m.chat, { image: { url: imageUrl } }, { quoted: m });
         } else {
             throw new Error('⚠️ No se encontró la imagen en la respuesta ritual.');
