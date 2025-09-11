@@ -14,10 +14,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         const res = await fetch(apiUrl);
         const data = await res.json();
 
-        if (!data.status || !data.data) throw "No se pudo obtener la canción desde GokuBlack.";
+        if (!data.status || !data.data) throw "No se pudo obtener la canción con la api gokublack.xyz";
 
         const song = data.data;
-        const info = `🪼 *Titulo:*\n${song.titulo}\n\n🪩 *Artista:*\n${song.artista}\n\n⏳ *Tipo:*\n${song.tipo}\n\n🕒 *Fecha:*\n${song.fecha}\n\n🔗 *Enlace:*\n${song.url}`;
+        const info = `🪼 *Titulo:*\n${song.titulo}\n\n🪩 *Artista:*\n${song.artista}\n\n🔗 *Enlace:*\n${song.url}`;
 
         await conn.sendMessage(m.chat, { 
             text: info, 
