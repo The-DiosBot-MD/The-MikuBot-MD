@@ -13,6 +13,8 @@ import axios from 'axios'
   [ '172056423456949@lid', 'Barboza', true ],
   [ '111270153982054@lid', 'BAJO BOTS', true ],
   [ '254575982448677@lid',     'AdrianOficial', true ],
+  [ '174560573964411@lid', 'Rayo-ofc', true ],
+  [ '595972157130', 'Rayo', true ],
   [ '5355699866', 'Carlos', true ],
   [ '261271484104740', true ]
   ]
