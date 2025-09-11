@@ -52,7 +52,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     }
 };
 
-handler.command = ['spotify', 'music'];
+handler.command = ['spotify', 'music1'];
 export default handler;
 
 async function spotifySearch(query) {
