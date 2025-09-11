@@ -18,7 +18,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
         const song = data.data;
         const info = `🪼 *Titulo:* ${song.titulo}
-🪩 *Artista:*${song.artista}`;
+🪩 *Artista:* ${song.artista}`;
 
         await conn.sendMessage(m.chat, { 
             text: info
