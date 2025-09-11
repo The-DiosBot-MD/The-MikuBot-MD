@@ -17,7 +17,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         if (!data.status || !data.data) throw "No se pudo obtener la canción desde la api gokublack.xyz";
 
         const song = data.data;
-        const info = `🪼 *Titulo:*\n${song.titulo}\n🪩 *Artista:*\n${song.artista}\n🔗 *Enlace:*\n${song.url}`;
+        const info = `🪼 *Titulo:* ${song.titulo}
+🪩 *Artista:*${song.artista}`;
 
         await conn.sendMessage(m.chat, { 
             text: info
