@@ -8,7 +8,7 @@ async function fetchSearch(query) {
     const res = await fetch(SEARCH_API + encodeURIComponent(query));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.status && json.data?.length > 0 ? json.data[0] : null;
+    return json.status && json.data && json.data.length > 0 ? json.data[0] : null;
   } catch (e) {
     console.log('⚠️ Error en búsqueda:', e);
     return null;
@@ -20,18 +20,14 @@ async function fetchDownload(videoUrl) {
     const res = await fetch(VREDEN_API + encodeURIComponent(videoUrl));
     if (!res.ok) return null;
     const json = await res.json();
-    const meta = json.result?.metadata;
-    const dl = json.result?.download;
-
-    return meta && dl?.url
+    return json.result?.download?.url
       ? {
-          title: meta.title,
-          duration: meta.duration.timestamp,
-          views: meta.views,
-          author: meta.author?.name || 'Desconocido',
-          thumbnail: meta.thumbnail,
-          dl_url: dl.url,
-          filename: dl.filename
+          dl_url: json.result.download.url,
+          title: json.result.metadata.title,
+          thumbnail: json.result.metadata.thumbnail,
+          duration: json.result.metadata.duration.timestamp,
+          views: json.result.metadata.views,
+          author: json.result.metadata.author?.name || 'Desconocido'
         }
       : null;
   } catch (e) {
@@ -70,7 +66,7 @@ let handler = async (m, { text, conn, command }) => {
     await conn.sendMessage(m.chat, {
       video: { url: download.dl_url },
       mimetype: 'video/mp4',
-      fileName: download.filename || `${download.title}.mp4`,
+      fileName: `${download.title}.mp4`,
       caption: `🎬 ${download.title}`
     }, { quoted: m });
 
