@@ -1,73 +1,60 @@
 import fetch from 'node-fetch';
 
-const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
-const VREDEN_API = 'https://api.vreden.my.id/api/ytmp4?url=';
+const VREDEN_PLAY_API = 'https://api.vreden.my.id/api/ytplaymp4?query=';
 
-async function fetchSearch(query) {
+async function fetchPlay(query) {
   try {
-    const res = await fetch(SEARCH_API + encodeURIComponent(query));
+    const res = await fetch(VREDEN_PLAY_API + encodeURIComponent(query));
     if (!res.ok) return null;
     const json = await res.json();
-    return json.status && json.data && json.data.length > 0 ? json.data[0] : null;
-  } catch (e) {
-    console.log('⚠️ Error en búsqueda:', e);
-    return null;
-  }
-}
+    const meta = json.result?.metadata;
+    const dl = json.result?.download;
 
-async function fetchDownload(videoUrl) {
-  try {
-    const res = await fetch(VREDEN_API + encodeURIComponent(videoUrl));
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.result?.download?.url
+    return meta && dl?.url
       ? {
-          dl_url: json.result.download.url,
-          title: json.result.metadata.title,
-          thumbnail: json.result.metadata.thumbnail,
-          duration: json.result.metadata.duration.timestamp,
-          views: json.result.metadata.views,
-          author: json.result.metadata.author?.name || 'Desconocido'
+          title: meta.title,
+          duration: meta.duration.timestamp,
+          views: meta.views,
+          author: meta.author?.name || 'Desconocido',
+          thumbnail: meta.thumbnail,
+          videoUrl: meta.url,
+          dl_url: dl.url,
+          filename: dl.filename
         }
       : null;
   } catch (e) {
-    console.log('❌ Error en descarga:', e);
+    console.log('❌ Error en búsqueda/descarga:', e);
     return null;
   }
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Miku');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 DJ Malam Pagi');
 
   try {
-    const video = await fetchSearch(text);
-    if (!video) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
-
-    const videoUrl = video.url;
-
-    const download = await fetchDownload(videoUrl);
-    if (!download || !download.dl_url) return m.reply('❌ No se pudo descargar el video.');
+    const video = await fetchPlay(text);
+    if (!video) return m.reply('⚠️ No se encontraron resultados o no se pudo descargar el video.');
 
     const msgInfo = `
 ╔═ೋ═══❖═══ೋ═╗
 ║  ⚡ The Miku Bot  ⚡
 ║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
 ╠═ೋ═══❖═══ೋ═╣
-║ 🎵 Título: ${download.title}
-║ ⏱️ Duración: ${download.duration}
-║ 👀 Vistas: ${download.views.toLocaleString()}
-║ 🧑‍🎤 Autor: ${download.author}
-║ 🔗 Link: ${videoUrl}
+║ 🎵 Título: ${video.title}
+║ ⏱️ Duración: ${video.duration}
+║ 👀 Vistas: ${video.views.toLocaleString()}
+║ 🧑‍🎤 Autor: ${video.author}
+║ 🔗 Link: ${video.videoUrl}
 ╚═ೋ═══❖═══ೋ═╝
 `.trim();
 
-    await conn.sendMessage(m.chat, { image: { url: download.thumbnail }, caption: msgInfo }, { quoted: m });
+    await conn.sendMessage(m.chat, { image: { url: video.thumbnail }, caption: msgInfo }, { quoted: m });
 
     await conn.sendMessage(m.chat, {
-      video: { url: download.dl_url },
+      video: { url: video.dl_url },
       mimetype: 'video/mp4',
-      fileName: `${download.title}.mp4`,
-      caption: `🎬 ${download.title}`
+      fileName: video.filename || `${video.title}.mp4`,
+      caption: `🎬 ${video.title}`
     }, { quoted: m });
 
   } catch (e) {
