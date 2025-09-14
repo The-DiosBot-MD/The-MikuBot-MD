@@ -29,7 +29,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
     const video = jsonSearch.data[0]; // Primer resultado
 
     // 🎵 Descargar en MP3 con la API Starlights
-    const dl = await fetch(`https://api.starlights.uk/api/downloader/youtube?url=${encodeURIComponent(video.url)}`);
+    const dl = await fetch(`https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(video.url)}`);
     const jsonDl = await dl.json();
 
     if (!jsonDl.status || !jsonDl.mp3) {
