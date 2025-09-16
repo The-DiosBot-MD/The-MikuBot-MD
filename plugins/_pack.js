@@ -14,7 +14,7 @@ let txt = 'Pack🔥🔥🔥\n> Pon De Nuevo .pack para mirar el siguiente ✨';
 
 let img = 'https://delirius-apiofc.vercel.app/nsfw/girls';
 
-m.react('✅');
+m.react('😈');
 conn.sendMessage(m.chat, { image: { url: img }, caption: txt }, { quoted: fkontak });
 }
 
