@@ -28,7 +28,7 @@ let handler = async (m, { conn, text }) => {
     }
 
    
-    m.reply('🧸 Gracias por confiar en *Miku-Bot*. Tu reporte fue enviado al staff y al grupo de validación. Será atendido lo antes posible.')
+    m.reply('🧸 Gracias por confiar en *Miku-Bot*. Tu reporte fue enviado al Staff. Será atendido lo antes posible.')
 }
 
 handler.help = ['reportar']
