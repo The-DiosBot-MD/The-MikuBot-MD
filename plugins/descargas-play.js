@@ -28,11 +28,11 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 
     const video = jsonSearch.data[0]; // Primer resultado
 
-    // 🎵 Descargar en MP3 con la API Vreden
-    const dl = await fetch(`https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(video.url)}`);
+    // 🎵 Descargar en MP3 con la nueva API Vreden
+    const dl = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${encodeURIComponent(video.url)}&quality=128`);
     const jsonDl = await dl.json();
 
-    if (!jsonDl.status || !jsonDl.result || !jsonDl.result.download?.url) {
+    if (!jsonDl.status || !jsonDl.result?.download?.url) {
       return m.reply(
         `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ ❌ *No se pudo obtener el audio de:* ${video.title}
@@ -49,7 +49,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 │ ≡◦ 🎵 *Título:* ${metadata.title}
 │ ≡◦ 👤 *Autor:* ${metadata.author.name}
 │ ≡◦ ⏱️ *Duración:* ${metadata.timestamp}
-│ ≡◦ 👁️ *Vistas:* ${metadata.views}
+│ ≡◦ 👁️ *Vistas:* ${metadata.views.toLocaleString()}
 │ ≡◦ 🌐 *YouTube:* ${metadata.url}
 │ ≡◦ 📝 *Descripción:* ${metadata.description || "Sin descripción"}
 ╰─⬣`
