@@ -20,6 +20,6 @@ handler.help = ['kickall']
 handler.tags = ['group']
 handler.command = ['kickall', 'expulsartodos']
 handler.group = true
-handler.botAdmin = true
+handler.botAdmin = false
 
 export default handler
