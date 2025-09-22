@@ -1,6 +1,7 @@
 let handler = async (m, { conn, participants }) => {
 
   if (!m.isGroup) return m.reply('✳️ Este comando solo funciona en grupos.')
+  if (!m.isAdmin) return m.reply('✳️ Solo los administradores pueden usar este comando.')
   if (!conn.isBotAdmin) return m.reply('✳️ Necesito ser administrador para expulsar usuarios.')
 
   let kickables = participants
@@ -19,7 +20,8 @@ let handler = async (m, { conn, participants }) => {
 handler.help = ['kickall']
 handler.tags = ['group']
 handler.command = ['kickall', 'expulsartodos']
+handler.admin = true
 handler.group = true
-handler.botAdmin = false
+handler.botAdmin = true
 
 export default handler
