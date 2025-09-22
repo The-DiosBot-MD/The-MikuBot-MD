@@ -91,7 +91,7 @@ let handler = async (m, { conn, args }) => {
       data: { url },
     }));
 
-    const albumCaption = `🌌  *Imágenes encontradas para:*  ${query}`;
+    const albumCaption = `🌌 𝓘𝓶𝓪𝓰𝓮𝓷𝓮𝓼 𝓮𝓷𝓬𝓸𝓷𝓽𝓻𝓪𝓭𝓪𝓼 𝓹𝓪𝓻𝓪: ${query}`;
 
     console.log("📦 Preparando álbum con", medias.length, "medios.");
     console.log("🖼️ URLs:", limitedData);
