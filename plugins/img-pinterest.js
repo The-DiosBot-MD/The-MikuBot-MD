@@ -77,10 +77,10 @@ let handler = async (m, { conn, args }) => {
 
   try {
     const query = args.join(" ");
-    const apiUrl = `https://api.vreden.my.id/api/pinterest?query=${encodeURIComponent(query)}`;
+    const apiUrl = `https://delirius-apiofc.vercel.app/search/pinterest?text=${encodeURIComponent(query)}`;
     const response = await axios.get(apiUrl);
 
-    const urls = response.data.result;
+    const urls = response.data.results;
     if (!Array.isArray(urls) || urls.length === 0) {
       return await conn.sendMessage(m.chat, { text: "⚠️ No se encontraron imágenes rituales." }, { quoted: m });
     }
@@ -93,7 +93,6 @@ let handler = async (m, { conn, args }) => {
 
     const albumCaption = `🌌 *Imágenes encontradas para:* ${query}`;
 
-    // Logging ritual
     console.log("📦 Preparando álbum con", medias.length, "medios.");
     console.log("🖼️ URLs:", limitedData);
 
