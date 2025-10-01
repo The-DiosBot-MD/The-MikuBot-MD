@@ -1,25 +1,10 @@
 import fetch from 'node-fetch';
 
-const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
-const DOWNLOAD_API = 'https://api.vreden.my.id/api/v1/download/youtube/video?url=';
+const VREDEN_PLAY_API = 'https://api.vreden.my.id/api/v1/download/play/video?query=';
 
-async function searchYoutube(query) {
+async function fetchPlay(query) {
   try {
-    const res = await fetch(SEARCH_API + encodeURIComponent(query));
-    if (!res.ok) return null;
-    const json = await res.json();
-    const first = json.data?.[0];
-    return first?.url || null;
-  } catch (e) {
-    console.log('🔍 Error en búsqueda:', e);
-    return null;
-  }
-}
-
-async function fetchVideoByUrl(youtubeUrl, quality = '360') {
-  try {
-    const apiUrl = `${DOWNLOAD_API}${encodeURIComponent(youtubeUrl)}&quality=${quality}`;
-    const res = await fetch(apiUrl);
+    const res = await fetch(VREDEN_PLAY_API + encodeURIComponent(query));
     if (!res.ok) return null;
     const json = await res.json();
     const meta = json.result?.metadata;
@@ -38,20 +23,17 @@ async function fetchVideoByUrl(youtubeUrl, quality = '360') {
         }
       : null;
   } catch (e) {
-    console.log('❌ Error en descarga:', e);
+    console.log('❌ Error en búsqueda/descarga:', e);
     return null;
   }
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 TWICE Happy Nation');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Happy Nation');
 
   try {
-    const videoUrl = await searchYoutube(text);
-    if (!videoUrl) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
-
-    const video = await fetchVideoByUrl(videoUrl);
-    if (!video) return m.reply('⚠️ No se pudo descargar el video.');
+    const video = await fetchPlay(text);
+    if (!video) return m.reply('⚠️ No se encontraron resultados o no se pudo descargar el video.');
 
     const msgInfo = `
 ╔═ೋ═══❖═══ೋ═╗
