@@ -1,10 +1,25 @@
 import fetch from 'node-fetch';
 
-const VREDEN_PLAY_API = 'https://api.vreden.my.id/api/ytplaymp4?query=';
+const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
+const DOWNLOAD_API = 'https://api.vreden.my.id/api/v1/download/youtube/video?url=';
 
-async function fetchPlay(query) {
+async function searchYoutube(query) {
   try {
-    const res = await fetch(VREDEN_PLAY_API + encodeURIComponent(query));
+    const res = await fetch(SEARCH_API + encodeURIComponent(query));
+    if (!res.ok) return null;
+    const json = await res.json();
+    const first = json.data?.[0];
+    return first?.url || null;
+  } catch (e) {
+    console.log('🔍 Error en búsqueda:', e);
+    return null;
+  }
+}
+
+async function fetchVideoByUrl(youtubeUrl, quality = '360') {
+  try {
+    const apiUrl = `${DOWNLOAD_API}${encodeURIComponent(youtubeUrl)}&quality=${quality}`;
+    const res = await fetch(apiUrl);
     if (!res.ok) return null;
     const json = await res.json();
     const meta = json.result?.metadata;
@@ -23,17 +38,20 @@ async function fetchPlay(query) {
         }
       : null;
   } catch (e) {
-    console.log('❌ Error en búsqueda/descarga:', e);
+    console.log('❌ Error en descarga:', e);
     return null;
   }
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 DJ Malam Pagi');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 TWICE Happy Nation');
 
   try {
-    const video = await fetchPlay(text);
-    if (!video) return m.reply('⚠️ No se encontraron resultados o no se pudo descargar el video.');
+    const videoUrl = await searchYoutube(text);
+    if (!videoUrl) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
+
+    const video = await fetchVideoByUrl(videoUrl);
+    if (!video) return m.reply('⚠️ No se pudo descargar el video.');
 
     const msgInfo = `
 ╔═ೋ═══❖═══ೋ═╗
@@ -64,7 +82,7 @@ let handler = async (m, { text, conn, command }) => {
 };
 
 handler.command = ['play2', 'mp4', 'ytmp4', 'playmp4'];
-handler.help = ['play2 <video>'];
+handler.help = ['play2 <nombre del video>'];
 handler.tags = ['downloader'];
 
 export default handler;
