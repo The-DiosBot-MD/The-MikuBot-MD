@@ -1,25 +1,31 @@
 import fetch from 'node-fetch';
 
-const VREDEN_PLAY_API = 'https://api.vreden.my.id/api/v1/download/play/video?query=';
+const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
+const DOWNLOAD_API = 'https://api.stellarwa.xyz/dow/ytmp4?apikey=Carlos&url=';
 
 async function fetchPlay(query) {
   try {
-    const res = await fetch(VREDEN_PLAY_API + encodeURIComponent(query));
-    if (!res.ok) return null;
-    const json = await res.json();
-    const meta = json.result?.metadata;
-    const dl = json.result?.download;
+    const searchRes = await fetch(SEARCH_API + encodeURIComponent(query));
+    if (!searchRes.ok) return null;
+    const searchJson = await searchRes.json();
+    const first = searchJson.data?.[0];
+    if (!first?.url) return null;
 
-    return meta && dl?.url
+    const downloadRes = await fetch(DOWNLOAD_API + encodeURIComponent(first.url));
+    if (!downloadRes.ok) return null;
+    const downloadJson = await downloadRes.json();
+    const dl = downloadJson.data?.dl;
+
+    return dl
       ? {
-          title: meta.title,
-          duration: meta.duration.timestamp,
-          views: meta.views,
-          author: meta.author?.name || 'Desconocido',
-          thumbnail: meta.thumbnail,
-          videoUrl: meta.url,
-          dl_url: dl.url,
-          filename: dl.filename
+          title: downloadJson.data.title,
+          duration: first.duration,
+          views: first.views,
+          author: first.author?.name || 'Desconocido',
+          thumbnail: first.thumbnail,
+          videoUrl: first.url,
+          dl_url: dl,
+          filename: `${downloadJson.data.title}.mp4`
         }
       : null;
   } catch (e) {
@@ -29,7 +35,7 @@ async function fetchPlay(query) {
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: .play2 Happy Nation');
+  if (!text) return m.reply(`🔍 Ingresa el nombre del video. Ejemplo: .${command} DJ Malam Pagi`);
 
   try {
     const video = await fetchPlay(text);
@@ -53,7 +59,7 @@ let handler = async (m, { text, conn, command }) => {
     await conn.sendMessage(m.chat, {
       video: { url: video.dl_url },
       mimetype: 'video/mp4',
-      fileName: video.filename || `${video.title}.mp4`,
+      fileName: video.filename,
       caption: `🎬 ${video.title}`
     }, { quoted: m });
 
@@ -64,7 +70,7 @@ let handler = async (m, { text, conn, command }) => {
 };
 
 handler.command = ['play2', 'mp4', 'ytmp4', 'playmp4'];
-handler.help = ['play2 <nombre del video>'];
+handler.help = ['play2 <video>'];
 handler.tags = ['downloader'];
 
 export default handler;
