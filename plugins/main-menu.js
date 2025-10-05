@@ -8,7 +8,7 @@ const clockString = ms => {
   return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
 };
 
-const imagen = "https://i.ibb.co/LYZrgRs/The-Miku-Bot-MD.jpg";
+const imagen = "https://raw.githubusercontent.com/Kone457/Nexus/refs/heads/main/imagen.png";
 
 const menuHeader = `
 ╭━━━「 🌸 The-MikuBot-MD 」━━━╮
