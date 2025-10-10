@@ -8,12 +8,6 @@ let handler = async (m, { conn, text }) => {
       return conn.reply(m.chat, '🌱 Ingresa un enlace válido de canal de WhatsApp.', m);
     }
 
-    // Verifica si el método existe
-    if (typeof conn.newsletterMetadata !== 'function') {
-      return conn.reply(m.chat, '❌ Este bot no tiene acceso al método newsletterMetadata. Asegúrate de usar una versión compatible.', m);
-    }
-
-    // Ritual de inspección
     await m.react("🔍");
     await conn.reply(m.chat, "🌿 Consultando los espíritus del canal...", m);
 
@@ -57,34 +51,51 @@ async function getInfo(conn, url) {
 
   const channelId = match[1];
 
-  const info = await conn.newsletterMetadata("invite", channelId);
-  if (!info || typeof info !== 'object') {
-    throw new Error("La respuesta del servidor no contiene información válida del canal.");
-  }
+  let info;
+  try {
+    // Fallback defensivo usando conn.query
+    const node = await conn.query({
+      tag: 'iq',
+      attrs: {
+        type: 'get',
+        xmlns: 'w:newsletter',
+        to: `${channelId}@newsletter`
+      },
+      content: [{ tag: 'newsletter', attrs: {} }]
+    });
 
-  const fecha = new Date(info.creation_time * 1000);
-  const fechaFormato = fecha.toLocaleDateString("es-ES", { year: 'numeric', month: 'long', day: 'numeric' });
+    const metadata = node?.content?.[0]?.attrs;
+    if (!metadata || !metadata.name) {
+      throw new Error("No se pudo obtener metadatos válidos del canal.");
+    }
 
-  let txt = `
+    const fecha = new Date(Number(metadata.creation_time || 0) * 1000);
+    const fechaFormato = isNaN(fecha.getTime()) ? "Desconocida" : fecha.toLocaleDateString("es-ES", { year: 'numeric', month: 'long', day: 'numeric' });
+
+    let txt = `
 ◜ Channel - Info ◞
 
-≡ 🌴 Nombre: ${info.name}
-≡ 🌿 ID: ${info.id}
-≡ 🌾 Estado: ${info.state}
+≡ 🌴 Nombre: ${metadata.name}
+≡ 🌿 ID: ${channelId}
+≡ 🌾 Estado: ${metadata.state || "Desconocido"}
 ≡ 📅 Creado: ${fechaFormato}
 
 ≡ 🗃️ Enlace:
-- https://whatsapp.com/channel/${info.invite}
+- https://whatsapp.com/channel/${channelId}
 
-≡ 🍄 Seguidores: ${info.subscribers}
-≡ 🎍 Verificación: ${info.verified ? "✅ Sí" : "❌ No"}
+≡ 🍄 Seguidores: ${metadata.subscribers || "?"}
+≡ 🎍 Verificación: ${metadata.verified === "true" ? "✅ Sí" : "❌ No"}
 
 ≡ 🌷 Descripción: 
-${info.description || "Sin descripción"}
-  `.trim();
+${metadata.description || "Sin descripción"}
+    `.trim();
 
-  return {
-    id: info.id,
-    inf: txt
-  };
+    return {
+      id: channelId,
+      inf: txt
+    };
+
+  } catch (error) {
+    throw new Error(`No se pudo obtener la información del canal: ${error.message}`);
+  }
 }
