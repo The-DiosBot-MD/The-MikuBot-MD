@@ -4,7 +4,7 @@
 </h1>
 
 <p align="center">
-  <img src="https://qu.ax/ARhkT.jpg" alt="Menú Principal" width="270">
+  <img src="https://i.postimg.cc/h4wcH5M2/Logo.jpg" alt="Menú Principal" width="270">
 </p>
 
 <h1 align="center">🌟✨ The-MikuBot-MD ✨🌟</h1>
