@@ -19,5 +19,6 @@ conn.sendMessage(m.chat, { image: { url: img }, caption: txt }, { quoted: fkonta
 }
 
 handler.command = ['pack'];
+handler.admin = true
 
 export default handler;
