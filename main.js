@@ -250,8 +250,6 @@ fs.watch(dirToWatchccc, (eventType, filename) => {
   }
 });
 
-
-
 async function connectionUpdate(update) {
   const {connection, lastDisconnect, isNewLogin} = update;
   global.stopped = connection;
@@ -307,7 +305,6 @@ if (connection === 'close') {
 process.on('uncaughtException', console.error);
 
 let isInit = true;
-
 
 let handler = await import('./handler.js');
 global.reloadHandler = async function(restatConn) {
