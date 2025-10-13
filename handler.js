@@ -442,45 +442,47 @@ if (m.chat === groupLimitado && !comandosPermitidos.includes(command)) {
             }
         }
 
-        try {
-  if (!opts['noprint']) await (await import(`./lib/print.js`)).default(m, this)
-} catch (e) {
-  console.log(m, m.quoted, e)
-}
-
-const settingsREAD = global.db.data.settings[this.user.jid] || {}
-if (opts['autoread']) await this.readMessages([m.key])
-if (settingsREAD.autoread) await this.readMessages([m.key])
+        
+try {
+      if (!opts['noprint']) await (await import(./lib/print.js)).default(m, this)
+    } catch (e) {
+      console.log(m, m.quoted, e)
+    }
+    const settingsREAD = global.db.data.settings[this.user.jid] || {}
+    if (opts['autoread']) await this.readMessages([m.key])
+    if (settingsREAD.autoread) await this.readMessages([m.key])
+  }
 }
 
 global.dfail = (type, m, conn, usedPrefix) => {
-  let msg = {
-    rowner: "❌🚫`𝗣𝗲𝗿𝗱𝗼𝗻, 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝗲𝘀 𝘀𝗼𝗹𝗼 𝗽𝗮𝗿𝗮 𝗺𝗶 𝗢𝘄𝗻𝗲𝗿`🚫❌",
-    owner: " _*`🛑 𝗣𝗲𝗿𝗱𝗼𝗻, 𝘀𝗼𝗹𝗼 𝗺𝗶 𝗰𝗿𝗲𝗮𝗱𝗼𝗿 𝗽𝘂𝗲𝗱𝗲 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼⚡.`*_",
-    mods: " _*`⚡ 𝗣𝗲𝗿𝗱𝗼𝗻, 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀𝗼𝗹𝗼 𝗲𝘀 𝗽𝗮𝗿𝗮 𝗺𝗼𝗱𝘀⚡`*_",
-    premium: " _*`🔑 𝗡𝗼 𝗲𝗿𝗲𝘀 𝘂𝗻 𝘂𝘀𝘂𝗮𝗿𝗶𝗼 𝗣𝗥𝗘𝗠𝗜𝗨𝗠, 𝗵𝗮𝗯𝗹𝗮 𝗰𝗼𝗻 𝗺𝗶 𝗢𝘄𝗻𝗲𝗿⚡`*_",
-    group: " _*`🟢 𝗣𝗲𝗿𝗱𝗼𝗻, 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀𝗼𝗹𝗼 𝗲𝘀 𝗽𝗮𝗿𝗮 𝗴𝗿𝘂𝗽𝗼𝘀⚡`*_",
-    private: " _*`💬 𝗩𝗲 𝗮 𝗺𝗶 𝗰𝗵𝗮𝘁 𝗽𝗿𝗶𝘃𝗮𝗱𝗼 𝘆 𝘂𝘀𝗮 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼⚡`*_",
-    admin: " _*`❌ 𝗤𝘂𝗶𝗲𝗻 𝗲𝗿𝗲𝘀? 𝗧𝘂 𝗡𝗢 𝗲𝗿𝗲𝘀 𝗮𝗱𝗺𝗶𝗻⚡`*_",
-    botAdmin: " _*`⚠️ 𝗘𝘀 𝗻𝗲𝗰𝗲𝘀𝗮𝗿𝗶𝗼 𝗤𝘂𝗲 𝗦𝗲𝗮 𝗮𝗱𝗺𝗶𝗻 𝗣𝗥𝗜𝗠𝗘𝗥𝗢 𝗣𝗔𝗥𝗔 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗮 𝗳𝘂𝗻𝗰𝗶ó𝗻⚡`*_",
-    unreg: `
-╭── ❗ *USUARIO NO REGISTRADO* ❗
+    let msg = {
+        rowner: "❌🚫𝗣𝗲𝗿𝗱𝗼𝗻, 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝗲𝘀 𝘀𝗼𝗹𝗼 𝗽𝗮𝗿𝗮 𝗺𝗶 𝗢𝘄𝗻𝗲𝗿🚫❌",
+        owner: " 🛑 𝗣𝗲𝗿𝗱𝗼𝗻, 𝘀𝗼𝗹𝗼 𝗺𝗶 𝗰𝗿𝗲𝗮𝗱𝗼𝗿 𝗽𝘂𝗲𝗱𝗲 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼⚡.",
+        mods: " ⚡ 𝗣𝗲𝗿𝗱𝗼𝗻, 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀𝗼𝗹𝗼 𝗲𝘀 𝗽𝗮𝗿𝗮 𝗺𝗼𝗱𝘀⚡",
+        premium: " 🔑 𝗡𝗼 𝗲𝗿𝗲𝘀 𝘂𝗻 𝘂𝘀𝘂𝗮𝗿𝗶𝗼 𝗣𝗥𝗘𝗠𝗜𝗨𝗠, 𝗵𝗮𝗯𝗹𝗮 𝗰𝗼𝗻 𝗺𝗶 𝗢𝘄𝗻𝗲𝗿⚡",
+        group: " 🟢 𝗣𝗲𝗿𝗱𝗼𝗻, 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀𝗼𝗹𝗼 𝗲𝘀 𝗽𝗮𝗿𝗮 𝗴𝗿𝘂𝗽𝗼𝘀⚡",
+        private: " 💬 𝗩𝗲 𝗮 𝗺𝗶 𝗰𝗵𝗮𝘁 𝗽𝗿𝗶𝘃𝗮𝗱𝗼 𝘆 𝘂𝘀𝗮 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼⚡",
+        admin: " ❌ 𝗤𝘂𝗶𝗲𝗻 𝗲𝗿𝗲𝘀? 𝗧𝘂 𝗡𝗢 𝗲𝗿𝗲𝘀 𝗮𝗱𝗺𝗶𝗻⚡",
+        botAdmin: " ⚠️ 𝗘𝘀 𝗻𝗲𝗰𝗲𝘀𝗮𝗿𝗶𝗼 𝗤𝘂𝗲 𝗦𝗲𝗮 𝗮𝗱𝗺𝗶𝗻 𝗣𝗥𝗜𝗠𝗘𝗥𝗢 𝗣𝗔𝗥𝗔 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗮 𝗳𝘂𝗻𝗰𝗶𝗼́𝗻⚡",
+        unreg: `
+╭── ❗ USUARIO NO REGISTRADO ❗
 │ 🌸 No puedes usar este comando todavía.
 │
-│ 🔐 *¿Cómo registrarse?*
-│ 📌 Usa: *.reg nombre.edad*
+│ 🔐 ¿Cómo registrarse?
+│ 📌 Usa: .reg nombre.edad
 │
-│ ✏️ *Ejemplo:*
+│ ✏️ Ejemplo:
 │ ➤.reg Miku.20
 ╰─────────────🌸 
 `
-  }[type]
-  if (msg) return conn.reply(m.chat, msg, m).then(_ => m.react('✖️'))
+    }[type]
+    if (msg) return  conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
 }
 
-let file = global.__filename(import.meta.url, true)
+
+let file = global.filename(import.meta.url, true)
 watchFile(file, async () => {
-  unwatchFile(file)
-  console.log(chalk.magenta("Se actualizo 'handler.js'"))
-  if (global.reloadHandler) console.log(await global.reloadHandler())
+    unwatchFile(file)
+    console.log(chalk.magenta("Se actualizo 'handler.js'"))
+    if (global.reloadHandler) console.log(await global.reloadHandler())
 })
