@@ -475,7 +475,7 @@ global.dfail = (type, m, conn, usedPrefix) => {
 ╰─────────────🌸 
 `
     }[type]
-    if (msg) return  conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
+    if (msg) return  conn.reply(m.chat, msg, m).then(_ => m.react('✖️'))
 }
 
 
