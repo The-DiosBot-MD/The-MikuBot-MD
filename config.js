@@ -12,7 +12,7 @@ import axios from 'axios'
   [ '254575982448677@lid', 'AdrianOficial', true ],
   [ '172056423456949@lid', 'Barboza', true ],
   [ '111270153982054@lid', 'BAJO BOTS', true ],
-  [ '254575982448677@lid',     'AdrianOficial', true ],
+  [ '254575982448677@lid', 'AdrianOficial', true ],
   [ '174560573964411@lid', 'Rayo-ofc', true ],
   [ '595972157130', 'Rayo', true ],
   [ '5355699866', 'Carlos', true ],
@@ -37,7 +37,7 @@ global.textbot = `𝐓𝐞𝐜𝐧𝐨𝐥𝐨𝐠𝐢𝐬 𝐛𝐲 𝐓𝐡𝐞
 global.dev = '𝐒𝐨𝐟𝐭𝐰𝐚𝐫𝐞 𝐁𝐲 𝐓𝐞𝐜𝐧𝐨𝐥𝐨𝐠𝐢𝐬 𝐠𝐫𝐮𝐩'
 global.listo = '*𝐄𝐱𝐢𝐭𝐨*'
 global.namechannel = '𝐓𝐡𝐞-𝐌𝐢𝐤𝐮𝐁𝐨𝐭-𝐌𝐃'
-global.channel = 'https://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W'
+global.channel = 'https://whatsapp.com/channel/0029VbBBXTr5fM5flFaxsO06'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
@@ -47,7 +47,7 @@ global.miniurl = fs.readFileSync('./storage/img/miniurl.jpg')
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.group = 'https://chat.whatsapp.com/C92isvspFcXCtqv2PqCfHI'
-global.canal = 'https://whatsapp.com/channel/0029VaGt7Uk6WaKkEDZUh43W'
+global.canal = 'https://whatsapp.com/channel/0029VbBBXTr5fM5flFaxsO06'
 global.insta = 'https://instagram.com/adri.analegresanchez'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
