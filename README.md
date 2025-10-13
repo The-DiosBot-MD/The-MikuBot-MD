@@ -32,10 +32,10 @@ Un proyecto colaborativo inspirado por la legendaria *Vocaloid Hatsune Miku*, fu
 ---
 
 *🎮 Comandos Principales*
-🎧 Comando🌟 Función`!menu`Muestra el menú principal interactivo`!miku`Miku te saluda con estilo idol 💫`!sticker`Transforma imágenes en stickers kawaii`!joke`Ríete con humor estilo japonés 🤭`!anime`Recomendaciones de anime según tu mood---
+🎧 Comando🌟 Función`.menu`Muestra el menú principal interactivo`.miku`Miku te saluda con estilo idol 💫`.sticker`Transforma imágenes en stickers kawaii`.joke`Ríete con humor estilo japonés 🤭`.anime`Recomendaciones de anime según tu mood---
 
 *📢 Canal Oficial de WhatsApp*
 
 ¿Quieres enterarte primero de los cambios, ver nuevas funciones y participar en eventos sorpresa?
 
-🪄 [🌐 ÚNETE AL CANAL AQUÍ](https://dash.genbl.site)
+🪄 [🌐 ÚNETE AL CANAL AQUÍ](https://whatsapp.com/channel/0029VbBBXTr5fM5flFaxsO06)
