@@ -13,7 +13,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
     await m.reply(data.response.trim())
   } catch (e) {
     await m.react('⚡️')
-    await conn.reply(m.chat, `${emoji} Mode IA no puede responder a esa pregunta.`, m, rcanal)
+    await conn.reply(m.chat, ` Mode IA no puede responder a esa pregunta.`, m, rcanal)
   }
 }
 
