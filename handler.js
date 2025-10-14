@@ -264,8 +264,8 @@ conn: this,
                 let _args = noPrefix.trim().split` `.slice(1)
                 let text = _args.join` `  
 command = (command || '').toLowerCase()  
-const groupLimitado = '120363400854207202@g.us'  
-const comandosPermitidos = ['serbot', 'bots', 'kick', 'code', 's', 'delsession', 'on', 'off', 'tutosub', 'menu', 'estado', 'update', 'sistema'];  
+const groupLimitado = '120363160004045293@g.us'  
+const comandosPermitidos = ['serbot', 'bots', 'kick', 'code', 's', 'delsession', 'on', 'off', 'tutosub', 'menu', 'estado', 'play', 'sistema'];  
 
 if (m.chat === groupLimitado && !comandosPermitidos.includes(command)) {
             return
@@ -475,7 +475,7 @@ global.dfail = (type, m, conn, usedPrefix) => {
 ╰─────────────🌸 
 `
     }[type]
-    if (msg) return  conn.reply(m.chat, msg, m).then(_ => m.react('✖️'))
+    if (msg) return  conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
 }
 
 
