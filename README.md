@@ -9,7 +9,7 @@
 
 <h1 align="center">🌟✨ The-MikuBot-MD ✨🌟</h1>
 
-<p align="center"><em>🤖💙 Inspirado por la energía de Hatsune Miku, llega un bot que mezcla kawaii, funcionalidad y música digital 💙🤖</em></p>
+<p align="center"><em>🤖💙 Inspirado por la energía de Miku Nakano, llega un bot que mezcla kawaii, funcionalidad y música digital 💙🤖</em></p>
 
 ---
 
@@ -21,7 +21,7 @@ Un proyecto colaborativo inspirado por la legendaria *Vocaloid Hatsune Miku*, fu
 
 👥 *Equipo de desarrollo*:
 
- 👨‍💻 [Adrian](https://Wa.me/595976126756)
+ 👨‍💻 [AdrianOficial](https://Wa.me/595976126756)
 
 🔥 [Bajo-Bots](https://Wa.me/573162402768) 
 
@@ -32,7 +32,7 @@ Un proyecto colaborativo inspirado por la legendaria *Vocaloid Hatsune Miku*, fu
 ---
 
 *🎮 Comandos Principales*
-🎧 Comando🌟 Función`.menu`Muestra el menú principal interactivo`.miku`Miku te saluda con estilo idol 💫`.sticker`Transforma imágenes en stickers kawaii`.joke`Ríete con humor estilo japonés 🤭`.anime`Recomendaciones de anime según tu mood---
+🎧 Comando🌟 Función`.menu`Muestra el menú principal interactivo`.miku`Miku te saluda con estilo idol 💫`.s`Transforma imágenes en stickers kawaii`.menu2`Ríete con humor estilo japonés 🤭`.anime`Recomendaciones de anime según tu mood---
 
 *📢 Canal Oficial de WhatsApp*
 
