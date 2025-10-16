@@ -1,7 +1,7 @@
 let handler = async (m, { conn, isAdmin, isROwner }) => {
     if (!(isAdmin || isROwner)) return dfail('admin', m, conn)
     global.db.data.chats[m.chat].isBanned = true
-    await conn.reply(m.chat, `🧑‍💻Miku-Bot FUE DESACTIVADO EN ESTE CHAT`)
+    await conn.reply(m.chat, `🧑‍💻Miku-Bot FUE DESACTIVADO EN ESTE CHAT`, msg)
     await m.react('✅')
 }
 handler.help = ['banearbot']
