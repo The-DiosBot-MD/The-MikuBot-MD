@@ -242,7 +242,7 @@ let handler = async (msg, { conn, args, usedPrefix, command, isOwner }) => {
         },
         msgRetry: msgRetry,
         msgRetryCache: cache,
-        version: [2, 3000, 1023223821],
+        version: [2, 3000, 1025190524],
         syncFullHistory: true,
         browser: isCode ? ["Ubuntu", "Chrome", "110.0.5585.95"] : ["${botname} (Sub Bot)", "Chrome", "2.0.0"],
         defaultQueryTimeoutMs: undefined,
