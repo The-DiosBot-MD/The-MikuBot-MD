@@ -28,11 +28,12 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 
     const video = jsonSearch.data[0]; // Primer resultado
 
-    // 🎵 Descargar en MP3 con la nueva API Vreden
-    const dl = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${encodeURIComponent(video.url)}&quality=128`);
+    
+    const apiKey = 'stellar-MUdpZwW6';
+    const dl = await fetch(`https://api.stellarwa.xyz/dow/ytmp3?url=${encodeURIComponent(video.url)}&apikey=${apiKey}`);
     const jsonDl = await dl.json();
 
-    if (!jsonDl.status || !jsonDl.result?.download?.url) {
+    if (!jsonDl.status || !jsonDl.data?.dl) {
       return m.reply(
         `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ ❌ *No se pudo obtener el audio de:* ${video.title}
@@ -40,27 +41,24 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       );
     }
 
-    const { metadata, download } = jsonDl.result;
+    const { title, author, dl: audioUrl } = jsonDl.data;
 
-    // 📄 Info con miniatura
+    
     await conn.sendMessage(m.chat, {
-      image: { url: metadata.thumbnail },
+      image: { url: video.thumbnail },
       caption: `╭─⬣「 *Descargador YouTube* 」⬣
-│ ≡◦ 🎵 *Título:* ${metadata.title}
-│ ≡◦ 👤 *Autor:* ${metadata.author.name}
-│ ≡◦ ⏱️ *Duración:* ${metadata.timestamp}
-│ ≡◦ 👁️ *Vistas:* ${metadata.views.toLocaleString()}
-│ ≡◦ 🌐 *YouTube:* ${metadata.url}
-│ ≡◦ 📝 *Descripción:* ${metadata.description || "Sin descripción"}
+│ ≡◦ 🎵 *Título:* ${title}
+│ ≡◦ 👤 *Autor:* ${author}
+│ ≡◦ 🌐 *YouTube:* ${video.url}
 ╰─⬣`
     }, { quoted: m });
 
     // 🎶 Audio MP3
     await conn.sendMessage(m.chat, {
-      audio: { url: download.url },
+      audio: { url: audioUrl },
       mimetype: 'audio/mp4',
       ptt: false,
-      fileName: download.filename
+      fileName: `${title}.mp3`
     }, { quoted: m });
 
     await m.react('✅');
