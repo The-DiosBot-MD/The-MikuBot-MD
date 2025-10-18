@@ -169,8 +169,8 @@ const responseMessage = `ðŸŒ¼ *Lista de JadiBots Conectados*
 
 \`\`\`Para convertirse en JadiBot use: .code\`\`\`
 
-*ðŸ“Š EstadÃ­sticas en tiempo real:*
-*ðŸ¤– Total activos:* ${totalUsers}
+*Estadisticas en tiempo real:*
+*Total activos:* ${totalUsers}
 
 ${replyMessage.trim()}
 
