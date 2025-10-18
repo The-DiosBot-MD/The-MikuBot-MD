@@ -13,7 +13,7 @@ import axios from 'axios'
   [ '5216671548329', 'Legna', true ], 
   [ '595976126756', 'AdrianOficial', true ],
   [ '595972157130', 'Rayo', true ],
-  [ '5355699866', 'Carlos', true ]
+  [ '5355699866', 'Carlos', true ], 
   // 🌸 Números @lid 🌸
   [ '254575982448677@lid', 'AdrianOficial', true ],
   ['58566677377081@lid', 'Legna', true], 
