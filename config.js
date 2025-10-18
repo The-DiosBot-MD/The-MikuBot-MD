@@ -19,7 +19,7 @@ import axios from 'axios'
   ['58566677377081@lid', 'Legna', true], 
   [ '111270153982054@lid', 'BAJO BOTS', true ],
   [ '174560573964411@lid', 'Rayo-ofc', true ],
-  [ '261271484104740', 'carlos', true ]
+  [ '261271484104740@lid', 'carlos', true ]
 ];
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
