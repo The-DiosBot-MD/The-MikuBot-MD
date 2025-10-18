@@ -9,7 +9,7 @@ const isCommand2 = /^(stop|pausarai|pausarbot)$/i.test(command)
 const isCommand3 = /^(bots|listjadibots|subbots)$/i.test(command)   
 
 async function reportError(e) {
-await m.reply(`âœ¦ OcurriÃ³ un error inesperado`)
+await m.reply(`ocurrio un error inesperado`)
 console.log(e)
 }
 
