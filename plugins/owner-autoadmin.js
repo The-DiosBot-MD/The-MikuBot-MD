@@ -14,7 +14,7 @@ const handler = async (m, {conn, isAdmin, groupMetadata }) => {
 handler.tags = ['owner'];
 handler.help = ['autoadmin'];
 handler.command = ['autoadmin' ,'tenerpoder'];
-handler.mods = true;
+handler.owner = true;
 handler.group = true;
 handler.botAdmin = true;
 export default handler;
