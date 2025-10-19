@@ -38,7 +38,7 @@ let handler = async (m, { conn}) => {
 },
     message: {
       contactMessage: {
-        displayName: "Miku Bot 🌸",
+        displayName: "Miku Bot 🎃",
         vcard: `BEGIN:VCARD\nVERSION:3.0\nN:Miku;Bot;;;\nFN:Miku Bot 🌸\nitem1.TEL;waid=${m.sender.split("@")[0]}:${m.sender.split("@")[0]}\nitem1.X-ABLabel:Celular\nEND:VCARD`
 }
 }
