@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
-const DOWNLOAD_API = 'https://api.stellarwa.xyz/dow/ytmp4v2?key=stellar-MUdpZwW6&url=';
+const DOWNLOAD_API = 'https://mayapi.ooguy.com/ytdl?type=mp4&apikey=may-d49d2316&url=';
 
 async function fetchPlay(query) {
   try {
@@ -14,18 +14,18 @@ async function fetchPlay(query) {
     const resDescarga = await fetch(DOWNLOAD_API + encodeURIComponent(video.url));
     if (!resDescarga.ok) return null;
     const jsonDescarga = await resDescarga.json();
-    const dl = jsonDescarga.data?.dl;
+    const dl = jsonDescarga.result?.url;
 
     return dl
       ? {
-          title: jsonDescarga.data.title,
-          duration: jsonDescarga.data.duration || video.duration,
+          title: jsonDescarga.result.title,
+          duration: video.duration,
           views: video.views,
           author: video.author?.name || 'Desconocido',
-          thumbnail: jsonDescarga.data.thumbnail || video.thumbnail,
+          thumbnail: video.thumbnail,
           videoUrl: video.url,
           dl_url: dl,
-          filename: `${jsonDescarga.data.title}.mp4`
+          filename: `${jsonDescarga.result.title}.mp4`
         }
       : null;
   } catch (e) {
