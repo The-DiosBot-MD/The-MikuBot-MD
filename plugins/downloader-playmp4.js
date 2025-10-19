@@ -1,38 +1,38 @@
 import fetch from 'node-fetch';
 
-const SEARCH_API = 'https://delirius-apiofc.vercel.app/search/ytsearch?q=';
-const DOWNLOAD_API = 'https://mayapi.ooguy.com/ytdl?type=mp4&apikey=may-d49d2316&url=';
+const SEARCH_API = 'https://sky-api-ashy.vercel.app/search/youtube?q=';
+const VREDEN_API = 'https://api.vreden.my.id/api/v1/download/youtube/video?quality=360&url=';
 
 async function fetchPlay(query) {
   try {
     const resBusqueda = await fetch(SEARCH_API + encodeURIComponent(query));
     if (!resBusqueda.ok) return null;
     const jsonBusqueda = await resBusqueda.json();
-    const video = jsonBusqueda.data?.[0];
-    if (!video?.url) return null;
+    const video = jsonBusqueda.result?.[0];
+    if (!video?.link) return null;
 
-    const resDescarga = await fetch(DOWNLOAD_API + encodeURIComponent(video.url));
+    const resDescarga = await fetch(VREDEN_API + encodeURIComponent(video.link));
     if (!resDescarga.ok) return null;
     const jsonDescarga = await resDescarga.json();
-    const dl = jsonDescarga.result?.url;
-    const calidad = jsonDescarga.result?.quality;
+    const result = jsonDescarga.result;
+    const meta = result?.metadata;
+    const dl = result?.download?.url;
+    const calidad = result?.download?.quality;
 
-    // Validar si la calidad es 360p o no
-    if (!dl || !calidad) return null;
-    if (calidad !== '360p') {
+    if (!dl || calidad !== '360p') {
       console.log(`⚠️ Calidad disponible: ${calidad}. No es 360p.`);
-      // Aquí podrías decidir si rechazar o aceptar otras calidades
+      return null;
     }
 
     return {
-      title: jsonDescarga.result.title,
-      duration: video.duration,
-      views: video.views,
-      author: video.author?.name || 'Desconocido',
-      thumbnail: video.thumbnail,
-      videoUrl: video.url,
+      title: meta.title,
+      duration: meta.duration.timestamp,
+      views: meta.views,
+      author: meta.author?.name || video.channel || 'Desconocido',
+      thumbnail: meta.thumbnail || video.imageUrl,
+      videoUrl: meta.url || video.link,
       dl_url: dl,
-      filename: `${jsonDescarga.result.title}.mp4`,
+      filename: result.download.filename,
       quality: calidad
     };
   } catch (e) {
