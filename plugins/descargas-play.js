@@ -26,9 +26,9 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       );
     }
 
-    const video = jsonSearch.data[0]; // Primer resultado
+    const video = jsonSearch.data[0]; 
 
-    // 🎧 Descargar con Neveloopp API
+    
     const apiKey = 'rmF1oUJI529jzux8';
     const dl = await fetch(`https://api-nv.ultraplus.click/api/youtube/v2?url=${encodeURIComponent(video.url)}&format=audio&key=${apiKey}`);
     const jsonDl = await dl.json();
