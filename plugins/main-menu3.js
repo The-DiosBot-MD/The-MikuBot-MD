@@ -1,6 +1,6 @@
 
 let handler = async (m, { conn}) => {
-  let img = "https://i.ibb.co/LYZrgRs/The-Miku-Bot-MD.jpg";
+  let img = "https://qu.ax/MExuf.jpg";
   let texto = `
 🌸 *ＭＩＫＵ　ＢＯＴ - ＭＥＮＵ　ＤＥ　ＬＯＧＯＳ* 🌸
 
