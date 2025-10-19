@@ -30,7 +30,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 
     
     const apiKey = 'stellar-MUdpZwW6';
-    const dl = await fetch(`https://api.stellarwa.xyz/dow/ytmp3?url=${encodeURIComponent(video.url)}&apikey=${apiKey}`);
+    const dl = await fetch(`https://api.stellarwa.xyz/dow/ytmp3v2?url=${encodeURIComponent(video.url)}&apikey=${apiKey}`);
     const jsonDl = await dl.json();
 
     if (!jsonDl.status || !jsonDl.data?.dl) {
