@@ -15,19 +15,26 @@ async function fetchPlay(query) {
     if (!resDescarga.ok) return null;
     const jsonDescarga = await resDescarga.json();
     const dl = jsonDescarga.result?.url;
+    const calidad = jsonDescarga.result?.quality;
 
-    return dl
-      ? {
-          title: jsonDescarga.result.title,
-          duration: video.duration,
-          views: video.views,
-          author: video.author?.name || 'Desconocido',
-          thumbnail: video.thumbnail,
-          videoUrl: video.url,
-          dl_url: dl,
-          filename: `${jsonDescarga.result.title}.mp4`
-        }
-      : null;
+    // Validar si la calidad es 360p o no
+    if (!dl || !calidad) return null;
+    if (calidad !== '360p') {
+      console.log(`⚠️ Calidad disponible: ${calidad}. No es 360p.`);
+      // Aquí podrías decidir si rechazar o aceptar otras calidades
+    }
+
+    return {
+      title: jsonDescarga.result.title,
+      duration: video.duration,
+      views: video.views,
+      author: video.author?.name || 'Desconocido',
+      thumbnail: video.thumbnail,
+      videoUrl: video.url,
+      dl_url: dl,
+      filename: `${jsonDescarga.result.title}.mp4`,
+      quality: calidad
+    };
   } catch (e) {
     console.log('❌ Error en búsqueda/descarga:', e);
     return null;
@@ -60,6 +67,7 @@ let handler = async (m, { text, conn, command }) => {
 ║ ⏱️ Duración: ${video.duration}
 ║ 👀 Vistas: ${video.views.toLocaleString()}
 ║ 🧑‍🎤 Autor: ${video.author}
+║ 📺 Calidad: ${video.quality}
 ║ 🔗 Link: ${video.videoUrl}
 ╚═ೋ═══❖═══ೋ═╝
 `.trim();
