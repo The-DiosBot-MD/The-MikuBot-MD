@@ -43,10 +43,10 @@ async function getSize(url) {
   }
 }
 
-// Descarga usando MayAPI
+// Descarga usando MayAPI con calidad 360p
 async function ytdl(url) {
   try {
-    const apiUrl = `https://mayapi.ooguy.com/ytdl?url=${encodeURIComponent(url)}&type=mp4&apikey=may-d49d2316`;
+    const apiUrl = `https://mayapi.ooguy.com/ytdl?url=${encodeURIComponent(url)}&type=mp4&quality=360&apikey=may-d49d2316`;
     const res = await axios.get(apiUrl, { timeout: 15000 });
 
     if (!res.data?.status || !res.data?.result?.url) {
