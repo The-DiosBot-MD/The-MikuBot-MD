@@ -11,12 +11,12 @@ const clockString = ms => {
 const imagen = "https://qu.ax/BKofJ.jpg";
 
 const menuHeader = `
-╭━━━「 🌸 The-MikuBot-MD 」━━━╮
+╭━━「 🌸 The-MikuBot-MD 」━━╮
 ┃ ¡Hola, %name!
 ┃ Nivel: %level | XP: %exp/%max
 ┃ Límite: %limit | Modo: %mode
 ┃ Uptime: %uptime | Usuarios: %total
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
+╰━━━━━━━━━━━━━━━━━━━━━╯
 `;
 
 const sectionDivider = `╰───────────────╯`;
