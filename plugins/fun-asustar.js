@@ -41,6 +41,7 @@ let handler = async (m, { usedPrefix, command, text, conn }) => {
 handler.help = ['asustar @usuario'];
 handler.tags = ['diversion'];
 handler.command = ['asustar', 'hackear'];
+handler.rowner = true;
 
 export default handler;
 
