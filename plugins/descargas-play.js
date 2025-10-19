@@ -28,12 +28,12 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 
     const video = jsonSearch.data[0]; // Primer resultado
 
-    
-    const apiKey = 'stellar-MUdpZwW6';
-    const dl = await fetch(`https://api.stellarwa.xyz/dow/ytmp3v2?url=${encodeURIComponent(video.url)}&apikey=${apiKey}`);
+    // 🎧 Descargar con Neveloopp API
+    const apiKey = 'rmF1oUJI529jzux8';
+    const dl = await fetch(`https://api-nv.ultraplus.click/api/youtube/v2?url=${encodeURIComponent(video.url)}&format=audio&key=${apiKey}`);
     const jsonDl = await dl.json();
 
-    if (!jsonDl.status || !jsonDl.data?.dl) {
+    if (!jsonDl.status || !jsonDl.result?.dl) {
       return m.reply(
         `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ ❌ *No se pudo obtener el audio de:* ${video.title}
@@ -41,14 +41,13 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       );
     }
 
-    const { title, author, dl: audioUrl } = jsonDl.data;
+    const { title, dl: audioUrl } = jsonDl.result;
 
-    
     await conn.sendMessage(m.chat, {
       image: { url: video.thumbnail },
       caption: `╭─⬣「 *Descargador YouTube* 」⬣
 │ ≡◦ 🎵 *Título:* ${title}
-│ ≡◦ 👤 *Autor:* ${author}
+│ ≡◦ 👤 *Autor:* ${video.author}
 │ ≡◦ 🌐 *YouTube:* ${video.url}
 ╰─⬣`
     }, { quoted: m });
