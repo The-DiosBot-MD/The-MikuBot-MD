@@ -2,9 +2,9 @@ import fetch from "node-fetch";
 import axios from 'axios';
 
 // Constantes
-const MAX_FILE_SIZE = 280 * 1024 * 1024; // 280 MB
-const VIDEO_THRESHOLD = 70 * 1024 * 1024; // 70 MB
-const HEAVY_FILE_THRESHOLD = 100 * 1024 * 1024; // 100 MB
+const MAX_FILE_SIZE = 280 * 1024 * 1024;
+const VIDEO_THRESHOLD = 70 * 1024 * 1024;
+const HEAVY_FILE_THRESHOLD = 100 * 1024 * 1024;
 const REQUEST_LIMIT = 3;
 const REQUEST_WINDOW_MS = 10000;
 const COOLDOWN_MS = 120000;
@@ -43,18 +43,17 @@ async function getSize(url) {
   }
 }
 
-// Descarga usando API de Vreden
+// Descarga usando MayAPI
 async function ytdl(url) {
   try {
-    const apiUrl = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(url    const res = await axios.get(apiUrl, { timeout: 15000 });
+    const apiUrl = `https://mayapi.ooguy.com/ytdl?url=${encodeURIComponent(url)}&type=mp4&apikey=may-d49d2316`;
+    const res = await axios.get(apiUrl, { timeout: 15000 });
 
-    if (!res.data?.status || !res.data?.result?.download?.url) {
+    if (!res.data?.status || !res.data?.result?.url) {
       throw new Error('No se pudo obtener la URL de descarga');
     }
 
-    const { title } = res.data.result.metadata;
-    const downloadUrl = res.data.result.download.url;
-
+    const { title, url: downloadUrl } = res.data.result;
     return { url: downloadUrl, title: title || 'Video sin título' };
   } catch (e) {
     throw new Error(`Error en la descarga: ${e.message}`);
@@ -82,7 +81,7 @@ const checkRequestLimit = () => {
 // Handler principal
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) {
-    return conn.reply(m.chat, `👉 Uso: ${usedPrefix}${command} https://youtube.com/watch?v=iQEVguV71sI`, m);
+    return conn.reply(m.chat, `👉 Uso: ${usedPrefix}${command} https://youtube.com/watch?v=Cr8K88UcO0s`, m);
   }
 
   if (!isValidYouTubeUrl(text)) {
@@ -133,7 +132,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       null,
       {
         mimetype: 'video/mp4',
-        asDocument: !isSmall: `${title}.mp4`
+        asDocument: !isSmallVideo,
+        filename: `${title}.mp4`
       }
     );
 
