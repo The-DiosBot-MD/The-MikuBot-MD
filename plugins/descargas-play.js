@@ -27,13 +27,13 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
     }
 
     const video = jsonSearch.data[0]; 
+    const videoUrl = video.url;
 
-    
-    const apiKey = 'rmF1oUJI529jzux8';
-    const dl = await fetch(`https://api-nv.ultraplus.click/api/youtube/v2?url=${encodeURIComponent(video.url)}&format=audio&key=${apiKey}`);
+    // 🎧 Descargar audio con Vreden API
+    const dl = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${encodeURIComponent(videoUrl)}&quality=128`);
     const jsonDl = await dl.json();
 
-    if (!jsonDl.status || !jsonDl.result?.dl) {
+    if (!jsonDl.status || !jsonDl.result?.download?.url) {
       return m.reply(
         `╭─⬣「 *The-MikuBot-MD* 」⬣
 │ ≡◦ ❌ *No se pudo obtener el audio de:* ${video.title}
@@ -41,14 +41,16 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       );
     }
 
-    const { title, dl: audioUrl } = jsonDl.result;
+    const { metadata, download } = jsonDl.result;
+    const { title, thumbnail } = metadata;
+    const audioUrl = download.url;
 
     await conn.sendMessage(m.chat, {
-      image: { url: video.thumbnail },
+      image: { url: thumbnail },
       caption: `╭─⬣「 *Descargador YouTube* 」⬣
 │ ≡◦ 🎵 *Título:* ${title}
-│ ≡◦ 👤 *Autor:* ${video.author}
-│ ≡◦ 🌐 *YouTube:* ${video.url}
+│ ≡◦ 👤 *Autor:* ${metadata.author.name}
+│ ≡◦ 🌐 *YouTube:* ${metadata.url}
 ╰─⬣`
     }, { quoted: m });
 
@@ -57,7 +59,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       audio: { url: audioUrl },
       mimetype: 'audio/mp4',
       ptt: false,
-      fileName: `${title}.mp3`
+      fileName: `${title} (128kbps).mp3`
     }, { quoted: m });
 
     await m.react('✅');
