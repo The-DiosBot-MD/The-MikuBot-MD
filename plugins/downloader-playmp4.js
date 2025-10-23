@@ -1,60 +1,41 @@
 import fetch from 'node-fetch';
 
-const SEARCH_API = 'https://sky-api-ashy.vercel.app/search/youtube?q=';
-const VREDEN_API = 'https://api.vreden.my.id/api/v1/download/youtube/video?quality=360&url=';
+const thumbnailUrl = 'https://qu.ax/Asbfq.jpg';
 
-async function fetchPlay(query) {
-  try {
-    const resBusqueda = await fetch(SEARCH_API + encodeURIComponent(query));
-    if (!resBusqueda.ok) return null;
-    const jsonBusqueda = await resBusqueda.json();
-    const video = jsonBusqueda.result?.[0];
-    if (!video?.link) return null;
-
-    const resDescarga = await fetch(VREDEN_API + encodeURIComponent(video.link));
-    if (!resDescarga.ok) return null;
-    const jsonDescarga = await resDescarga.json();
-    const result = jsonDescarga.result;
-    const meta = result?.metadata;
-    const dl = result?.download?.url;
-    const calidad = result?.download?.quality;
-
-    if (!dl || calidad !== '360p') {
-      console.log(`⚠️ Calidad disponible: ${calidad}. No es 360p.`);
-      return null;
-    }
-
-    return {
-      title: meta.title,
-      duration: meta.duration.timestamp,
-      views: meta.views,
-      author: meta.author?.name || video.channel || 'Desconocido',
-      thumbnail: meta.thumbnail || video.imageUrl,
-      videoUrl: meta.url || video.link,
-      dl_url: dl,
-      filename: result.download.filename,
-      quality: calidad
-    };
-  } catch (e) {
-    console.log('❌ Error en búsqueda/descarga:', e);
-    return null;
+const contextInfo = {
+  externalAdReply: {
+    title: "📺 YouTube Video",
+    body: "Transmisión directa desde el universo visual...",
+    mediaType: 1,
+    previewType: 0,
+    mediaUrl: "https://youtube.com",
+    sourceUrl: "https://youtube.com",
+    thumbnailUrl
   }
-}
+};
 
-let handler = async (m, { text, conn, command }) => {
-  if (!text) {
+const handler = async (m, { conn, args, command, usedPrefix }) => {
+  const input = args.join(" ").trim();
+  if (!input) {
     await conn.sendMessage(m.chat, { react: { text: '🌀', key: m.key } });
-    return m.reply(`🔍 Ingresa el nombre del video. Ejemplo: .${command} DJ Malam Pagi`);
+    return conn.sendMessage(m.chat, {
+      text: `🔍 Ingresa el nombre del video.\n📌 Ejemplo: ${usedPrefix + command} DJ Malam Pagi`,
+      contextInfo
+    }, { quoted: m });
   }
 
-  try {
-    await conn.sendMessage(m.chat, { react: { text: '🔍', key: m.key } });
+  await conn.sendMessage(m.chat, { react: { text: '🔎', key: m.key } });
 
-    const video = await fetchPlay(text);
-    if (!video) {
-      await conn.sendMessage(m.chat, { react: { text: '⚠️', key: m.key } });
-      return m.reply('⚠️ No se encontraron resultados o no se pudo descargar el video.');
+  try {
+    const res = await fetch(`https://api.vreden.my.id/api/v1/download/play/video?query=${encodeURIComponent(input)}`);
+    if (!res.ok) throw new Error(`Código HTTP ${res.status}`);
+
+    const json = await res.json();
+    if (!json.status || !json.result?.download?.url) {
+      throw new Error('No se pudo obtener el video. Verifica el nombre o intenta con otro término.');
     }
+
+    const { metadata, download } = json.result;
 
     await conn.sendMessage(m.chat, { react: { text: '🎶', key: m.key } });
 
@@ -63,37 +44,50 @@ let handler = async (m, { text, conn, command }) => {
 ║  ⚡ The Miku Bot  ⚡
 ║  🎶 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐬 𝐏𝐥𝐚𝐲 🎶
 ╠═ೋ═══❖═══ೋ═╣
-║ 🎵 Título: ${video.title}
-║ ⏱️ Duración: ${video.duration}
-║ 👀 Vistas: ${video.views.toLocaleString()}
-║ 🧑‍🎤 Autor: ${video.author}
-║ 📺 Calidad: ${video.quality}
-║ 🔗 Link: ${video.videoUrl}
+║ 🎵 Título: ${metadata.title}
+║ ⏱️ Duración: ${metadata.duration.timestamp}
+║ 👀 Vistas: ${metadata.views.toLocaleString()}
+║ 🧑‍🎤 Autor: ${metadata.author.name}
+║ 📺 Calidad: ${download.quality}
+║ 🔗 Link: ${metadata.url}
 ╚═ೋ═══❖═══ೋ═╝
 `.trim();
 
-    await conn.sendMessage(m.chat, { image: { url: video.thumbnail }, caption: msgInfo }, { quoted: m });
+    await conn.sendMessage(m.chat, {
+      image: { url: metadata.thumbnail },
+      caption: msgInfo,
+      contextInfo
+    }, { quoted: m });
 
     await conn.sendMessage(m.chat, { react: { text: '📥', key: m.key } });
 
+    const videoRes = await fetch(download.url);
+    if (!videoRes.ok) throw new Error(`Código HTTP ${videoRes.status}`);
+    const buffer = await videoRes.buffer();
+
     await conn.sendMessage(m.chat, {
-      video: { url: video.dl_url },
+      video: buffer,
       mimetype: 'video/mp4',
-      fileName: video.filename,
-      caption: `🎬 ${video.title}`
+      fileName: download.filename || 'video.mp4',
+      caption: `🎬 ${metadata.title}`,
+      contextInfo
     }, { quoted: m });
 
     await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
 
   } catch (e) {
-    console.error('💥 Error general en el flujo:', e);
+    console.error("💥 Error en Miku Video Downloader:", e);
     await conn.sendMessage(m.chat, { react: { text: '💥', key: m.key } });
-    m.reply('❌ Error al procesar tu solicitud.');
+    await conn.sendMessage(m.chat, {
+      text: `🎭 La transmisión se desvaneció entre bambalinas...\n\n🛠️ ${e.message}`,
+      contextInfo
+    }, { quoted: m });
   }
 };
 
 handler.command = ['play2', 'mp4', 'ytmp4', 'playmp4'];
-handler.help = ['play2 <video>'];
-handler.tags = ['downloader'];
+handler.tags = ['descargas'];
+handler.help = ['play2 <nombre o enlace de YouTube>'];
+handler.coin = 300;
 
 export default handler;
